@@ -1,12 +1,15 @@
-﻿using CallTech.Class;
+﻿using AppraisalLand.Class;
 using DAL.Classes;
 using DAL.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Cryptography;
 
-namespace CallTech.Controllers
+namespace AppraisalLand.Controllers
 {
+    /// <summary>
+    /// 
+    /// </summary>
     [Route("api/com.appraisalland.Registration")]
     [ApiController]
     public class RegistrationController : ControllerBase
@@ -17,6 +20,15 @@ namespace CallTech.Controllers
         private IEmailService _emailService;
         private readonly EncryptionHelper _encryptionHelper;
         Log Log = new Log();
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="_registrationService"></param>
+        /// <param name="propertyService"></param>
+        /// <param name="emailService"></param>
+        /// <param name="authService"></param>
+        /// <param name="encryptionHelper"></param>
         public RegistrationController(IRegistrationService _registrationService, IPropertyService propertyService, IEmailService emailService, IAuthService authService, EncryptionHelper encryptionHelper)
         {
             registrationService = _registrationService;
@@ -26,6 +38,11 @@ namespace CallTech.Controllers
             _encryptionHelper = encryptionHelper;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         // [Route("Registration")]
         [AllowAnonymous]
         [HttpPost("userRegistration")]
@@ -61,7 +78,11 @@ namespace CallTech.Controllers
 
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [AllowAnonymous]
         [HttpPost("signUpUser")]
         public async Task<IActionResult> signUpUser([FromBody] ClsSignUpUser model)
@@ -156,6 +177,12 @@ namespace CallTech.Controllers
         }
 
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="password"></param>
+        /// <param name="passwordHash"></param>
+        /// <param name="passwordSalt"></param>
         private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
             using (var hmac = new HMACSHA512())
@@ -164,6 +191,13 @@ namespace CallTech.Controllers
                 passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
             }
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="token"></param>
+        /// <param name="emailid"></param>
+        /// <returns></returns>
         [AllowAnonymous]
         [HttpGet("VerifyEmailToken")]
         public IActionResult VerifyEmailToken(string token, string emailid)
@@ -189,7 +223,11 @@ namespace CallTech.Controllers
 
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="appraiserCompanyClass"></param>
+        /// <returns></returns>
         [HttpPost("RegisterAppraiserByCompany")]
         public async Task<IActionResult> RegisterAppraiserByCompany(DAL.Classes.AppraiserCompanyClass appraiserCompanyClass)
         {
@@ -241,6 +279,11 @@ namespace CallTech.Controllers
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="brokerageCls"></param>
+        /// <returns></returns>
         [HttpPost("RegisterBrokerByBrokerage")]
         public async Task<IActionResult> RegisterBrokerByBrokerage(BrokerageCls brokerageCls)
         {

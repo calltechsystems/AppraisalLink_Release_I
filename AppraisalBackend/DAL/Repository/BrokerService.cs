@@ -9,7 +9,7 @@ namespace DAL.Repository
     public class BrokerService : IBroker
     {
         private readonly AppraisallandsContext _context;
-        
+
         /// <summary>
         /// 
         /// </summary>

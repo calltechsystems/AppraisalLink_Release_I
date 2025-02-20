@@ -1,10 +1,12 @@
-﻿using DAL.Classes;
+﻿using AppraisalLand.Helper;
+using DAL.Classes;
 using DAL.Repository;
 using DBL.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
-namespace CallTech.Controllers
+namespace AppraisalLand.Controllers
 {
     /// <summary>
     /// 
@@ -16,19 +18,21 @@ namespace CallTech.Controllers
         private readonly IPropertyService _property;
         private readonly AppraisallandsContext _context;
         private IRegistrationService _registrationService;
+        private HelperService _smtpEmailService;
         Log Log = new Log();
-        
+
         /// <summary>
         /// 
         /// </summary>
         /// <param name="property"></param>
         /// <param name="context"></param>
         /// <param name="registrationService"></param>
-        public PropertyController(IPropertyService property, AppraisallandsContext context, IRegistrationService registrationService)
+        public PropertyController(IPropertyService property, AppraisallandsContext context, IRegistrationService registrationService, HelperService smtpEmailService)
         {
             _property = property;
             _context = context;
             _registrationService = registrationService;
+            _smtpEmailService = smtpEmailService;
         }
 
         /// <summary>
@@ -332,22 +336,77 @@ namespace CallTech.Controllers
                             if (SubcriptionDetails != null)
                             {
                                 var totalUsedPropertiesCount = _context.Properties.Where(x => x.UserId == userId_).ToList().Count();
-                                remainingProperty = SubcriptionDetails.TotalProperties - totalUsedPropertiesCount;
+                                remainingProperty = (int)SubcriptionDetails.TotalProperties - totalUsedPropertiesCount;
 
                                 if (remainingProperty > 0)
                                 {
                                     var registeredProperty = await _registrationService.RegisterPropertyAsync(property);
                                     if (registeredProperty > 0)
                                     {
-                                        await _registrationService.SendPropertyRegistrationEmail(property);
+
                                         short Count = 1;
                                         SubcriptionDetails.UsedProperties = (short)((SubcriptionDetails.UsedProperties) + Count);
                                         _context.TransactionLogs.Update(SubcriptionDetails);
                                         _context.SaveChanges();
+                                        var userEmail = _context.UserInformations.Where(x => x.UserId == userId_).Select(x => x.Email).FirstOrDefault();
+
+                                        //if (UserType == 6)
+                                        //{
+                                        //    var broker_details = _context.Brokers.Where(x => x.UserId == userId_).FirstOrDefault();
+                                        //    var BrokerageUserId = _context.Brokerages.Where(x => x.Id == broker_details.Brokerageid).FirstOrDefault();
+                                        //    userId_ = BrokerageUserId.UserId;
+
+                                        //}
+                                        //if (UserType == 5)
+                                        //{
+                                        //    var Appraiser_details = _context.Appraisers.Where(x => x.UserId == userId_).FirstOrDefault();
+                                        //    var AppraiserCompanyUserId = _context.Brokerages.Where(x => x.Id == Appraiser_details.CompanyId).FirstOrDefault();
+                                        //    userId_ = AppraiserCompanyUserId.UserId;
+
+                                        //}
+
+                                        var transtion_log = _context.TransactionLogs
+                                                           .Where(x => x.UserId == userId_ && x.IsActive == true)
+                                                           .FirstOrDefault();
+                                        var planLimitExceed = 0;
+                                        if (transtion_log != null)
+                                        {
+
+
+                                            if (transtion_log.UsedProperties < transtion_log.TotalProperties)
+                                            {
+                                                planLimitExceed = 0;
+                                            }
+                                            else
+                                            {
+                                                planLimitExceed = 1;
+                                            }
+                                        }
+                                        List<string> email = new List<string>();
+                                        List<string> brokeremail = new List<string>();
+                                        var Appraisers = await _context.UserInformations.Where(x => x.UserType == 3).ToListAsync();
+                                        var AppraiserCompany = await _context.UserInformations.Where(x => x.UserType == 4).ToListAsync();
+                                        foreach (var AppraiserCompanyEmail in AppraiserCompany)
+                                        {
+                                            email.Add(AppraiserCompanyEmail.Email);
+                                        }
+                                        foreach (var AppraisersEmail in Appraisers)
+                                        {
+                                            email.Add(AppraisersEmail.Email);
+                                        }
+                                        // await _registrationService.SendPropertyRegistrationEmail(property, registeredProperty);
+                                        brokeremail.Add(userEmail);
+                                        Task.Run(async () => await _smtpEmailService.SendEmailToUser(email, "Appraiser", Convert.ToString(registeredProperty)));
+                                        Task.Run(async () => await _smtpEmailService.SendEmailToUser(brokeremail, "Broker", Convert.ToString(registeredProperty)));
+
                                         return Ok(new
                                         {
                                             Message = "Property Registration successful!",
-                                            PropertyId = registeredProperty
+                                            PropertyId = registeredProperty,
+                                            usedProperties = transtion_log?.UsedProperties ?? 0,
+                                            totalNoOfProperties = transtion_log?.TotalProperties ?? 0,
+                                            planLimitExceed = planLimitExceed
+
                                         });
 
                                     }

@@ -3,9 +3,9 @@ using DBL.Models;
 
 namespace DAL.Repository
 {
-     /// <summary>
-     /// 
-     /// </summary>
+    /// <summary>
+    /// 
+    /// </summary>
     public class WishlistService : IWishlistService
     {
         readonly private AppraisallandsContext _AppraisallandContext;

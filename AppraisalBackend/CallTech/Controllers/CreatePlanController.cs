@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Text;
 
-namespace CallTech.Controllers
+namespace AppraisalLand.Controllers
 {
     /// <summary>
     /// 

@@ -3,7 +3,7 @@ using DAL.Repository;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CallTech.Controllers
+namespace AppraisalLand.Controllers
 {
     /// <summary>
     /// 
@@ -14,7 +14,7 @@ namespace CallTech.Controllers
     {
         private readonly IEmailService _emailService;
         private readonly ITwilioSms _twilioSms;
-        
+
         /// <summary>
         /// 
         /// </summary>

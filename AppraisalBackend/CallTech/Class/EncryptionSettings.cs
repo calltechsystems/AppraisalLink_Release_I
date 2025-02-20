@@ -1,4 +1,4 @@
-﻿namespace CallTech.Class
+﻿namespace AppraisalLand.Class
 {
     /// <summary>
     /// 

@@ -1,4 +1,4 @@
-﻿using CallTech.Class;
+﻿using AppraisalLand.Class;
 using DAL.Classes;
 using DAL.Repository;
 using DBL.Models;
@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Cryptography;
 
-namespace CallTech.Controllers
+namespace AppraisalLand.Controllers
 {
     /// <summary>
     /// 
@@ -123,17 +123,42 @@ namespace CallTech.Controllers
                     {
                         Broker_Details = null;
                     }
+                    var Appraiser_Details = _authService.GetAppraiserdetails(User_Id);
+                    if (Appraiser_Details.Result == null)
+                    {
+                        Appraiser_Details = null;
+                    }
+                    var AppraiserCompany_Datails = _authService.GetAppraiserCompanydetails(User_Id);
+                    if (AppraiserCompany_Datails.Result == null)
+                    {
+                        AppraiserCompany_Datails = null;
+                    }
                     List<Plan> plans = new List<Plan>();
+
+                    if (UserType == 6)
+                    {
+                        var broker_details = _context.Brokers.Where(x => x.UserId == User_Id).FirstOrDefault();
+                        var BrokerageUserId = _context.Brokerages.Where(x => x.Id == broker_details.Brokerageid).FirstOrDefault();
+                        User_Id = (long)BrokerageUserId.UserId;
+
+                    }
+                    if (UserType == 5)
+                    {
+                        var Appraiser_details = _context.Appraisers.Where(x => x.UserId == User_Id).FirstOrDefault();
+                        var AppraiserCompanyUserId = _context.Brokerages.Where(x => x.Id == Appraiser_details.CompanyId).FirstOrDefault();
+                        User_Id = (long)AppraiserCompanyUserId.UserId;
+                    }
+
                     List<Subscription> subscriptionDTOs = new List<Subscription>();
                     var objsub = _authService.GetSubscriptiondetails(User_Id);
                     var transtion_log = _context.TransactionLogs
                                  .Where(x => x.UserId == User_Id && x.IsActive == true)
                                  .FirstOrDefault();
-                    short? Usedproperty = 0;
+
+                    long? Usedproperty = 0;
+
                     if (objsub != null)
                     {
-
-
                         foreach (var item in objsub)
                         {
                             if (transtion_log.Paymentid == item.PaymentId)
@@ -146,8 +171,6 @@ namespace CallTech.Controllers
                     var planLimitExceed = 0;
                     if (transtion_log != null)
                     {
-
-
                         if (transtion_log.UsedProperties < transtion_log.TotalProperties)
                         {
                             planLimitExceed = 0;
@@ -157,6 +180,7 @@ namespace CallTech.Controllers
                             planLimitExceed = 1;
                         }
                     }
+
                     var UserSubscription = subscriptionDTOs.Select(sub => new SubscriptionDto
                     {
                         SubscriptionId = sub.SubscriptionId,
@@ -184,17 +208,6 @@ namespace CallTech.Controllers
                         plans.Add(plan);
 
                     }
-
-                    var Appraiser_Details = _authService.GetAppraiserdetails(User_Id);
-                    if (Appraiser_Details.Result == null)
-                    {
-                        Appraiser_Details = null;
-                    }
-                    var AppraiserCompany_Datails = _authService.GetAppraiserCompanydetails(User_Id);
-                    if (AppraiserCompany_Datails.Result == null)
-                    {
-                        AppraiserCompany_Datails = null;
-                    }
                     return Ok(new
                     {
                         Token = token,
@@ -207,7 +220,8 @@ namespace CallTech.Controllers
                         UserType = user.UserType,
                         message = "Login successful",
                         UserSubscription = UserSubscription,
-                        Usedproperty = Usedproperty,
+                        usedProperties = Usedproperty,
+                        totalNoOfProperties = transtion_log?.TotalProperties ?? 0,
                         plans = plans,
                         Broker_Details = Broker_Details != null ? await Broker_Details : null,
                         Brokerage_Details = Brokerage_Details != null ? await Brokerage_Details : null,

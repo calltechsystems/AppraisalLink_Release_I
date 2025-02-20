@@ -10,7 +10,7 @@ namespace DAL.Repository
     public class PlansService : IPlans
     {
         private readonly AppraisallandsContext _context;
-        
+
         /// <summary>
         /// 
         /// </summary>

@@ -4,7 +4,7 @@ using DBL.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CallTech.Controllers
+namespace AppraisalLand.Controllers
 {
     /// <summary>
     /// 
@@ -16,7 +16,7 @@ namespace CallTech.Controllers
         readonly private AppraisallandsContext _context;
         readonly private IWishlistService _wishlistService;
         Log log = new Log();
-        
+
         /// <summary>
         /// 
         /// </summary>

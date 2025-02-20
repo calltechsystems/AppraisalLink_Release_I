@@ -1,5 +1,4 @@
-﻿using DAL.Repository;
-using DBL.Models;
+﻿using DBL.Models;
 using Microsoft.Extensions.Configuration;
 using System.Net;
 using System.Net.Mail;
@@ -29,7 +28,7 @@ namespace DAL.Repository
             _emailService = emailService;
 
         }
-        
+
         /// <summary>
         /// 
         /// </summary>

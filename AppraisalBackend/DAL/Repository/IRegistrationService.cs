@@ -25,7 +25,7 @@ namespace DAL.Repository
         Task<int> RegisterPropertyAsync(ClsProperty property);
         Task AppraiserRegisterByCompany(Classes.AppraiserCompanyClass appraiserCompany, long userid);
         Task BrokerRegisterByBrokerage(BrokerageCls brokerageCls, long userid);
-        Task<bool> SendPropertyRegistrationEmail(ClsProperty propertyDetails);
+        Task<bool> SendPropertyRegistrationEmail(ClsProperty propertyDetails, int orderId);
         string GenerateJwtToken(ClsUserInformation user);
         string GenerateJwtToken();
         Task<PublishResponse> SendSms();

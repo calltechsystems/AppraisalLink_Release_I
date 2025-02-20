@@ -1,9 +1,10 @@
-﻿using DBL.Models;
+﻿using DAL.Classes;
+using DBL.Models;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace CallTech.Controllers
+namespace AppraisalLand.Controllers
 {
     /// <summary>
     /// 
@@ -49,7 +50,7 @@ namespace CallTech.Controllers
                 switch (eventType)
                 {
                     case "BILLING.SUBSCRIPTION.CREATED":
-                        HandleSubscriptionCreated(payload);
+                        HandleSubscriptionCreated(parsedObject);
                         break;
 
                     case "BILLING.SUBSCRIPTION.UPDATED":
@@ -88,7 +89,7 @@ namespace CallTech.Controllers
             }
             catch (Exception ex)
             {
-                _appraisallandsContext.Notifications.Add(new Notification { Message = ex.Message });
+                // _appraisallandsContext.EmailNotifications.Add(new Notification { Message = ex.Message });
                 await _appraisallandsContext.SaveChangesAsync();
                 Console.WriteLine("Error handling PayPal webhook: " + ex);
                 return StatusCode(500, new { error = "Internal Server Error" });
@@ -101,16 +102,11 @@ namespace CallTech.Controllers
         /// <param name="payload"></param>
         private void HandleSubscriptionCreated(JObject payload)
         {
-            var resource = payload["resource"];
-            string agreementId = resource["id"]?.ToString();
-            string description = resource["description"]?.ToString();
-            string state = resource["state"]?.ToString();
-            string startDate = resource["start_date"]?.ToString();
-
-            Console.WriteLine($"Subscription Created: Agreement ID = {agreementId}, Description = {description}, State = {state}, Start Date = {startDate}");
+            string json = payload.ToString();
+            RecurringPayPalSubscription subscription = JsonConvert.DeserializeObject<RecurringPayPalSubscription>(json);
         }
 
-        
+
         /// <summary>
         /// Handler for subscription updated
         /// </summary>

@@ -1,10 +1,11 @@
-﻿using DAL.Classes;
+﻿using AppraisalLand.Helper;
+using DAL.Classes;
 using DAL.Repository;
 using DBL.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CallTech.Controllers
+namespace AppraisalLand.Controllers
 {
     /// <summary>
     /// 
@@ -16,16 +17,19 @@ namespace CallTech.Controllers
         private readonly AppraisallandsContext _context;
         private readonly Ibid _bid;
         Log log = new Log();
+        private HelperService _smtpEmailService;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="bid"></param>
         /// <param name="context"></param>
-        public QuotesController(Ibid bid, AppraisallandsContext context)
+        /// <param name="smtpEmailService"></param>
+        public QuotesController(Ibid bid, AppraisallandsContext context, HelperService smtpEmailService)
         {
             _bid = bid;
             _context = context;
+            _smtpEmailService = smtpEmailService;
         }
 
         /// <summary>
@@ -40,11 +44,21 @@ namespace CallTech.Controllers
             log.WriteLog("AppraiserBid processing");
             try
             {
-                long? user_id = clsBid.appraiserId;
-                var user_type=_context.UserInformations.Where(x=>x.UserId==clsBid.appraiserId).Select(x=>x.UserType).FirstOrDefault();
-                if (user_type==5)
+                var Property = _context.Properties.Where(x => x.OrderId == clsBid.OrderId).FirstOrDefault();
+                if (Property.Isonhold == true)
                 {
-                    var details = _context.Appraisers.Where(x => x.UserId == clsBid.AppraiserUserId).FirstOrDefault();
+                    return BadRequest(new { message = "The Quote cannot be updated as the order is On Hold" });
+                }
+                if (Property.Isoncancel == true)
+                {
+                    return BadRequest(new { message = "The Quote cannot be updated as the order is On Cancel" });
+                }
+
+                long? user_id = clsBid.appraiserId;
+                var user_type = _context.UserInformations.Where(x => x.UserId == clsBid.appraiserId).Select(x => x.UserType).FirstOrDefault();
+                if (user_type == 5)
+                {
+                    var details = _context.Appraisers.Where(x => x.UserId == clsBid.appraiserId).FirstOrDefault();
                     if (details == null)
                     {
                         var AppraiserComapny = _context.AppraiserCompanies.Where(x => x.AppraiserCompanyId == details.CompanyId).FirstOrDefault();
@@ -56,6 +70,14 @@ namespace CallTech.Controllers
                                        .Where(x => x.UserId == user_id && x.EndDate >= DateTime.Today && x.PlanId != 0)
                                        .OrderBy(x => x.EndDate)
                                        .FirstOrDefault();
+                ////mail 
+
+                var BrokerUserDetails = _context.UserInformations.Where(x => x.UserId == Property.UserId).Select(x => x.Email).ToList();
+                var AppraiserDetails = _context.UserInformations.Where(x => x.UserId == user_id).Select(x => x.Email).ToList();
+
+                Task.Run(async () => await _smtpEmailService.SendEmailToUser(BrokerUserDetails, " QuotesBroker", Convert.ToString(clsBid.OrderId)));
+                Task.Run(async () => await _smtpEmailService.SendEmailToUser(AppraiserDetails, " QuotesAppraiser", Convert.ToString(clsBid.OrderId)));
+
                 if (subscription != null)
                 {
                     var Bids = _bid.AppraiserBidAsync(clsBid);
@@ -202,15 +224,20 @@ namespace CallTech.Controllers
                 var Bid_Details = _context.Bids.Where(x => x.BidId == quoteClass.Quoteid).FirstOrDefault();
                 var OrderId = Bid_Details.OrderId;
                 var Property = _context.Properties.Where(x => x.OrderId == OrderId).FirstOrDefault();
-                if(Property.Isonhold==true)
+                if (Property.Isonhold == true)
                 {
-                    return Ok(new { message = "Property Status is Hold" });
+                    return BadRequest(new { message = "The appraisal status cannot be updated as the order is On Hold" });
                 }
+                if (Property.Isoncancel == true)
+                {
+                    return BadRequest(new { message = "The appraisal status cannot be updated as the order is Cancelled" });
+                }
+
                 var bidDetails = _bid.UpdateStatus(quoteClass);
                 if (bidDetails != null)
                 {
-                   
-                   
+
+
                     if (Property != null)
                     {
                         Property.Orderstatus = quoteClass.OrderStatus;

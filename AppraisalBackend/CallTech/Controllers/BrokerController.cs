@@ -1,10 +1,11 @@
-﻿using DAL.Classes;
+﻿using AppraisalLand.Helper;
+using DAL.Classes;
 using DAL.Repository;
 using DBL.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CallTech.Controllers
+namespace AppraisalLand.Controllers
 {
     /// <summary>
     /// 
@@ -17,6 +18,7 @@ namespace CallTech.Controllers
         private readonly IBroker _broker;
         private readonly AppraisallandsContext _AppraisallandContext;
         Log log = new Log();
+        private HelperService _smtpEmailService;
 
         /// <summary>
         /// 
@@ -24,11 +26,14 @@ namespace CallTech.Controllers
         /// <param name="broker"></param>
         /// <param name="bidService"></param>
         /// <param name="AppraisallandContext"></param>
-        public BrokerController(IBroker broker, Ibid bidService, AppraisallandsContext AppraisallandContext)
+        /// <param name="smtpEmailService"></param>
+
+        public BrokerController(IBroker broker, Ibid bidService, AppraisallandsContext AppraisallandContext, HelperService smtpEmailService)
         {
             _broker = broker;
             _bidService = bidService;
             _AppraisallandContext = AppraisallandContext;
+            _smtpEmailService = smtpEmailService;
         }
 
         /// <summary>
@@ -62,12 +67,12 @@ namespace CallTech.Controllers
                     _AppraisallandContext.SaveChanges();
                 }
                 var Broker_Details = _AppraisallandContext.UserInformations.Where(x => x.UserId == BrokerId).FirstOrDefault();
-                return Ok(new 
-                { 
-                    Message = $"Broker with ID {BrokerId} updated successfully", 
-                    Brokerage = updatedBrokerage, 
-                    IsEmail = Broker_Details.GetEmail, 
-                    IsSms = Broker_Details.GetSms 
+                return Ok(new
+                {
+                    Message = $"Broker with ID {BrokerId} updated successfully",
+                    Brokerage = updatedBrokerage,
+                    IsEmail = Broker_Details.GetEmail,
+                    IsSms = Broker_Details.GetSms
                 });
             }
             catch (Exception ex)
@@ -126,6 +131,12 @@ namespace CallTech.Controllers
             log.WriteLog("quoteActionByBroker started");
             try
             {
+                var BidDetails_ = _AppraisallandContext.Bids.Where(x => x.BidId == QuoteID).FirstOrDefault();
+                var Bid = _AppraisallandContext.Bids.Where(x => x.OrderId == BidDetails_.OrderId && x.Status == 1).FirstOrDefault();
+                if (Bid != null)
+                {
+                    return BadRequest(new { massage = "Appraisal for the property is in progress; quotes cannot be submitted at this stage" });
+                }
                 var restProperty = 0;
                 var userid = _AppraisallandContext.Bids.Where(x => x.BidId == QuoteID).Select(x => x.AppraiserUserId).FirstOrDefault();
                 long? user_id = userid;
@@ -162,16 +173,6 @@ namespace CallTech.Controllers
                     var No_of_property = plan.NoOfProperties;
 
                     var PropertiesInfo = _AppraisallandContext.TransactionLogs.Where(x => x.UserId == user_id && x.IsActive == true).FirstOrDefault();
-
-                    //  var topUp_property = _AppraisallandContext.Subscriptions.Where(x => x.UserId == user_id && x.TopUpId != null).FirstOrDefault();
-                    //var topUp_properties = _AppraisallandContext.TransactionLogs.Where(x => x.UserId == user_id && x.EndDate >= DateTime.Today && x.TransactionDetail.Contains("topup")).ToList();
-                    //foreach (var item in topUp_properties)
-                    //{
-
-                    //    topUp_property = topUp_property + (short)item.NoOfProperties;
-
-                    //}
-
 
                     var UserProperty = _AppraisallandContext.Bids.Where(x => x.AppraiserUserId == user_id && x.Status == 1).ToList();
                     int topUpTotalProperties = topUp_property == 0 ? 0 : topUp_property;
@@ -250,28 +251,57 @@ namespace CallTech.Controllers
                         }
                         var topUp_property = _AppraisallandContext.Subscriptions.Where(x => x.UserId == user_id && x.TopUpId != null).FirstOrDefault();
                         // int topUpTotalProperties = topUp_property?.TotalProperties ?? 0;
-                        var t = TranstionLog.TotalProperties - (short)acceptedbid;
-                        var transaction = _AppraisallandContext.TransactionLogs.Where(x => x.UserId == user_id && x.IsActive == true && (x.TransactionDetail.ToLower().Contains("lite") || x.TransactionDetail.ToLower().Contains("pro") || x.TransactionDetail.ToLower().Contains("ultimate"))).FirstOrDefault();
-                        if (transaction != null && t >= 0)
+                        var transaction = _AppraisallandContext.TransactionLogs.Where(x => x.UserId == user_id && x.IsActive == true).FirstOrDefault();
+                        short Count = 1;
+                        transaction.UsedProperties = (short)((transaction.UsedProperties) + Count);
+                        _AppraisallandContext.TransactionLogs.Update(transaction);
+                        _AppraisallandContext.SaveChanges();
+                        var transtion_log = _AppraisallandContext.TransactionLogs
+                                                          .Where(x => x.UserId == user_id && x.IsActive == true)
+                                                          .FirstOrDefault();
+
+                        var planLimitExceed = 0;
+                        if (transtion_log != null)
                         {
-
-                            transaction.UsedProperties = (short)acceptedbid;
-                            _AppraisallandContext.Update(transaction);
-                            _AppraisallandContext.SaveChanges();
-
+                            if (transtion_log.UsedProperties < transtion_log.TotalProperties)
+                            {
+                                planLimitExceed = 0;
+                            }
+                            else
+                            {
+                                planLimitExceed = 1;
+                            }
                         }
-                        else
+
+                        //var t = transaction.TotalProperties - (short)acceptedbid;
+
+                        //if (transaction != null && t >= 0)
+                        //{
+
+                        //    transaction.UsedProperties = (short)acceptedbid;
+                        //    _AppraisallandContext.Update(transaction);
+                        //    _AppraisallandContext.SaveChanges();
+
+                        //}
+                        //else
+                        //{
+                        //    var transtionproperty = 0;
+                        //    var transactions = _AppraisallandContext.TransactionLogs.Where(x => x.UserId == user_id && x.IsActive == true && x.TransactionDetail.Contains("topup")).FirstOrDefault();
+
+                        //    transactions.UsedProperties = (short)Math.Abs(acceptedbid - ((int)TranstionLog.TotalProperties + transtionproperty));
+                        //    _AppraisallandContext.Update(transactions);
+                        //    _AppraisallandContext.SaveChanges();
+                        //}
+
+                        var BrokerDetails = _AppraisallandContext.UserInformations.Where(x => x.UserId == BidDetails_.UserId).Select(x => x.Email).ToList();
+                        Task.Run(async () => await _smtpEmailService.SendEmailToUser(BrokerDetails, "BrokerProperty", Convert.ToString(BidDetails_.OrderId)));
+                        return Ok(new
                         {
-                            var transtionproperty = 0;
-                            var transactions = _AppraisallandContext.TransactionLogs.Where(x => x.UserId == user_id && x.IsActive == true && x.TransactionDetail.Contains("topup")).FirstOrDefault();
-
-                            transactions.UsedProperties = (short)Math.Abs(acceptedbid - ((int)TranstionLog.TotalProperties + transtionproperty));
-                            _AppraisallandContext.Update(transactions);
-                            _AppraisallandContext.SaveChanges();
-                        }
-
-
-                        return Ok("Bid accepted successfully");
+                            Message = "Bid accepted successfully",
+                            usedProperties = transtion_log.UsedProperties,
+                            totalNoOfProperties = transtion_log.TotalProperties,
+                            planLimitExceed = planLimitExceed
+                        });
                     }
                     return NotFound("No quote found for the given ID");
                 }
@@ -319,7 +349,7 @@ namespace CallTech.Controllers
                         foreach (var bid in Bids_Details)
                         {
                             bid.AppraiserAssign = true;
-                            bid.Orderstatus=null;
+                            bid.Orderstatus = null;
                             bid.Remark = null;
                             _AppraisallandContext.Bids.Update(bid);
                             _AppraisallandContext.SaveChanges();

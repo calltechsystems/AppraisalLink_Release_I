@@ -160,46 +160,50 @@ namespace DAL.Repository
             try
             {
                 var Brokerage_Details = await context.Brokerages.Where(x => x.UserId == UserId).FirstOrDefaultAsync();
-                if (Brokerage_Details != null)
+
+                if (Brokerage_Details == null)
                 {
-                    brokerDetailsDto = new Brokerage
-                    {
-                        Id = Brokerage_Details.Id,
-                        UserId = Brokerage_Details.UserId,
-                        FirstName = Brokerage_Details.FirstName,
-                        MiddleName = Brokerage_Details.MiddleName,
-                        LastName = Brokerage_Details.LastName,
-                        CompanyName = Brokerage_Details.CompanyName,
-                        LicenseNo = Brokerage_Details.LicenseNo,
-                        BrokerageName = Brokerage_Details.BrokerageName,
-                        StreetNumber = Brokerage_Details.StreetNumber,
-                        StreetName = Brokerage_Details.StreetName,
-                        ApartmentNo = Brokerage_Details.ApartmentNo,
-                        City = Brokerage_Details.City,
-                        Province = Brokerage_Details.Province,
-                        PostalCode = Brokerage_Details.PostalCode,
-                        Area = Brokerage_Details.Area,
-                        PhoneNumber = Brokerage_Details.PhoneNumber,
-                        MortageBrokerageLicNo = Brokerage_Details.MortageBrokerageLicNo,
-                        MortageBrokerLicNo = Brokerage_Details.MortageBrokerLicNo,
-                        AssistantFirstName = Brokerage_Details.AssistantFirstName,
-                        AssistantPhoneNumber = Brokerage_Details.AssistantPhoneNumber,
-                        AssistantEmailAddress = Brokerage_Details.AssistantEmailAddress,
-                        ProfileImage = Brokerage_Details.ProfileImage,
-                        DateEstablished = Brokerage_Details.DateEstablished,
-                        IsActive = Brokerage_Details.IsActive,
-                        FaxNumber = Brokerage_Details.FaxNumber,
-                        Description = Brokerage_Details.Description,
-                        Cellnumber = Brokerage_Details.Cellnumber,
-                        EmailId = Brokerage_Details.EmailId,
-                        AssistantLastName = Brokerage_Details.AssistantLastName,
-                        AssistantTwoFirstName = Brokerage_Details.AssistantTwoFirstName,
-                        AssistantTwoLastName = Brokerage_Details.AssistantTwoLastName,
-                        AssistantTwoEmailAddress = Brokerage_Details.AssistantTwoEmailAddress,
-                        AssistantTwoPhoneNumber = Brokerage_Details.AssistantTwoPhoneNumber,
-                        ModifiedDateTime = Brokerage_Details.ModifiedDateTime
-                    };
+                    return null;
                 }
+
+                brokerDetailsDto = new Brokerage
+                {
+                    Id = Brokerage_Details.Id,
+                    UserId = Brokerage_Details.UserId,
+                    FirstName = Brokerage_Details.FirstName,
+                    MiddleName = Brokerage_Details.MiddleName,
+                    LastName = Brokerage_Details.LastName,
+                    CompanyName = Brokerage_Details.CompanyName,
+                    LicenseNo = Brokerage_Details.LicenseNo,
+                    BrokerageName = Brokerage_Details.BrokerageName,
+                    StreetNumber = Brokerage_Details.StreetNumber,
+                    StreetName = Brokerage_Details.StreetName,
+                    ApartmentNo = Brokerage_Details.ApartmentNo,
+                    City = Brokerage_Details.City,
+                    Province = Brokerage_Details.Province,
+                    PostalCode = Brokerage_Details.PostalCode,
+                    Area = Brokerage_Details.Area,
+                    PhoneNumber = Brokerage_Details.PhoneNumber,
+                    MortageBrokerageLicNo = Brokerage_Details.MortageBrokerageLicNo,
+                    MortageBrokerLicNo = Brokerage_Details.MortageBrokerLicNo,
+                    AssistantFirstName = Brokerage_Details.AssistantFirstName,
+                    AssistantPhoneNumber = Brokerage_Details.AssistantPhoneNumber,
+                    AssistantEmailAddress = Brokerage_Details.AssistantEmailAddress,
+                    ProfileImage = Brokerage_Details.ProfileImage,
+                    DateEstablished = Brokerage_Details.DateEstablished,
+                    IsActive = Brokerage_Details.IsActive,
+                    FaxNumber = Brokerage_Details.FaxNumber,
+                    Description = Brokerage_Details.Description,
+                    Cellnumber = Brokerage_Details.Cellnumber,
+                    EmailId = Brokerage_Details.EmailId,
+                    AssistantLastName = Brokerage_Details.AssistantLastName,
+                    AssistantTwoFirstName = Brokerage_Details.AssistantTwoFirstName,
+                    AssistantTwoLastName = Brokerage_Details.AssistantTwoLastName,
+                    AssistantTwoEmailAddress = Brokerage_Details.AssistantTwoEmailAddress,
+                    AssistantTwoPhoneNumber = Brokerage_Details.AssistantTwoPhoneNumber,
+                    ModifiedDateTime = Brokerage_Details.ModifiedDateTime
+                };
+                return brokerDetailsDto;
             }
             catch (Exception ex)
             {

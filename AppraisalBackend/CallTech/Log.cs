@@ -3,7 +3,7 @@ using Amazon.Runtime;
 using Amazon.S3;
 using Amazon.S3.Model;
 
-namespace CallTech
+namespace AppraisalLand
 {
     /// <summary>
     /// 
@@ -32,7 +32,7 @@ namespace CallTech
                 var logFilePath = FindConfigurationValue(configuration.Providers, "Logging:FilePath");
 
                 //Logfile
-                var path = logFilePath;
+                string path = logFilePath;
                 StreamWriter sw;
                 if (!File.Exists(path))
                 { sw = File.CreateText(path); }

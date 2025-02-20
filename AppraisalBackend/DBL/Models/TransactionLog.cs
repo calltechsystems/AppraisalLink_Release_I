@@ -25,9 +25,9 @@
 
         public DateTime? EndDate { get; set; }
 
-        public short? UsedProperties { get; set; }
+        public long? UsedProperties { get; set; }
 
-        public short TotalProperties { get; set; }
+        public long TotalProperties { get; set; }
 
         public string? PaypalSubscriptionStatus { get; set; }
     }

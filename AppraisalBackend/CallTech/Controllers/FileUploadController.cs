@@ -2,11 +2,11 @@
 using Amazon.Runtime;
 using Amazon.S3;
 using Amazon.S3.Model;
-using CallTech.Class;
+using AppraisalLand.Class;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CallTech.Controllers
+namespace AppraisalLand.Controllers
 {
     /// <summary>
     /// 

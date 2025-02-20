@@ -11,7 +11,7 @@ namespace DAL.Repository
     public class PropertyService : IPropertyService
     {
         private readonly AppraisallandsContext _context;
-        
+
         /// <summary>
         /// 
         /// </summary>

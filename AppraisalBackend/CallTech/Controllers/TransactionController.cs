@@ -3,9 +3,8 @@ using DAL.Repository;
 using DBL.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Collections;
 
-namespace CallTech.Controllers
+namespace AppraisalLand.Controllers
 {
     /// <summary>
     /// 
@@ -39,8 +38,8 @@ namespace CallTech.Controllers
         {
             List<PaymentHistory> transactions = new List<PaymentHistory>();
 
-            var paymentHistory =  _transactionService.GetTransactionsByUserId(userId); //(IEnumerable)
-            
+            var paymentHistory = _transactionService.GetTransactionsByUserId(userId);
+
             foreach (var transaction in paymentHistory)
             {
                 PaymentHistory objpaymentHistory = new PaymentHistory  // New instance for each loop
@@ -55,7 +54,8 @@ namespace CallTech.Controllers
                 };
                 if (transaction.PlanName == "Top Up")
                 {
-                    objpaymentHistory.planType = "N.A";
+                    objpaymentHistory.planType = "N.A.";
+
                 }
 
                 transactions.Add(objpaymentHistory);

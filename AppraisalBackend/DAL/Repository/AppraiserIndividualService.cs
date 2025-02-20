@@ -218,7 +218,6 @@ namespace DAL.Repository
                 {
                     plan_Details.NoOfProperties = numberOfProperty;
                     plan_Details.MonthlyAmount = amount;
-                    plan_Details.MonthlyAmount = amount;
                     _AppraisallandContext.Plans.Update(plan_Details);
                     _AppraisallandContext.SaveChanges();
                     return plan_Details;

@@ -1,12 +1,11 @@
-﻿using CallTech;
-using DAL.Classes;
+﻿using DAL.Classes;
 using DAL.Repository;
 using DBL.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
-namespace CallTech.Controllers
+namespace AppraisalLand.Controllers
 {
     /// <summary>
     /// 
@@ -39,7 +38,6 @@ namespace CallTech.Controllers
         //        Success = true
         //    };
         //} [HttpPut("{BrokerId}")]
-        // [Authorize]
 
         /// <summary>
         /// 
@@ -48,6 +46,7 @@ namespace CallTech.Controllers
         /// <param name="UserId"></param>
         /// <returns></returns>
         [Route("paymenturl")]
+        [Authorize]
         [HttpPost]
         public IActionResult PaymentUrl(string PlanName, long UserId)
         {
@@ -277,29 +276,30 @@ namespace CallTech.Controllers
             int upgradeEligible = 0;
             var activePaypalSubscriptionId = "";
             var futurePaypalSubscriptionId = "";
+            var PayPalSubscriptionStatus = "Cancel";
 
             var transactions = _AppraisallandContext.TransactionLogs
                             .Where(t => t.UserId == userId)
                             .ToList();
-          
 
-            if (transactions.Count()==0)
+
+            if (transactions.Count() == 0)
             {
                 return Ok(new
                 {
                     messageCD = "001",
                     description = "Subscription Details not found for the user"
-                   
+
                 });
             }
 
-            if (transactions.Count() >= 2) 
-            { 
-                upgradeEligible = 0; 
+            if (transactions.Count() >= 2)
+            {
+                upgradeEligible = 0;
             }
-            else 
-            { 
-                upgradeEligible = 1; 
+            else
+            {
+                upgradeEligible = 1;
             }
 
             var subcription_Dtails = _AppraisallandContext.Subscriptions
@@ -308,6 +308,11 @@ namespace CallTech.Controllers
                                                     .FirstOrDefault();
             foreach (var transaction in transactions)
             {
+                if (transaction.PaypalSubscriptionStatus == "Active")
+                {
+                    PayPalSubscriptionStatus = "Active";
+                }
+
                 if (transaction.IsActive == true)
                 {
                     if (transaction.IsActive == true && transaction.PaypalSubscriptionStatus == "Cancel")
@@ -332,7 +337,8 @@ namespace CallTech.Controllers
                 subcription_Dtails,
                 upgradeEligible,
                 activePaypalSubscriptionId,
-                futurePaypalSubscriptionId
+                futurePaypalSubscriptionId,
+                PayPalSubscriptionStatus
             });
         }
 
@@ -357,7 +363,7 @@ namespace CallTech.Controllers
         /// <returns></returns>
         [Authorize]
         [HttpGet("getAllSubscriptionHistory")]
-       public async Task<ActionResult> getAllSubscriptionHistory()
+        public async Task<ActionResult> getAllSubscriptionHistory()
         {
             var subcription_history = _AppraisallandContext.TransactionLogs.ToList();
             return Ok(subcription_history);
@@ -382,7 +388,48 @@ namespace CallTech.Controllers
                 var status = _servicesMiddlware.postSubscriptionsDetails(payment);
                 if (status)
                 {
-                    return Ok(payment);
+                    long userId_ = payment.UserId;
+                    var usertype = _AppraisallandContext.UserInformations.Where(x => x.UserId == userId_).Select(x => x.UserType).FirstOrDefault();
+                    if (usertype == 6)
+                    {
+                        var broker_details = _AppraisallandContext.Brokers.Where(x => x.UserId == userId_).FirstOrDefault();
+                        var BrokerageUserId = _AppraisallandContext.Brokerages.Where(x => x.Id == broker_details.Brokerageid).FirstOrDefault();
+                        userId_ = (long)BrokerageUserId.UserId;
+
+                    }
+                    if (usertype == 5)
+                    {
+                        var Appraiser_details = _AppraisallandContext.Appraisers.Where(x => x.UserId == userId_).FirstOrDefault();
+                        var AppraiserCompanyUserId = _AppraisallandContext.Brokerages.Where(x => x.Id == Appraiser_details.CompanyId).FirstOrDefault();
+                        userId_ = (long)AppraiserCompanyUserId.UserId;
+
+                    }
+                    var transtion_log = _AppraisallandContext.TransactionLogs
+                                        .Where(x => x.UserId == userId_ && x.IsActive == true)
+                                        .FirstOrDefault();
+                    var planLimitExceed = 0;
+                    if (transtion_log != null)
+                    {
+
+
+                        if (transtion_log.UsedProperties < transtion_log.TotalProperties)
+                        {
+                            planLimitExceed = 0;
+                        }
+                        else
+                        {
+                            planLimitExceed = 1;
+                        }
+                    }
+
+                    return Ok(new
+                    {
+                        Message = "Payment Complete successful!",
+                        usedProperties = transtion_log?.UsedProperties ?? 0,
+                        totalNoOfProperties = transtion_log?.TotalProperties ?? 0,
+                        planLimitExceed = planLimitExceed
+
+                    });
                 }
                 else
                 {
@@ -418,9 +465,51 @@ namespace CallTech.Controllers
                 }
                 Log.WriteLog("subscription is not null");
                 var status = await _servicesMiddlware.postRecurringSubscriptionsDetails(subscription);
+
+                long userId_ = subscription.UserId;
                 if (status)
                 {
-                    return Ok();
+                    var usertype = _AppraisallandContext.UserInformations.Where(x => x.UserId == userId_).Select(x => x.UserType).FirstOrDefault();
+                    if (usertype == 6)
+                    {
+                        var broker_details = _AppraisallandContext.Brokers.Where(x => x.UserId == userId_).FirstOrDefault();
+                        var BrokerageUserId = _AppraisallandContext.Brokerages.Where(x => x.Id == broker_details.Brokerageid).FirstOrDefault();
+                        userId_ = (long)BrokerageUserId.UserId;
+
+                    }
+                    if (usertype == 5)
+                    {
+                        var Appraiser_details = _AppraisallandContext.Appraisers.Where(x => x.UserId == userId_).FirstOrDefault();
+                        var AppraiserCompanyUserId = _AppraisallandContext.Brokerages.Where(x => x.Id == Appraiser_details.CompanyId).FirstOrDefault();
+                        userId_ = (long)AppraiserCompanyUserId.UserId;
+
+                    }
+                    var transtion_log = _AppraisallandContext.TransactionLogs
+                                        .Where(x => x.UserId == userId_ && x.IsActive == true)
+                                        .FirstOrDefault();
+                    var planLimitExceed = 0;
+                    if (transtion_log != null)
+                    {
+
+
+                        if (transtion_log.UsedProperties < transtion_log.TotalProperties)
+                        {
+                            planLimitExceed = 0;
+                        }
+                        else
+                        {
+                            planLimitExceed = 1;
+                        }
+                    }
+
+                    return Ok(new
+                    {
+                        Message = "Payment Complete successful!",
+                        usedProperties = transtion_log?.UsedProperties ?? 0,
+                        totalNoOfProperties = transtion_log?.TotalProperties ?? 0,
+                        planLimitExceed = planLimitExceed
+
+                    });
                 }
                 else
                 {
@@ -451,12 +540,12 @@ namespace CallTech.Controllers
 
 
                 Log.WriteLog("start CancelRecurringSubscription function " + cancelSubscriptionDetails);
-               // WriteLogAndUploadToS3("start postRecurringSubscriptionsDetails function " + recurringPayPalSubscription);
+                // WriteLogAndUploadToS3("start postRecurringSubscriptionsDetails function " + recurringPayPalSubscription);
                 if (subscription == null)
                 {
                     return BadRequest("Cancel Subscription cannot be null.");
                 }
-                var status =await _servicesMiddlware.cancelRecurringSubscription(subscription);
+                var status = await _servicesMiddlware.cancelRecurringSubscription(subscription);
                 if (status)
                 {
                     return Ok();

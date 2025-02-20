@@ -3,7 +3,7 @@ using DBL.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace CallTech.Controllers
+namespace AppraisalLand.Controllers
 {
     /// <summary>
     /// 
@@ -35,7 +35,7 @@ namespace CallTech.Controllers
             _appraiserIndividual = appraiserIndividual;
             _appraiserCompany = appraiserCompany;
         }
-        
+
         /// <summary>
         /// 
         /// </summary>

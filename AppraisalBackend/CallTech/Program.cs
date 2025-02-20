@@ -1,5 +1,6 @@
 using Amazon.S3;
-using CallTech.Class;
+using AppraisalLand.Class;
+using AppraisalLand.Helper;
 using DAL.Repository;
 using DBL.Backend;
 using DBL.Models;
@@ -51,6 +52,7 @@ builder.Services.AddScoped<IContactusRepository, ContactusRepository>();
 builder.Services.AddScoped<IAdmin, AdminService>();
 builder.Services.Configure<EncryptionSettings>(builder.Configuration.GetSection("EncryptionSettings"));
 builder.Services.AddScoped<EncryptionHelper>();
+builder.Services.AddScoped<HelperService>();
 //builder.Services.AddScoped<IServicesMiddlewareTopUp, ServicesMiddlewareTopUp>();
 builder.Services.AddScoped<ITwilioSms>(provider =>
     new TwilioSmsService(
@@ -66,7 +68,7 @@ builder.Services.Configure<ApplicationSettings>(appSettingsSection);
 
 var appSettings = appSettingsSection.Get<ApplicationSettings>();
 builder.Services.AddMvc(options => options.EnableEndpointRouting = false);
-
+builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 builder.Services.AddTransient<IServicesMiddleware>(serviceProvider => new ServicesMiddleware(appSettings));
 builder.Services.AddTransient<IServicesMiddlewareTopUp>(serviceProvider => new ServicesMiddlewareTopUp(appSettings));
 Log.Logger = new LoggerConfiguration()

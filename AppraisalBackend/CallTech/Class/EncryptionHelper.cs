@@ -2,7 +2,7 @@
 using System.Security.Cryptography;
 using System.Text;
 
-namespace CallTech.Class
+namespace AppraisalLand.Class
 {
     /// <summary>
     /// 

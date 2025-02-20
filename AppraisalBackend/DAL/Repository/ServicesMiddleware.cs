@@ -320,6 +320,14 @@ namespace DAL.Repository
 
                 //if (subscription.Status.ToUpper()== "COMPLETED")
                 //{
+
+                var TranstionDetails = _AppraisallandContext.TransactionLogs.Where(x => x.UserId == subscription.UserId && x.IsActive == true).FirstOrDefault();
+
+                if (TranstionDetails != null && subscription.TopUpId != null)
+                {
+                    endDateEst = TranstionDetails.EndDate ?? default(DateTime);
+                }
+
                 Subscription subscription1 = new Subscription();
                 subscription1.StartDate = createTimeEst;
                 subscription1.EndDate = endDateEst;
@@ -413,15 +421,16 @@ namespace DAL.Repository
                 {
                     recurringPayPalSubscription.StartTime = ActivePlanDetails.EndDate?.AddDays(1) ?? DateTime.UtcNow.AddDays(1);
                 }
+
+                var PlanDetails = await _AppraisallandContext.Plans.Where(x => x.Id == recurringPayPalSubscription.newPlanId).FirstOrDefaultAsync();
                 TimeZoneInfo easternTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
                 DateTime createTimeEst = TimeZoneInfo.ConvertTimeFromUtc(recurringPayPalSubscription.StartTime, easternTimeZone);
 
-                DateTime endDateEst = createTimeEst.AddDays(30);
+                DateTime endDateEst = createTimeEst.AddDays(PlanDetails.PlanValidity); /// day count from plan table 
                 Logs.WriteLog("DateTime------------------");
                 PaypalTransactionLog transactionLog = new PaypalTransactionLog();
                 Subscription subscription = new Subscription();
                 Logs.WriteLog("PlanId------------------" + recurringPayPalSubscription.newPlanId);
-                var PlanDetails = await _AppraisallandContext.Plans.Where(x => x.Id == recurringPayPalSubscription.newPlanId).FirstOrDefaultAsync();
                 if (PlanDetails != null)
                 {
                     Logs.WriteLog("PlanDetails------------------" + PlanDetails.PlanName);
@@ -476,7 +485,8 @@ namespace DAL.Repository
                         transaction_Log.StartDate = createTimeEst;
                         transaction_Log.EndDate = endDateEst;
                         transaction_Log.UsedProperties = 0;
-                        transaction_Log.TotalProperties = (short)PlanDetails.NoOfProperties;
+                        transaction_Log.PaypalSubscriptionStatus = "Active";
+                        transaction_Log.TotalProperties = PlanDetails.NoOfProperties;
                         _AppraisallandContext.TransactionLogs.Add(transaction_Log);
                         _AppraisallandContext.SaveChanges();
                     }
@@ -530,6 +540,12 @@ namespace DAL.Repository
                 transactionLog.SubscriptionId = recurringPayPalSubscription.PaypalSubscriptionId;
 
                 _AppraisallandContext.PaypalTransactionLogs.Add(transactionLog);
+                _AppraisallandContext.SaveChanges();
+
+                var subcriptionDetails = _AppraisallandContext.PaypalTransactionLogs.Where(x => x.SubscriptionId == recurringPayPalSubscription.PaypalSubscriptionId && x.Paymentid != "N.A.").FirstOrDefault();
+                var transactionDetails = _AppraisallandContext.TransactionLogs.Where(x => x.UserId == recurringPayPalSubscription.UserId && x.Paymentid == subcriptionDetails.Paymentid).FirstOrDefault();
+                transactionDetails.PaypalSubscriptionStatus = "Cancel";
+                _AppraisallandContext.TransactionLogs.Update(transactionDetails);
                 _AppraisallandContext.SaveChanges();
                 return true;
             }

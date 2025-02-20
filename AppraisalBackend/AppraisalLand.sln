@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33530.505
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CallTech", "CallTech\CallTech.csproj", "{DC7DECE5-90B9-4253-8285-B7885821EDDB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AppraisalLand", "CallTech\AppraisalLand.csproj", "{DC7DECE5-90B9-4253-8285-B7885821EDDB}"
 	ProjectSection(ProjectDependencies) = postProject
 		{B19E1D71-C2C6-4F0B-95ED-026D74774E92} = {B19E1D71-C2C6-4F0B-95ED-026D74774E92}
 		{F2B0BE05-5E38-4471-880A-39977748898A} = {F2B0BE05-5E38-4471-880A-39977748898A}

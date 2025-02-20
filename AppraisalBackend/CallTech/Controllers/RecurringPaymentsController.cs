@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using PayPal.Api;
 
 
-namespace CallTech.Controllers
+namespace AppraisalLand.Controllers
 {
     /// <summary>
     /// 
@@ -16,7 +16,7 @@ namespace CallTech.Controllers
         private readonly IConfiguration _configuration;
         private readonly HttpClient _httpClient;
         private readonly AppraisallandsContext _context;
-        
+
         /// <summary>
         /// 
         /// </summary>

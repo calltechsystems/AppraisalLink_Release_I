@@ -31,7 +31,7 @@ namespace DAL.Repository
         /// <returns></returns>
         public async Task<DBL.Models.Bid> AppraiserBidAsync(DAL.Classes.Bid clsBid)
         {
-            long? Appraiser_Id = clsBid.AppraiserUserId;
+            long? Appraiser_Id = clsBid.appraiserId;
             int? BidLowerRange = 0;
             int? BidUpperRange = 0;
             DateTime? request_time = DateTime.Now;
@@ -237,11 +237,15 @@ namespace DAL.Repository
         /// <returns></returns>
         public Task<DBL.Models.Bid> AcceptBidAsync(int bidId)
         {
+            DateTime utcNow = DateTime.UtcNow;
+            TimeZoneInfo estZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
+            DateTime estTime = TimeZoneInfo.ConvertTimeFromUtc(utcNow, estZone);
+
             var data = _context.Bids.Where(x => x.BidId == bidId).FirstOrDefault();
             if (data != null)
             {
                 data.Status = 1;
-                data.ResponseTime = DateTime.Now;
+                data.ResponseTime = estTime; // Need to convert to Est 
                 _context.Bids.Update(data);
                 _context.SaveChanges();
                 SendMailAcceptQuotes(bidId);
@@ -369,11 +373,15 @@ namespace DAL.Repository
         /// <returns></returns>
         public Task<DBL.Models.Bid> DeclineBidAsync(int bidId)
         {
+            DateTime utcNow = DateTime.UtcNow;
+            TimeZoneInfo estZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
+            DateTime estTime = TimeZoneInfo.ConvertTimeFromUtc(utcNow, estZone);
+
             var data = _context.Bids.Where(x => x.BidId == bidId).FirstOrDefault();
             if (data != null)
             {
                 data.Status = 2;
-                data.ResponseTime = DateTime.Now;
+                data.ResponseTime = estTime;
                 _context.Bids.Update(data);
                 _context.SaveChanges();
                 SendMailDeclineQuotes(bidId);
@@ -392,13 +400,17 @@ namespace DAL.Repository
         {
             try
             {
+                DateTime utcNow = DateTime.UtcNow;
+                TimeZoneInfo estZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
+                DateTime estTime = TimeZoneInfo.ConvertTimeFromUtc(utcNow, estZone);
+
                 var BidDetails = _context.Bids.Where(x => x.BidId == bidiD).FirstOrDefault();
                 if (BidDetails != null)
                 {
                     BidDetails.OrderId = bid.OrderId;
                     BidDetails.UserId = bid.UserId;
                     BidDetails.AppraiserUserId = bid.AppraiserUserId;
-                    BidDetails.RequestTime = DateTime.Now;
+                    BidDetails.RequestTime = estTime;
                     BidDetails.Status = bid.Status;
                     BidDetails.Description = bid.Description;
                     BidDetails.BidAmount = bid.BidAmount;
@@ -445,12 +457,16 @@ namespace DAL.Repository
         {
             try
             {
+                DateTime utcNow = DateTime.UtcNow;
+                TimeZoneInfo estZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
+                DateTime estTime = TimeZoneInfo.ConvertTimeFromUtc(utcNow, estZone);
+
                 var Bid_Details = _context.Bids.Where(x => x.BidId == quoteClass.Quoteid).FirstOrDefault();
                 if (Bid_Details != null)
                 {
                     Bid_Details.Orderstatus = quoteClass.OrderStatus;
                     Bid_Details.Remark = quoteClass.remark;
-                    Bid_Details.ModifiedDate = DateTime.Now;
+                    Bid_Details.ModifiedDate = estTime;
                     Bid_Details.Statusdate = quoteClass.statusDate;
                     _context.Bids.Update(Bid_Details);
                     _context.SaveChanges();
