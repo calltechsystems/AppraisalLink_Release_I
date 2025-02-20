@@ -14,6 +14,7 @@ import {
   getNextDate,
 } from "../../../utils/Paypal/GeneratePayloads.js";
 import { getPayPalAccessToken, PayPalApi } from "./utilFunctions.js";
+import { getCredsConfigData } from "../../../utils/CredentialConfigFile.js";
 
 const Checkout = ({
   topUpDetails,
@@ -237,7 +238,7 @@ const CheckoutPage = ({
 }) => (
   <PayPalScriptProvider
     options={{
-      "client-id": process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID,
+      "client-id": getCredsConfigData().NEXT_PUBLIC_PAYPAL_CLIENT_ID,
       currency: "CAD",
       intent: "subscription",
       vault: true,

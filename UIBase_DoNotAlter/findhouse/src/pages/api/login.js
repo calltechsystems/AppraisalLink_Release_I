@@ -1,10 +1,10 @@
 import axios from "axios";
 import CryptoJS from "crypto-js";
-import withSession from "../../utils/session/session";
+import { getCredsConfigData } from "../../utils/CredentialConfigFile";
 
 async function handler(request, response) {
-  const decryptionKey = process.env.CRYPTO_SECRET_KEY;
-  const domain = process.env.BACKEND_DOMAIN;
+  const decryptionKey = getCredsConfigData().CRYPTO_SECRET_KEY;
+  const domain = getCredsConfigData().DOMAIN;
 
   try {
     const encryptedBody = await request.body.data;

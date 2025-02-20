@@ -12,6 +12,7 @@ import {
 } from "../../../utils/Paypal/GeneratePayloads.js";
 
 import axios from "axios";
+import { getCredsConfigData } from "../../../utils/CredentialConfigFile.js";
 const Checkout = ({
   topUpDetails,
   setErrorOccurred,
@@ -309,7 +310,7 @@ const CheckoutPage = ({
 }) => (
   <PayPalScriptProvider
     options={{
-      "client-id": process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID,
+      "client-id": getCredsConfigData().NEXT_PUBLIC_PAYPAL_CLIENT_ID,
       currency: "CAD",
       intent: paymentType === "subscription" ? "subscription" : "capture",
       vault: paymentType === "subscription" ? true : false,

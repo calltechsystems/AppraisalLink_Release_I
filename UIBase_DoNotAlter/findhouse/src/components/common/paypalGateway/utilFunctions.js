@@ -1,12 +1,13 @@
 import axios from "axios";
+import { getCredsConfigData } from "../../../utils/CredentialConfigFile";
 
 export const PayPalApi = {
-  clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID,
-  clientSecret: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_SECRET,
+  clientId: getCredsConfigData().NEXT_PUBLIC_PAYPAL_CLIENT_ID,
+  clientSecret: getCredsConfigData().NEXT_PUBLIC_PAYPAL_CLIENT_SECRET,
   baseUrl:
-    // process.env.NODE_ENV === "production"
-    //   ? "https://api-m.paypal.com"
-    //   :
+    process.env.NODE_ENV === "production"
+      ? "https://api-m.paypal.com"
+      :
     "https://api-m.sandbox.paypal.com", 
 };
 

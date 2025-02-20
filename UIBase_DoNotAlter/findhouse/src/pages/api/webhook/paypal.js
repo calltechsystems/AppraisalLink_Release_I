@@ -1,4 +1,5 @@
 import crypto from "crypto";
+import { getCredsConfigData } from "../../../utils/CredentialConfigFile";
  
 export default async function handler(req, res) {
   if (req.method !== "POST") {
@@ -6,7 +7,7 @@ export default async function handler(req, res) {
   }
  
   // 1. Validate the PayPal webhook signature
-  const paypalWebhookId = process.env.PAYPAL_WEBHOOK_ID; // Your webhook ID from PayPal dashboard
+  const paypalWebhookId = getCredsConfigData().PAYPAL_WEBHOOK_ID; // Your webhook ID from PayPal dashboard
   const transmissionId = req.headers["paypal-transmission-id"];
   const transmissionTime = req.headers["paypal-transmission-time"];
   const certUrl = req.headers["paypal-cert-url"];

@@ -7,15 +7,13 @@ const nextConfig = {
   appDir: true,
   eslint: { ignoreDuringBuilds: true },
   env: {
-    CRYPTO_SECRET_KEY: "gjfdkhslbreif847593rewfdkjbcm34woebkdjcnx43oihefdkcnx",
-    COOKIE_PASSWORD: "ierfkgj439802vfckdh5438909endck",
-    AWS_API_KEY: "AKIAYS2NR75VXZEML7HX",
-    AWS_API_SECRET: "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",
-    AWS_BUCKET: "appraisalfile",
-    AWS_REGION: "us-east-1",
-    BACKEND_DOMAIN:
+    DOMAIN2: 'http://appraisalland-prod.us-east-1.elasticbeanstalk.com/api',
+    DOMAIN1: 'http://appraisalland-prod.us-east-1.elasticbeanstalk.com/api',
+    BACKEND_DOMAIN: 'http://appraisalland-prod.us-east-1.elasticbeanstalk.com/api',
+    BACKEND_DOMAIN2: 'http://appraisalland-prod.us-east-1.elasticbeanstalk.com/api',
+    STAGING_DOMAIN:
       "http://appraisalland-prod.us-east-1.elasticbeanstalk.com/api",
-    BACKEND_DOMAIN2:
+    PRODUCTION_DOMAIN:
       "http://appraisalland-prod.us-east-1.elasticbeanstalk.com/api",
   },
   images: {

@@ -1,8 +1,9 @@
 import paypal from "@paypal/checkout-server-sdk";
+import { getCredsConfigData } from "../../../utils/CredentialConfigFile";
 
 const environment = new paypal.core.SandboxEnvironment(
-  process.env.PAYPAL_CLIENT_ID,
-  process.env.PAYPAL_CLIENT_SECRET
+  getCredsConfigData().PAYPAL_CLIENT_ID,
+  getCredsConfigData().PAYPAL_CLIENT_SECRET,
 );
 const paypalClient = new paypal.core.PayPalHttpClient(environment);
 
@@ -45,7 +46,7 @@ export default async function handler(req, res) {
 
 // Helper function to get PayPal Access Token
 async function getPayPalAccessToken() {
-  const auth = `${process.env.PAYPAL_CLIENT_ID}:${process.env.PAYPAL_CLIENT_SECRET}`;
+  const auth = `${getCredsConfigData().PAYPAL_CLIENT_ID}:${getCredsConfigData().PAYPAL_CLIENT_SECRET}`;
   const base64Auth = Buffer.from(auth).toString("base64");
 
   const response = await fetch(
