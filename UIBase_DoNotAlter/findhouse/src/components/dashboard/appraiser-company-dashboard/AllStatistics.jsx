@@ -48,14 +48,14 @@ const AllStatistics = ({
     {
       id: 3,
       blockStyle: "stylecardnew3",
-      icon: "flaticon-tick",
+      icon: "fa fa-check",
       timer: bids,
       name: "Quotes Accepted",
     },
     {
       id: 4,
       blockStyle: "stylecardnew4",
-      icon: "fa fa-check",
+      icon: "fa fa-edit",
       timer: views,
       name: "Quotes in Progress",
     },
@@ -133,7 +133,7 @@ const AllStatistics = ({
             <p>{item.timer}</p>
           </div>
           <div className="icon">
-            <span className={item.icon}></span>
+            <i className={item.icon}></i>
           </div>
         </div>
       ))}

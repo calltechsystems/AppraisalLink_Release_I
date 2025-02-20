@@ -15,6 +15,7 @@ import { AppraiserStatusOptions } from "../create-listing/data";
 import Link from "next/link";
 import Image from "next/image";
 import { FaDownload } from "react-icons/fa";
+import CommonLoader from "../../common/CommonLoader/page";
 
 const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -46,7 +47,7 @@ const Index = () => {
   const [modalIsOpenError, setModalIsOpenError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [refresh, setRefresh] = useState(false);
 
@@ -196,7 +197,7 @@ const Index = () => {
 
   const unArchivePropertyHandler = (propertyId) => {
     const data = JSON.parse(localStorage.getItem("user"));
-
+    setIsLoading(true);
     toast.loading("Un-Archiving the desired property!!.");
 
     const encryptedBody = encryptionData({
@@ -215,11 +216,13 @@ const Index = () => {
       })
       .then((res) => {
         toast.dismiss();
+        setIsLoading(false);
         toast.success("Un-Archived property Successfully!");
         location.reload(true);
       })
       .catch((err) => {
         toast.dismiss();
+        setIsLoading(false);
         toast.error(err);
       });
   };
@@ -369,7 +372,7 @@ const Index = () => {
       status: false,
       token: data.token,
     };
-
+    setIsLoading(true);
     toast.loading("Un-Archiving the property......");
 
     const encryptedBody = encryptionData(payload);
@@ -383,11 +386,13 @@ const Index = () => {
       })
       .then((res) => {
         toast.dismiss();
+        setIsLoading(false);
         toast.success("Successfully Un-Archived the Property!!");
         location.reload(true);
       })
       .catch((err) => {
         toast.dismiss();
+        setIsLoading(false);
         toast.error(err);
       });
   };
@@ -669,6 +674,8 @@ const Index = () => {
     <>
       {/* <!-- Main Header Nav --> */}
       <Header userData={userData} />
+
+      {isLoading && <CommonLoader />}
 
       {/* <!--  Mobile Menu --> */}
       <MobileMenu />

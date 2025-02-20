@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import Header from "../../common/header/dashboard/Header";
 import SidebarMenu from "../../common/header/dashboard/SidebarMenu";
 import MobileMenu from "../../common/header/MobileMenu_02";
-import ChangePassword from "./ChangePassword";
 import ProfileInfo from "./ProfileInfo";
 import Link from "next/link";
 import Image from "next/image";

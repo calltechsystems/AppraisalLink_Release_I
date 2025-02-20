@@ -49,7 +49,7 @@ const AllStatistics = ({ properties, views, bids, favourites }) => {
               bid.status == 1 && bid?.orderStatus == null ? 1 : 0;
             QuotesCompletedCount +=
               bid?.status == 1 && bid?.orderstatus == 3 ? 1 : 0;
-            QuotesOnHoldCount += property.isonhold ? 1 : 0;
+              QuotesOnHoldCount += bid?.orderstatus == 4 ? 1 : 0;
           }
         });
       }

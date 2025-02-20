@@ -9,11 +9,13 @@ import Form from "./Form";
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import CommonLoader from "../common/CommonLoader/page";
 
 const Index = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [modalIsOpenError, setModalIsOpenError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const closeModal = () => {
@@ -30,6 +32,7 @@ const Index = () => {
     <>
       {/* <!-- Main Header Nav --> */}
       {/* <Header />*/}
+      {isLoading && <CommonLoader />}
 
       {/* <!--  Mobile Menu --> */}
       <MobileMenu />
@@ -50,6 +53,7 @@ const Index = () => {
                   setModalIsOpen={setModalIsOpen}
                   setModalIsOpenError={setModalIsOpenError}
                   setErrorMessage={setErrorMessage}
+                  setIsLoading={setIsLoading}
                 />
               </div>
             </div>

@@ -8,7 +8,6 @@ import axios from "axios";
 import { CldUploadWidget } from "next-cloudinary";
 import toast from "react-hot-toast";
 import { province } from "../create-listing/data";
-import { designation } from "../create-listing/data";
 import ReactInputMask from "react-input-mask";
 
 const ProfileInfo = ({
@@ -16,6 +15,7 @@ const ProfileInfo = ({
   setShowCard,
   setModalIsOpenError,
   setModalIsOpenError_01,
+  setIsLoading,
 }) => {
   const [profilePhoto, setProfilePhoto] = useState(null);
   let userData = JSON.parse(localStorage.getItem("user")) || {};
@@ -252,6 +252,7 @@ const ProfileInfo = ({
   };
 
   const onUpdatHandler = () => {
+    setIsLoading(true);
     const firstName =
       firstNameRef !== "" ? firstNameRef : userData.brokerage_Details.firstName;
     const lastName =
@@ -368,6 +369,7 @@ const ProfileInfo = ({
         top: 0,
         behavior: "smooth",
       });
+      setIsLoading(false);
       return;
     } else if (missingFields.length > 1) {
       // Show generic error for multiple missing fields
@@ -376,6 +378,7 @@ const ProfileInfo = ({
         top: 0,
         behavior: "smooth",
       });
+      setIsLoading(false);
       return;
     }
 
@@ -398,6 +401,7 @@ const ProfileInfo = ({
         top: 0,
         behavior: "smooth",
       });
+      setIsLoading(false);
       return false;
     } else if (
       lastName.trim().length < 1 ||
@@ -410,11 +414,11 @@ const ProfileInfo = ({
         top: 0,
         behavior: "smooth",
       });
+      setIsLoading(false);
       return false;
     } else if (
       brokerageName.trim().length < 1 ||
-      brokerageName.trim().length > 30 ||
-      !nameCityRegex.test(brokerageName)
+      brokerageName.trim().length > 30
     ) {
       setBrokerageError(true);
       toast.error("Please enter a valid brokerage name");
@@ -422,6 +426,7 @@ const ProfileInfo = ({
         top: 0,
         behavior: "smooth",
       });
+      setIsLoading(false);
       return false;
     } else if (
       streetNameRef.trim().length < 1 ||
@@ -434,6 +439,7 @@ const ProfileInfo = ({
         top: 0,
         behavior: "smooth",
       });
+      setIsLoading(false);
       return false;
     } else if (
       city.trim().length < 1 ||
@@ -446,6 +452,7 @@ const ProfileInfo = ({
         top: 0,
         behavior: "smooth",
       });
+      setIsLoading(false);
       return false;
     } else if (
       (assistantFirstName.trim() !== "" &&
@@ -468,6 +475,7 @@ const ProfileInfo = ({
           assistantTwoLastName.trim().length > 30 ||
           !nameRegex.test(assistantTwoLastName)))
     ) {
+      setIsLoading(false);
       toast.error("Please enter a valid assistant name");
     } else if (cellNumberRegex.test(phoneNumber) === false || !phoneNumber) {
       setPhoneNumberError(true);
@@ -476,6 +484,7 @@ const ProfileInfo = ({
         top: 0,
         behavior: "smooth",
       });
+      setIsLoading(false);
       return false;
     } else if (
       cellNumber &&
@@ -487,15 +496,18 @@ const ProfileInfo = ({
         top: 0,
         behavior: "smooth",
       });
+      setIsLoading(false);
     } else if (
       cellNumberRegex.test(assistantPhoneNumber) === false &&
       assistantPhoneNumber.trim() !== ""
     ) {
+      setIsLoading(false);
       toast.error("Please enter a valid assistant phone number");
     } else if (
       cellNumberRegex.test(assistantTwoPhoneNumber) === false &&
       assistantTwoPhoneNumber.trim() !== ""
     ) {
+      setIsLoading(false);
       toast.error("Please enter a valid assistant phone number");
     } else if (emailRegex.test(emailIdRef) === false) {
       setEmailError(true);
@@ -504,6 +516,7 @@ const ProfileInfo = ({
         top: 0,
         behavior: "smooth",
       });
+      setIsLoading(false);
       return false;
     } else if (alphanumericWithSpacesRegex.test(zipCode) === false) {
       setZipCodeError(true);
@@ -512,16 +525,19 @@ const ProfileInfo = ({
         top: 0,
         behavior: "smooth",
       });
+      setIsLoading(false);
       return false;
     } else if (
       emailRegex.test(assistantEmailAddress) === false &&
       assistantEmailAddress.trim() !== ""
     ) {
+      setIsLoading(false);
       toast.error("Please enter a valid assistant email address");
     } else if (
       emailRegex.test(assistantTwoEmailAddress) === false &&
       assistantTwoEmailAddress.trim() !== ""
     ) {
+      setIsLoading(false);
       toast.error("Please enter a valid assistant email address");
     } else if (
       (!firstName ||
@@ -582,11 +598,12 @@ const ProfileInfo = ({
             console.log("brokerageProfile", res.data.userData.broker);
             localStorage.removeItem("user");
             localStorage.setItem("user", JSON.stringify(data));
-            setShowCard(true);
             router.push("/brokerage-dashboard");
+            setShowCard(true);
           })
           .catch((err) => {
             toast.error(err.message);
+            setIsLoading(false);
           })
           .finally(() => {});
         toast.dismiss();

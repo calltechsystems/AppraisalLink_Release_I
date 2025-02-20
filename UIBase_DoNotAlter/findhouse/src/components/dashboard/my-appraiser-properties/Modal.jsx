@@ -25,6 +25,9 @@ const Modal = ({
   propertyId,
   closeQuoteModal,
   openQuoteModal,
+  setIsLoading,
+  setModalIsOpenError,
+  setErrorMessage,
 }) => {
   const router = useRouter();
   const [value, setValue] = useState(null);
@@ -73,6 +76,7 @@ const Modal = ({
 
   const onSubmitHnadler = () => {
     setDisable(true);
+    setIsLoading(true);
     const bidAmount = value;
     const desp = description;
 
@@ -105,15 +109,20 @@ const Modal = ({
               ? "Successfully updated the quote!"
               : "Successfully set the quote"
           );
+          setIsLoading(false);
           location.reload(true);
         })
         .catch((err) => {
           toast.dismiss();
-          toast.error(
-            `Got error while ${
-              alreadyBidded ? "Updating the" : "Setting the"
-            } quote, Try Again!!`
-          );
+          const error = err?.response?.data?.error || "Something went wrong!";
+          // toast.error(
+          //   `Got error while ${
+          //     alreadyBidded ? "Updating the" : "Setting the"
+          //   } quote, Try Again!!`
+          // );
+          setIsLoading(false);
+          setErrorMessage(error);
+          setModalIsOpenError(true);
         });
       setToggle(false);
     }

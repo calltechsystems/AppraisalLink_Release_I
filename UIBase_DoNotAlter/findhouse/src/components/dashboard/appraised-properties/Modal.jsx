@@ -26,6 +26,8 @@ const Modal = ({
   closeQuoteModal,
   openQuoteModal,
   setIsLoading,
+  setModalIsOpenError,
+  setErrorMessage,
 }) => {
   const router = useRouter();
   const [value, setValue] = useState(null);
@@ -113,13 +115,16 @@ const Modal = ({
         })
         .catch((err) => {
           toast.dismiss();
-          toast.error(
-            `Got error while ${
-              alreadyBidded ? "Updating the" : "Setting the"
-            } quote, Try Again!!`,
-            err
-          );
+          const error = err?.response?.data?.error || "Something went wrong!";
+          // toast.error(
+          //   `Got error while ${
+          //     alreadyBidded ? "Updating the" : "Setting the"
+          //   } quote, Try Again!!`,
+          //   err
+          // );
           setIsLoading(false);
+          setErrorMessage(error);
+          setModalIsOpenError(true);
         });
       setToggle(false);
     }
@@ -348,6 +353,7 @@ const Modal = ({
                             onChange={(e) => setDescription(e.target.value)}
                             className="form-control"
                             id="formGroupExampleInput3"
+                            maxLength={50}
                           />
                         </div>
                       </div>

@@ -26,15 +26,14 @@ const Modal = ({
   closeQuoteModal,
   openQuoteModal,
   setIsLoading,
+  setModalIsOpenError,
+  setErrorMessage,
 }) => {
   const router = useRouter();
   const [value, setValue] = useState(null);
   const [description, setDescription] = useState("");
-
   const [toggle, setToggle] = useState(false);
-
   const [disable, setDisable] = useState(false);
-
   const [selectedImage, setSelectedImage] = useState({});
 
   const handleUpload = (result) => {
@@ -116,12 +115,15 @@ const Modal = ({
         })
         .catch((err) => {
           toast.dismiss();
-          toast.error(
-            `Got error while ${
-              alreadyBidded ? "Updating the" : "Setting the"
-            } quote, Try Again!!`
-          );
+          const error = err?.response?.data?.error || "Something went wrong!";
+          // toast.error(
+          //   `Got error while ${
+          //     alreadyBidded ? "Updating the" : "Setting the"
+          //   } quote, Try Again!!`
+          // );
           setIsLoading(false);
+          setErrorMessage(error);
+          setModalIsOpenError(true);
         });
       setToggle(false);
     }

@@ -17,7 +17,6 @@ import { uploadFile } from "./functions";
 import LoadingSpinner from "../../common/LoadingSpinner";
 import CommonLoader from "../../common/CommonLoader/page";
 import { Modal } from "react-bootstrap";
-
 import Button from "react-bootstrap/Button";
 
 const Index = ({ isView, propertyData }) => {

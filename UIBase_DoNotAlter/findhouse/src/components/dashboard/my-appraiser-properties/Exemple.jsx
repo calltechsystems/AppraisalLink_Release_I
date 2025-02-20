@@ -147,6 +147,7 @@ export default function Exemple({
   wishlist,
   setWishlist,
   refresh,
+  setIsLoading,
 }) {
   const [updatedData, setUpdatedData] = useState([]);
   const [bids, setBids] = useState([]);
@@ -308,6 +309,7 @@ export default function Exemple({
     };
 
     const payload = encryptionData(formData);
+    setIsLoading(true);
     toast.loading("removing this property into your wishlist");
     axios
       .delete("/api/removeWishlistProperty", {
@@ -320,11 +322,13 @@ export default function Exemple({
       })
       .then((res) => {
         toast.dismiss();
+        setIsLoading(false);
         toast.success("Successfully removed !!! ");
         location.reload(true);
       })
       .catch((err) => {
         toast.dismiss();
+        setIsLoading(false);
         toast.error(err?.response?.data?.error);
       });
   };

@@ -541,6 +541,7 @@ const ProfileInfo = ({
         top: 0,
         behavior: "smooth",
       });
+      setIsLoading(false);
       return;
     } else if (missingFields.length > 1) {
       // Show generic error for multiple missing fields
@@ -549,6 +550,7 @@ const ProfileInfo = ({
         top: 0,
         behavior: "smooth",
       });
+      setIsLoading(false);
       return;
     }
 
@@ -572,6 +574,7 @@ const ProfileInfo = ({
         top: 0,
         behavior: "smooth",
       });
+      setIsLoading(false);
       return false;
     } else if (
       middleName !== null &&
@@ -585,6 +588,7 @@ const ProfileInfo = ({
         top: 0,
         behavior: "smooth",
       });
+      setIsLoading(false);
       return false;
     } else if (
       lastName.trim().length < 1 ||
@@ -597,11 +601,11 @@ const ProfileInfo = ({
         top: 0,
         behavior: "smooth",
       });
+      setIsLoading(false);
       return false;
     } else if (
       companyName.trim().length < 1 ||
-      companyName.trim().length > 30 ||
-      !nameCityRegex.test(companyName)
+      companyName.trim().length > 30 
     ) {
       setCompanyNameError(true);
       toast.error("Please enter a valid company name");
@@ -609,6 +613,7 @@ const ProfileInfo = ({
         top: 0,
         behavior: "smooth",
       });
+      setIsLoading(false);
       return false;
     } else if (cellNumberRegex.test(phoneNumber) === false || !phoneNumber) {
       setPhoneNumberError(true);
@@ -617,6 +622,7 @@ const ProfileInfo = ({
         top: 0,
         behavior: "smooth",
       });
+      setIsLoading(false);
       return false;
     } else if (
       cellNumberRegex.test(cellNumberRef) === false &&
@@ -627,6 +633,7 @@ const ProfileInfo = ({
         top: 0,
         behavior: "smooth",
       });
+      setIsLoading(false);
     } else if (emailRegex.test(emailIdRef) === false) {
       setEmailError(true);
       toast.error("Please enter a valid email address");
@@ -634,6 +641,7 @@ const ProfileInfo = ({
         top: 0,
         behavior: "smooth",
       });
+      setIsLoading(false);
       return false;
     } else if (
       streetNameRef.trim().length < 1 ||
@@ -646,6 +654,7 @@ const ProfileInfo = ({
         top: 0,
         behavior: "smooth",
       });
+      setIsLoading(false);
       return false;
     } else if (
       city.trim().length < 1 ||
@@ -658,6 +667,7 @@ const ProfileInfo = ({
         top: 0,
         behavior: "smooth",
       });
+      setIsLoading(false);
       return false;
     } else if (alphanumericWithSpacesRegex.test(zipCode) === false) {
       setZipCodeError(true);
@@ -666,6 +676,7 @@ const ProfileInfo = ({
         top: 0,
         behavior: "smooth",
       });
+      setIsLoading(false);
       return false;
     } else if (
       assistantFirstName.trim() !== "" &&
@@ -673,6 +684,7 @@ const ProfileInfo = ({
         assistantFirstName.trim().length > 30 ||
         !nameRegex.test(assistantFirstName))
     ) {
+      setIsLoading(false);
       setAssistantFirstNameError(true);
       toast.error("Please enter a valid first name for assistant 1.");
     } else if (
@@ -681,6 +693,7 @@ const ProfileInfo = ({
         assistantLastName.trim().length > 30 ||
         !nameRegex.test(assistantLastName))
     ) {
+      setIsLoading(false);
       setAssistantLastNameError(true);
       toast.error("Please enter a valid last name for assistant 1.");
     } else if (
@@ -689,6 +702,7 @@ const ProfileInfo = ({
         assistantTwoFirstName.trim().length > 30 ||
         !nameRegex.test(assistantTwoFirstName))
     ) {
+      setIsLoading(false);
       setAssistantTwoFirstNameError(true);
       toast.error("Please enter a valid first name for assistant 2.");
     } else if (
@@ -697,12 +711,14 @@ const ProfileInfo = ({
         assistantTwoLastName.trim().length > 30 ||
         !nameRegex.test(assistantTwoLastName))
     ) {
+      setIsLoading(false);
       setAssistantTwoLastNameError(true);
       toast.error("Please enter a valid last name for assistant 2.");
     } else if (
       cellNumberRegex.test(assistantPhoneNumber) === false &&
       assistantPhoneNumber.trim() !== ""
     ) {
+      setIsLoading(false);
       setAssistantPhoneNumberError(true);
       toast.error(
         "Please enter a valid assistant phone number for assistant 1."
@@ -711,6 +727,7 @@ const ProfileInfo = ({
       cellNumberRegex.test(assistantTwoPhoneNumber) === false &&
       assistantTwoPhoneNumber.trim() !== ""
     ) {
+      setIsLoading(false);
       setAssistantTwoPhoneNumberError(true);
       toast.error(
         "Please enter a valid assistant phone number for assistant 2."
@@ -719,6 +736,7 @@ const ProfileInfo = ({
       emailRegex.test(assistantEmailAddress) === false &&
       assistantEmailAddress.trim() !== ""
     ) {
+      setIsLoading(false);
       setAssistantEmailAddressError(true);
       toast.error(
         "Please enter a valid assistant email address for assistant 1."
@@ -727,6 +745,7 @@ const ProfileInfo = ({
       emailRegex.test(assistantTwoEmailAddress) === false &&
       assistantTwoEmailAddress.trim() !== ""
     ) {
+      setIsLoading(false);
       setAssistantTwoEmailAddressError(true);
       toast.error(
         "Please enter a valid assistant email address for assistant 2."
@@ -786,6 +805,7 @@ const ProfileInfo = ({
         axios
           .put("/api/updateBrokerProfile", encryptedData)
           .then((res) => {
+            setIsLoading(false);
             toast.success("Successfully Updated Profile!");
             let data = userData;
             data.smsNotification = res.data.userData.isSms;
@@ -793,7 +813,6 @@ const ProfileInfo = ({
             data.broker_Details = res.data.userData.brokerage;
             localStorage.removeItem("user");
             localStorage.setItem("user", JSON.stringify(data));
-            setIsLoading(false);
             router.push("/my-dashboard");
             setShowCard(true);
           })

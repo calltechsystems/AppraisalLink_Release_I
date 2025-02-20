@@ -157,6 +157,7 @@ export default function Exemple({
   setStartLoading,
   refresh,
   setSelectedPropertyNew,
+  setIsLoading,
 }) {
   const [updatedData, setUpdatedData] = useState([]);
   const [wishlist, setWishlist] = useState([]);
@@ -360,7 +361,6 @@ export default function Exemple({
 
   const removeWishlistHandler = (id) => {
     const userData = JSON.parse(localStorage.getItem("user"));
-
     const formData = {
       userId: userData.userId,
       propertyId: id,
@@ -368,6 +368,7 @@ export default function Exemple({
     };
 
     const payload = encryptionData(formData);
+    setIsLoading(true);
     toast.loading("removing this property into your wishlist");
     axios
       .delete("/api/removeWishlistProperty", {
@@ -380,11 +381,13 @@ export default function Exemple({
       })
       .then((res) => {
         toast.dismiss();
+        setIsLoading(false);
         toast.success("Successfully removed !!! ");
         location.reload(true);
       })
       .catch((err) => {
         toast.dismiss();
+        setIsLoading(false);
         toast.error(err?.response?.data?.error);
       });
   };
@@ -416,7 +419,7 @@ export default function Exemple({
       year: "numeric",
       month: "short",
       day: "numeric",
-      hour12: true, 
+      hour12: true,
     };
 
     const formattedDate = new Date(dateString).toLocaleString("en-US", options);
@@ -1057,7 +1060,6 @@ export default function Exemple({
     setSearchInput("");
     setWishlist([]);
     const data = JSON.parse(localStorage.getItem("user"));
-
     axios
       .get("/api/getArchiveAppraiserProperty", {
         headers: {
@@ -1223,13 +1225,13 @@ export default function Exemple({
   };
 
   useEffect(() => {
-    fetchData(); 
+    fetchData();
 
     intervalRef.current = setInterval(() => {
       fetchData();
-    }, 600000); 
+    }, 600000);
 
-    return () => clearInterval(intervalRef.current); 
+    return () => clearInterval(intervalRef.current);
   }, [refresh]);
 
   return (

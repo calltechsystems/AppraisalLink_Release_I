@@ -11,6 +11,7 @@ const Form = ({
   setModalIsOpenError,
   setErrorMessage,
   setCloseRegisterModal,
+  setIsLoading,
 }) => {
   const [isLoading, setLoading] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
@@ -19,7 +20,7 @@ const Form = ({
 
   const registerHandler = (event) => {
     event.preventDefault();
-
+    setIsLoading(true);
     const email = emailRegisterRef.current.value;
 
     if (!email) {
@@ -44,6 +45,7 @@ const Form = ({
         .post("/api/registerBrokerByBrokerageCompany", encryptedData)
         .then(() => {
           toast.dismiss();
+          setIsLoading(false);
           setModalIsOpen(true);
           // toast.success("Successfully added!");
           // setTimeout(() => {
@@ -52,6 +54,7 @@ const Form = ({
         })
         .catch((err) => {
           toast.dismiss();
+          setIsLoading(false);
           const status = err.response?.request?.status;
           if (status === 409) {
             toast.error("Email is already registered!");

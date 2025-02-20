@@ -53,7 +53,7 @@ const Index = () => {
   const [modalIsOpenError, setModalIsOpenError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [refresh, setRefresh] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
@@ -85,7 +85,7 @@ const Index = () => {
       return `${digits.slice(0, 3)} ${digits.slice(3, 6)}-${digits.slice(
         6,
         10
-      )}`; 
+      )}`;
     }
   };
 
@@ -115,7 +115,7 @@ const Index = () => {
 
   const handleStatusUpdateHandler = () => {
     setDisable(true);
-
+    setIsLoading(true);
     const data = JSON.parse(localStorage.getItem("user"));
     const payload = {
       token: data.token,
@@ -131,12 +131,14 @@ const Index = () => {
       .put("/api/updateOrderStatus", encryptedBody)
       .then((res) => {
         toast.dismiss();
+        setIsLoading(false);
         toast.success("Successfully updated!!");
         location.reload(true);
       })
       .catch((err) => {
         toast.dismiss();
         // toast.error(err?.response?.data?.error);
+        setIsLoading(false);
         const error = err?.response?.data?.error || "Something went wrong!";
         setErrorMessage(error);
         setModalIsOpenError(true);
@@ -242,7 +244,7 @@ const Index = () => {
       toast.error("Invalid Fields. Please check the inputs and try again.");
       return;
     }
-
+    setIsLoading(true);
     const encryptedData = encryptionData(payload);
     toast.loading("Assigning the property!!....");
     axios
@@ -253,6 +255,7 @@ const Index = () => {
       })
       .then((res) => {
         toast.dismiss();
+        setIsLoading(false);
         toast.success("Successfully assigned the property!");
         setTimeout(() => {
           location.reload(true); // Reload the page after a short delay
@@ -261,6 +264,7 @@ const Index = () => {
       .catch((err) => {
         toast.dismiss();
         // Extract a meaningful error message
+        setIsLoading(false);
         const errorMessage =
           err.response?.data?.message || // API-provided error message
           err.message || // General Axios error message
@@ -415,10 +419,9 @@ const Index = () => {
       token: data.token,
     };
 
+    setIsLoading(true);
     toast.loading("Archiving the desired property!!.");
-
     const encryptedBody = encryptionData(payload);
-
     axios
       .post("/api/setArchivePropertyByAppraiser", encryptedBody, {
         headers: {
@@ -428,11 +431,13 @@ const Index = () => {
       })
       .then((res) => {
         toast.dismiss();
+        setIsLoading(false);
         toast.success("Archived property!");
         location.reload(true);
       })
       .catch((err) => {
         toast.dismiss();
+        setIsLoading(false);
         toast.error(err);
       });
   };
@@ -687,17 +692,19 @@ const Index = () => {
     };
 
     const payload = encryptionData(formData);
-
+    setIsLoading(true);
     toast.loading("Setting this property into your wishlist");
     axios
       .post("/api/addToWishlist", payload)
       .then((res) => {
         toast.dismiss();
+        setIsLoading(false);
         toast.success("Successfully added !!! ");
         location.reload(true);
       })
       .catch((err) => {
         toast.dismiss();
+        setIsLoading(false);
         toast.error(err?.response?.data?.error);
       });
   };
@@ -877,6 +884,7 @@ const Index = () => {
                           setStartLoading={setStartLoading}
                           openModalBroker={openModalBroker}
                           setSelectedPropertyNew={setSelectedPropertyNew}
+                          setIsLoading={setIsLoading}
                         />
 
                         {modalIsOpenError && (
@@ -2076,6 +2084,8 @@ const Index = () => {
                   setBidAmount={setbidAmount}
                   alreadyBidded={alreadyBidded}
                   setIsLoading={setIsLoading}
+                  setErrorMessage={setErrorMessage}
+                  setModalIsOpenError={setModalIsOpenError}
                 />
               </div>
               {/* End .row */}

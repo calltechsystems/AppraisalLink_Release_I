@@ -19,6 +19,7 @@ import Form from "../../appraiser-register/Form";
 import Link from "next/link";
 import { FaCopy } from "react-icons/fa";
 import Image from "next/image";
+import CommonLoader from "../../common/CommonLoader/page";
 
 const Index = () => {
   const [assignModal, setAssignModal] = useState(false);
@@ -135,7 +136,7 @@ const Index = () => {
       };
 
       const encryptedData = encryptionData(payload);
-
+      setIsLoading(true);
       toast.loading("Updating the status");
       axios
         .put("/api/updateIsActiveAppraiser", encryptedData, {
@@ -146,11 +147,13 @@ const Index = () => {
         })
         .then((res) => {
           toast.dismiss();
+          setIsLoading(false);
           toast.success("Successfully Updated!!");
           window.location.reload();
         })
         .catch((err) => {
           toast.dismiss();
+          setIsLoading(false);
           toast.error(err);
         });
 
@@ -475,6 +478,8 @@ const Index = () => {
   return (
     <>
       <Header userData={userData} />
+      {isLoading && <CommonLoader />}
+
       <MobileMenu />
 
       <div className="dashboard_sidebar_menu">
@@ -1099,7 +1104,10 @@ const Index = () => {
                       className="mb-2"
                       style={{ border: "2px solid #97d700" }}
                     ></div>
-                    <Form setCloseRegisterModal={setCloseRegisterModal} />
+                    <Form
+                      setCloseRegisterModal={setCloseRegisterModal}
+                      setIsLoading={setIsLoading}
+                    />
                   </div>
                 </div>
               )}

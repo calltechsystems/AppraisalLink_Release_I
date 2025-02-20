@@ -15,13 +15,13 @@ import { AppraiserStatusOptions } from "../create-listing/data";
 import Link from "next/link";
 import Image from "next/image";
 import { FaDownload } from "react-icons/fa";
+import CommonLoader from "../../common/CommonLoader/page";
 
 const Index = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchInput, setSearchInput] = useState("");
   const [selectedPropertyNew, setSelectedPropertyNew] = useState(null);
   const [disable, setDisable] = useState(false);
-
   const [assignAppraiser, setAssignAppraiser] = useState([]);
   const [isStatusModal, setIsStatusModal] = useState(false);
   const [toggleId, setToggleId] = useState(-1);
@@ -38,13 +38,11 @@ const Index = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const [lowRangeBid, setLowRangeBid] = useState("");
   const [propertyId, setPropertyId] = useState(null);
-
   const [assignAppraiserId, setassignAppraiserId] = useState(-1);
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [wishlistedProperties, setWishlistedProperties] = useState([]);
   const [updatedCode, setUpdatedCode] = useState(false);
   const [isQuoteModalOpen, setIsQuoteModalOpen] = useState(false);
-
   const [modalIsOpenError, setModalIsOpenError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -115,16 +113,19 @@ const Index = () => {
     };
 
     const encryptedBody = encryptionData(payload);
+    setIsLoading(true);
     toast.loading("Updating order status!!");
     axios
       .put("/api/updateOrderStatus", encryptedBody)
       .then((res) => {
         toast.dismiss();
+        setIsLoading(false);
         toast.success("Successfully updated!!");
         location.reload(true);
       })
       .catch((err) => {
         toast.dismiss();
+        setIsLoading(false);
         const error = err?.response?.data?.error || "Something went wrong!";
         setErrorMessage(error);
         setModalIsOpenError(true);
@@ -207,6 +208,7 @@ const Index = () => {
     };
 
     const encryptedData = encryptionData(payload);
+    setIsLoading(true);
     toast.loading("Assigning the property!!....");
     axios
       .post("/api/assignPropertyToAppraiser", encryptedData, {
@@ -216,11 +218,13 @@ const Index = () => {
       })
       .then((res) => {
         toast.dismiss();
+        setIsLoading(false);
         toast.success("Successfully assigned the property!");
         location.reload(true);
       })
       .catch((err) => {
         toast.dismiss();
+        setIsLoading(false);
         toast.error(err);
       });
     setAssignPropertyId(-1);
@@ -676,6 +680,8 @@ const Index = () => {
       {/* <!-- Main Header Nav --> */}
       <Header userData={userData} />
 
+      {isLoading && <CommonLoader />}
+
       {/* <!--  Mobile Menu --> */}
       <MobileMenu />
 
@@ -795,6 +801,7 @@ const Index = () => {
                           setStartLoading={setStartLoading}
                           openModalBroker={openModalBroker}
                           setSelectedPropertyNew={setSelectedPropertyNew}
+                          setIsLoading={setIsLoading}
                         />
 
                         {modalIsOpenError && (
@@ -1754,34 +1761,13 @@ const Index = () => {
                   setCurrentBid={setCurrentBid}
                   setBidAmount={setbidAmount}
                   alreadyBidded={alreadyBidded}
+                  setIsLoading={setIsLoading}
+                  setErrorMessage={setErrorMessage}
+                  setModalIsOpenError={setModalIsOpenError}
                 />
               </div>
-              <div className="row">
-                {/* <div className="col-lg-12 mt20">
-                  <div className="mbp_pagination">
-                    <Pagination
-                      properties={properties}
-                      setProperties={setProperties}
-                    />
-                  </div>
-                </div> */}
-                {/* End paginaion .col */}
-              </div>
-              {/* End .row */}
             </div>
             {/* End .row */}
-
-            {/* <div className="row">
-              <div className="col-lg-12 mt20">
-                <div className="mbp_pagination">
-                  <Pagination
-                    setStart={setStart}
-                    setEnd={setEnd}
-                    properties={wishlistedProperties}
-                  />
-                </div>
-              </div>
-            </div> */}
 
             <div className="row mt50">
               <div className="col-lg-12">

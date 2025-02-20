@@ -664,7 +664,7 @@ export default function Exemple({
                 </li>
                 {/* )} */}
 
-                {!isEditable && !isCancel && (
+                {!isEditable && !isCancel && !isHold && (
                   <li title="Quotes">
                     {/* <Link href={`/my-property-bids/${property.propertyId}`}>
                       <span className="btn btn-color w-100 mb-1"> Quotes </span>

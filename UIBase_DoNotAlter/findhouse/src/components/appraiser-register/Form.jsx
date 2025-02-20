@@ -10,6 +10,7 @@ const Form = ({
   setModalIsOpenError,
   setErrorMessage,
   setCloseRegisterModal,
+  setIsLoading
 }) => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const emailRegisterRef = useRef();
@@ -17,7 +18,7 @@ const Form = ({
 
   const registerHandler = async (event) => {
     event.preventDefault();
-
+    setIsLoading(true);
     const email = emailRegisterRef.current.value;
 
     if (!email) {
@@ -38,6 +39,7 @@ const Form = ({
         toast.loading("Registering user...");
         await axios.post("/api/registerByCompany", encryptedData);
         toast.dismiss();
+        setIsLoading(false);
         setModalIsOpen(true);
         // toast.success("Successfully added!");
         // setTimeout(() => {
@@ -46,6 +48,7 @@ const Form = ({
 
       } catch (err) {
         toast.dismiss();
+        setIsLoading(false);
         const status = err.response?.request?.status;
         if (status === 409) {
           toast.error("Email is already registered!");

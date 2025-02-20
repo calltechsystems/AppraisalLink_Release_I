@@ -147,6 +147,7 @@ export default function Exemple({
   setStartLoading,
   refresh,
   setSelectedPropertyNew,
+  setIsLoading,
 }) {
   const [updatedData, setUpdatedData] = useState([]);
   const [wishlist, setWishlist] = useState([]);
@@ -164,7 +165,7 @@ export default function Exemple({
   const [isWishlistProperty, setIsWishlistProperty] = useState(0);
   const [selectedWishlistId, setSelectedWishlistId] = useState(null);
   const [isLimitModalOpen, setIsLimitModalOpen] = useState(false);
-  
+
   useEffect(() => {
     if (searchInput === "") {
       setRefresh(true);
@@ -310,6 +311,7 @@ export default function Exemple({
     };
 
     const payload = encryptionData(formData);
+    setIsLoading(true);
     toast.loading("removing this property into your wishlist");
     axios
       .delete("/api/removeWishlistProperty", {
@@ -322,11 +324,13 @@ export default function Exemple({
       })
       .then((res) => {
         toast.dismiss();
+        setIsLoading(false);
         toast.success("Successfully removed !!! ");
         location.reload(true);
       })
       .catch((err) => {
         toast.dismiss();
+        setIsLoading(false);
         toast.error(err?.response?.data?.error);
       });
   };

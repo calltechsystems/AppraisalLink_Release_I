@@ -40,7 +40,8 @@ const TableData = ({
   setModalIsOpenError,
   setRefresh,
   refresh,
-  setSelectedPropertyNew
+  setSelectedPropertyNew,
+  setIsLoading
 }) => {
   let userInfo = {};
   const [Id, setId] = useState(-1);
@@ -305,6 +306,7 @@ const TableData = ({
           setOpenAssignModal={setOpenAssignModal}
           setWishlistedProperties={setWishlistedProperties}
           setSelectedPropertyNew={setSelectedPropertyNew}
+          setIsLoading={setIsLoading}
           end={end}
         />
       )}

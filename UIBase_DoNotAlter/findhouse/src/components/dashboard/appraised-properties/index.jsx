@@ -76,16 +76,19 @@ const Index = () => {
     };
 
     const encryptedBody = encryptionData(payload);
+    setIsLoading(true);
     toast.loading("Updating order status!!");
     axios
       .put("/api/updateOrderStatus", encryptedBody)
       .then((res) => {
         toast.dismiss();
+        setIsLoading(false);
         toast.success("Successfully updated!!");
         location.reload(true);
       })
       .catch((err) => {
         toast.dismiss();
+        setIsLoading(false);
         const error = err?.response?.data?.error || "Something went wrong!";
         setErrorMessage(error);
         setModalIsOpenError(true);
@@ -224,6 +227,7 @@ const Index = () => {
     };
 
     const encryptedData = encryptionData(payload);
+    setIsLoading(true);
     toast.loading("Assigning the property!!....");
     axios
       .post("/api/assignPropertyToAppraiser", encryptedData, {
@@ -233,11 +237,13 @@ const Index = () => {
       })
       .then((res) => {
         toast.dismiss();
+        setIsLoading(false);
         toast.success("Successfully assigned the property!");
         location.reload(true);
       })
       .catch((err) => {
         toast.dismiss();
+        setIsLoading(false);
         toast.error(err);
       });
     setAssignPropertyId(-1);
@@ -383,7 +389,7 @@ const Index = () => {
       status: true,
       token: data.token,
     };
-
+    setIsLoading(true);
     toast.loading("Archiving the property.....");
 
     const encryptedBody = encryptionData(payload);
@@ -397,12 +403,14 @@ const Index = () => {
       })
       .then((res) => {
         toast.dismiss();
+        setIsLoading(false);
         toast.success("Successfully Added to Archived Properties!!");
         location.reload(true);
         // router.push("/appraiser-archive-property");
       })
       .catch((err) => {
         toast.dismiss();
+        setIsLoading(false);
         toast.error(err);
       });
   };
@@ -626,17 +634,19 @@ const Index = () => {
     };
 
     const payload = encryptionData(formData);
-
+    setIsLoading(true);
     toast.loading("Setting this property into your wishlist");
     axios
       .post("/api/addToWishlist", payload)
       .then((res) => {
         toast.dismiss();
+        setIsLoading(false);
         toast.success("Successfully added !!! ");
         location.reload(true);
       })
       .catch((err) => {
         toast.dismiss();
+        setIsLoading(false);
         toast.error(err?.response?.data?.error);
       });
   };
@@ -830,6 +840,7 @@ const Index = () => {
                           setStartLoading={setStartLoading}
                           openModalBroker={openModalBroker}
                           setSelectedPropertyNew={setSelectedPropertyNew}
+                          setIsLoading={setIsLoading}
                         />
 
                         {modalIsOpenError && (
@@ -1905,6 +1916,8 @@ const Index = () => {
                   setBidAmount={setbidAmount}
                   alreadyBidded={alreadyBidded}
                   setIsLoading={setIsLoading}
+                  setErrorMessage={setErrorMessage}
+                  setModalIsOpenError={setModalIsOpenError}
                 />
               </div>
               <div className="row">
