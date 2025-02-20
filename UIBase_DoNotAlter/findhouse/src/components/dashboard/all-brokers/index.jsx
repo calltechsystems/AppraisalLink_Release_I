@@ -1251,7 +1251,10 @@ const Index = () => {
                       className="mb-2"
                       style={{ border: "2px solid #97d700" }}
                     ></div>
-                    <Form setCloseRegisterModal={setCloseRegisterModal} />
+                    <Form
+                      setCloseRegisterModal={setCloseRegisterModal}
+                      setIsLoading={setIsLoading}
+                    />
                   </div>
                 </div>
               )}

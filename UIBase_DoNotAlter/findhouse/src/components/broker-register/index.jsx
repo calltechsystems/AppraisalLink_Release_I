@@ -9,7 +9,7 @@ import Form from "./Form";
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import CommonLoader from "../../common/CommonLoader/page";
+import CommonLoader from "../common/CommonLoader/page";
 
 const Index = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);

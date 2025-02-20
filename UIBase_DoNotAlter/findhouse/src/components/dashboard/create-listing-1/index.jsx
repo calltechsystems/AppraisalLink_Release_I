@@ -4,9 +4,9 @@ import { useRouter } from "next/router";
 import Header from "../../common/header/dashboard/HeaderBrokerage";
 import SidebarMenu from "../../common/header/dashboard/SidebarMenuBrokerage";
 import MobileMenu from "../../common/header/MobileMenu_02";
-import CreateList from "./CreateList";
-import DetailedInfo from "./DetailedInfo";
-import LocationField from "./LocationField";
+import CreateList from "../create-listing/CreateList";
+import DetailedInfo from "../create-listing/DetailedInfo";
+import LocationField from "../create-listing/LocationField";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { typeOfBuilding } from "./data";
@@ -16,6 +16,8 @@ import { useModal } from "../../../context/ModalContext";
 import { uploadFile } from "./functions";
 import LoadingSpinner from "../../common/LoadingSpinner";
 import CommonLoader from "../../common/CommonLoader/page";
+import { Modal } from "react-bootstrap";
+import Button from "react-bootstrap/Button";
 
 const Index = ({ isView, propertyData }) => {
   const router = useRouter();
@@ -23,7 +25,8 @@ const Index = ({ isView, propertyData }) => {
   const [userData, setUserData] = useState({});
   // const userData = JSON.parse(localStorage.getItem("user"));
   const data = JSON.parse(localStorage.getItem("user"));
-
+  const [isFormDirty, setIsFormDirty] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const [updateView, setUpdateView] = useState(propertyData);
   const [isDisable, setDisable] = useState(updateView);
 
@@ -135,6 +138,50 @@ const Index = ({ isView, propertyData }) => {
   const [isSubmitInProgress, setIsSubmitInProgress] = useState(false);
 
   const [isLoading, setisLoading] = useState(false);
+  // Handle input changes to mark form as dirty
+  const handleInputChangeNew = (e, setter) => {
+    setter(e.target.value);
+    setIsFormDirty(true);
+  };
+
+  // Intercept route changes
+  useEffect(() => {
+    const handleRouteChange = (url) => {
+      if (isFormDirty) {
+        setShowModal(true);
+        router.events.emit("routeChangeError");
+        throw "Navigation blocked";
+      }
+    };
+
+    router.events.on("routeChangeStart", handleRouteChange);
+    return () => {
+      router.events.off("routeChangeStart", handleRouteChange);
+    };
+  }, [isFormDirty, router]);
+
+  // Warn user before refreshing/closing the tab
+  useEffect(() => {
+    const handleBeforeUnload = (event) => {
+      if (isFormDirty) {
+        event.preventDefault();
+        event.returnValue =
+          "The property data entered will be lost if you navigate from the page.";
+      }
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [isFormDirty]);
+
+  // Confirm Navigation
+  const confirmNavigation = () => {
+    setShowModal(false);
+    setIsFormDirty(false);
+    router.push(router.asPath);
+  };
 
   useEffect(() => {
     if (
@@ -542,7 +589,7 @@ const Index = ({ isView, propertyData }) => {
 
         const url = window.location.pathname;
 
-        const propertyOrderId = url.split("/create-listing-1/")[1];
+        const propertyOrderId = url.split("/create-listing/")[1];
 
         toast.loading("Updating the property..");
         axios
@@ -558,6 +605,7 @@ const Index = ({ isView, propertyData }) => {
           .then((res) => {
             toast.dismiss();
             toast.success("Successfully updated the property!");
+            setIsFormDirty(false);
             setModalIsOpen(false);
             router.push("/brokerage-properties");
             setIsSubmitInProgress(false);
@@ -566,15 +614,16 @@ const Index = ({ isView, propertyData }) => {
           })
           .catch((err) => {
             if (TimesTrigerredSubmission > 2) {
-              setIsSubmitInProgress(false);
-              setTimesTrigerredSubmission(0);
+              setdisable(false);
+              setisLoading(false);
+
               toast.dismiss();
               toast.error(
                 err.response.data.error ||
                   "Got error while updating the Property details."
               );
-              setdisable(false);
-              setisLoading(false);
+              setIsSubmitInProgress(false);
+              setTimesTrigerredSubmission(0);
             } else {
               setTimesTrigerredSubmission(TimesTrigerredSubmission + 1);
             }
@@ -725,12 +774,13 @@ const Index = ({ isView, propertyData }) => {
       }
     } catch (err) {
       if (TimesTrigerredSubmission > 2) {
-        setIsSubmitInProgress(false);
-        setTimesTrigerredSubmission(0);
         setDisable(false);
         setisLoading(false);
         toast.error("Got error while saving, trying again.");
         console.error(err);
+
+        setIsSubmitInProgress(false);
+        setTimesTrigerredSubmission(0);
       } else {
         setTimesTrigerredSubmission(TimesTrigerredSubmission + 1);
       }
@@ -886,11 +936,15 @@ const Index = ({ isView, propertyData }) => {
 
             setIsSubmitInProgress(false);
             setTimesTrigerredSubmission(2);
+            setIsFormDirty(false);
           })
           .catch((err) => {
             if (TimesTrigerredSubmission > 2) {
               const status = err.response?.status;
               toast.dismiss();
+              setdisable(false);
+              setisLoading(false);
+
               if (status == 403) {
                 setModalIsOpenError(true);
               } else if (status == 404) {
@@ -907,8 +961,6 @@ const Index = ({ isView, propertyData }) => {
 
               setIsSubmitInProgress(false);
               setTimesTrigerredSubmission(0);
-              setdisable(false);
-              setisLoading(false);
             } else {
               setTimesTrigerredSubmission(TimesTrigerredSubmission + 1);
             }
@@ -932,11 +984,12 @@ const Index = ({ isView, propertyData }) => {
       // Handle API error or invalid zip code
       console.error("Error fetching location data:", error);
     }
+    setIsFormDirty(true);
   };
 
   const handleOkClick = () => {
     setSuccessModal(false);
-    // navigate('/brokerage-properties');
+    // navigate('/my-properties');
     router.push("/brokerage-properties");
   };
 
@@ -1031,6 +1084,15 @@ const Index = ({ isView, propertyData }) => {
                           }}
                         >
                           Property Details
+                          {propertyData?.orderId && (
+                            <>
+                              {" "}
+                              - Property Id{" "}
+                              <span style={{ color: "#000" }}>
+                                #{propertyData.orderId}
+                              </span>
+                            </>
+                          )}
                         </h4>
                       </div>
 
@@ -1060,6 +1122,8 @@ const Index = ({ isView, propertyData }) => {
                         setUrgencyRef={setUrgencyRef}
                         bidLowerRangeRef={bidLowerRangeRef}
                         setBidLowerRangeRef={setBidLowerRangeRef}
+                        handleInputChangeNew={handleInputChangeNew}
+                        setIsFormDirty={setIsFormDirty}
                       />
                     </div>
                   </div>
@@ -1121,6 +1185,8 @@ const Index = ({ isView, propertyData }) => {
                       otherUrgencyValue={otherUrgencyValue}
                       setOtherTypeOfBuildingValue={setOtherTypeOfBuildingValue}
                       setOtherUrgencyValue={setOtherUrgencyValue}
+                      handleInputChangeNew={handleInputChangeNew}
+                      setIsFormDirty={setIsFormDirty}
                     />
                   </div>
 
@@ -1179,6 +1245,8 @@ const Index = ({ isView, propertyData }) => {
                         propertyData={propertyData}
                         setDisable={setDisable}
                         onCancelHandler={onCancelHandler}
+                        handleInputChangeNew={handleInputChangeNew}
+                        setIsFormDirty={setIsFormDirty}
                       />
                     </div>
                   </div>
@@ -1246,7 +1314,7 @@ const Index = ({ isView, propertyData }) => {
                               {propertyData?.orderId && (
                                 <>
                                   {" "}
-                                  - Property Id -{" "}
+                                  - Property Id{" "}
                                   <span style={{ color: "#97d700" }}>
                                     #{propertyData.orderId}
                                   </span>
@@ -1804,6 +1872,105 @@ const Index = ({ isView, propertyData }) => {
                   </div>
                 </div>
               )}
+
+              {/* Modal for Unsaved Changes Warning */}
+              {showModal && (
+                <div className="modal">
+                  <div className="modal-content" style={{ width: "25%" }}>
+                    <div className="row">
+                      <div className="col-lg-12">
+                        <Link href="/" className="">
+                          <Image
+                            width={50}
+                            height={45}
+                            className="logo1 img-fluid"
+                            style={{ marginTop: "-20px" }}
+                            src="/assets/images/logo.png"
+                            alt="header-logo2.png"
+                          />
+                          <span
+                            style={{
+                              color: "#2e008b",
+                              fontWeight: "bold",
+                              fontSize: "24px",
+                              // marginTop: "20px",
+                            }}
+                          >
+                            Appraisal
+                          </span>
+                          <span
+                            style={{
+                              color: "#97d700",
+                              fontWeight: "bold",
+                              fontSize: "24px",
+                              // marginTop: "20px",
+                            }}
+                          >
+                            {" "}
+                            Land
+                          </span>
+                        </Link>
+                      </div>
+                    </div>
+                    <h3
+                      className="text-center mt-3"
+                      style={{ color: "#2e008b" }}
+                    >
+                      Information <span style={{ color: "#97d700" }}></span>
+                    </h3>
+                    <div
+                      className="mb-2"
+                      style={{ border: "2px solid #97d700" }}
+                    ></div>
+                    <p className="fs-5 text-center text-dark mt-4">
+                      The property data entered will be lost if you navigate
+                      from the page.
+                      {/* <br />
+                      Kindly Top Up.{" "} */}
+                      {/* <span className="text-danger fw-bold">Top Up</span>{" "} */}
+                    </p>
+                    <div
+                      className="mb-3 mt-4"
+                      style={{ border: "2px solid #97d700" }}
+                    ></div>
+                    <div className="col-lg-12 d-flex justify-content-center gap-2">
+                      <button
+                        // disabled={disable}
+                        className="btn btn-color w-25"
+                        onClick={() => setShowModal(false)}
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        // disabled={disable}
+                        className="btn btn-color w-25"
+                        onClick={confirmNavigation}
+                      >
+                        Ok
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+              {/* <Modal show={showModal} onHide={() => setShowModal(false)}>
+                <Modal.Body>
+                  <p>
+                    The property data entered will be lost if you navigate from
+                    the page.
+                  </p>
+                </Modal.Body>
+                <Modal.Footer>
+                  <Button
+                    variant="secondary"
+                    onClick={() => setShowModal(false)}
+                  >
+                    Cancel
+                  </Button>
+                  <Button variant="primary" onClick={confirmNavigation}>
+                    OK
+                  </Button>
+                </Modal.Footer>
+              </Modal> */}
 
               <div className="row mt50">
                 <div className="col-lg-12">
