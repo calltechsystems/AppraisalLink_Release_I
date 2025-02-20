@@ -89,7 +89,6 @@ const Index = () => {
             <OurMission />
           </div>
         </div>
-        {/* End .row */}
 
         {/* <div className="row mt80">
           <div className="col-lg-12">
