@@ -293,8 +293,13 @@ const Pricing = ({
                 String(currentSubscription.planId) !== String(item.id) &&
                 (currentSubscription?.$id ? (
                   <button
-                    disabled={!canUpgrade ? true : false}
-                    className="btn btn-color_01 w-100"
+                    disabled={!canUpgrade}
+                    // className="btn btn-color_01 w-100"
+                    className={`${
+                      !canUpgrade
+                        ? "btn btn-disabled w-100"
+                        : "btn w-100 btn-color_01"
+                    }`}
                     onClick={() =>
                       selectPackageHandler(
                         item.id,
@@ -307,7 +312,7 @@ const Pricing = ({
                       )
                     }
                   >
-                    <a href="#">Change Plan</a>
+                    Change Plan
                   </button>
                 ) : (
                   ""

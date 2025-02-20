@@ -795,7 +795,7 @@ export default function Exemple({
                         className="w-100"
                         onClick={() => openArchiveModal(property)}
                       >
-                        <button href="#" className="btn btn-color m-1">
+                        <button href="#" className="btn btn-color">
                           <Link href="#">
                             <span className="text-light">
                               {" "}

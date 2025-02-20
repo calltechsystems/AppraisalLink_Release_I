@@ -65,7 +65,7 @@ export const getTheDownloadView = (userFieldType, allData, pdfTitle) => {
               <style>
                 @media print {
                   @page {
-                    size: landscape;
+                    size: A4 landscape;
                     margin: 0;
                   }
                   body {

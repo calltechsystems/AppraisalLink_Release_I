@@ -23967,4 +23967,10 @@ input:checked + .slider:before {
     opacity: 1;
   }
 }
+.btn-disabled {
+  background-color: #2e008b !important; /* Greyed out */
+  cursor: not-allowed;
+  color: white !important;
+  opacity: 0.6;
+}
 
