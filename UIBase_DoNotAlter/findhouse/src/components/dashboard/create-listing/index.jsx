@@ -604,8 +604,9 @@ const Index = ({ isView, propertyData }) => {
           })
           .then((res) => {
             toast.dismiss();
-            toast.success("Successfully updated the property!");
+            // toast.success("Successfully updated the property!");
             setIsFormDirty(false);
+            setSuccessModal(true);
             setModalIsOpen(false);
             router.push("/my-properties");
             setIsSubmitInProgress(false);
@@ -616,7 +617,6 @@ const Index = ({ isView, propertyData }) => {
             if (TimesTrigerredSubmission > 2) {
               setdisable(false);
               setisLoading(false);
-              
               toast.dismiss();
               toast.error(
                 err.response.data.error ||
@@ -933,7 +933,6 @@ const Index = ({ isView, propertyData }) => {
             setGeneratedPropertyId(propertyId);
             setSuccessModal(true);
             setisLoading(false);
-
             setIsSubmitInProgress(false);
             setTimesTrigerredSubmission(2);
             setIsFormDirty(false);

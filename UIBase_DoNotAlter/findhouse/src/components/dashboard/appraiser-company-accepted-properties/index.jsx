@@ -24,7 +24,8 @@ const Index = () => {
 
   const [isStatusModal, setIsStatusModal] = useState(false);
   const [toggleId, setToggleId] = useState(-1);
-
+  const [openQuoteView, setOpenQuoteView] = useState(false);
+  const [currentBiddedView, setCurrentBiddedView] = useState({});
   const [requiredProp, setRequiredProp] = useState([]);
   const [toggleWishlist, setToggleWishlist] = useState(0);
   const [searchResult, setSearchResult] = useState([]);
@@ -136,6 +137,11 @@ const Index = () => {
     setIsStatusModal(false);
   };
 
+  const closeQuoteViewModal = () => {
+    setOpenQuoteView(false);
+    setCurrentBiddedView({});
+  };
+
   const [openBrokerModal, setOpenBrokerModal] = useState(false);
   const [broker, setBroker] = useState({});
 
@@ -145,6 +151,26 @@ const Index = () => {
 
   const closeQuoteModal = () => {
     setIsQuoteModalOpen(false);
+  };
+
+  const formatDateTime = (dateString) => {
+    const options = {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      second: "numeric",
+    };
+
+    const originalDate = new Date(dateString);
+
+    // Adjust for Eastern Standard Time (EST) by subtracting 5 hours
+    const estDate = new Date(originalDate.getTime() - 5 * 60 * 60 * 1000);
+
+    // Format the EST date
+    const formattedDate = estDate.toLocaleString("en-US", options);
+    return formattedDate;
   };
 
   const openQuoteModal = () => {
@@ -743,6 +769,8 @@ const Index = () => {
                           setStartLoading={setStartLoading}
                           openModalBroker={openModalBroker}
                           setRequiredProp={setRequiredProp}
+                          setCurrentBiddedView={setCurrentBiddedView}
+                          setOpenQuoteView={setOpenQuoteView}
                         />
 
                         {modalIsOpenError && (
@@ -1469,6 +1497,91 @@ const Index = () => {
                         onClick={handleStatusUpdateHandler}
                       >
                         Submit
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {openQuoteView && (
+                <div className="modal">
+                  <div className="modal-content" style={{ width: "30%" }}>
+                    <div className="row">
+                      <div className="col-lg-12">
+                        <Link href="/" className="">
+                          <Image
+                            width={50}
+                            height={45}
+                            className="logo1 img-fluid"
+                            style={{ marginTop: "-20px" }}
+                            src="/assets/images/Appraisal_Land_Logo.png"
+                            alt="header-logo2.png"
+                          />
+                          <span
+                            style={{
+                              color: "#2e008b",
+                              fontWeight: "bold",
+                              fontSize: "24px",
+                              // marginTop: "20px",
+                            }}
+                          >
+                            Appraisal
+                          </span>
+                          <span
+                            style={{
+                              color: "#97d700",
+                              fontWeight: "bold",
+                              fontSize: "24px",
+                              // marginTop: "20px",
+                            }}
+                          >
+                            {" "}
+                            Land
+                          </span>
+                        </Link>
+                      </div>
+                    </div>
+                    <h3 className="text-center mt-2 text-color">
+                      Provided Quote – Property Id{" "}
+                      <span style={{ color: "#97d700" }}>
+                        #{currentBiddedView.orderId}
+                      </span>
+                    </h3>
+                    <div>
+                      <div
+                        className="mt-2 mb-3"
+                        style={{ border: "2px solid #97d700" }}
+                      ></div>
+                    </div>
+                    <p className="text-center fs-5 text-dark">
+                      The Last Provided Quote was{" "}
+                      <span
+                        style={{
+                          color: "#97d700",
+                          fontWeight: "bold",
+                          fontSize: "22px",
+                        }}
+                      >
+                        ${addCommasToNumber(currentBiddedView?.bidAmount)}
+                      </span>
+                    </p>
+                    <p className="text-center fs-6 text-dark">
+                      Updated At :{" "}
+                      {formatDateTime(currentBiddedView?.requestTime)}
+                    </p>
+
+                    <div className="text-center" style={{}}>
+                      <div>
+                        <div
+                          className="mt-2 mb-3"
+                          style={{ border: "2px solid #97d700" }}
+                        ></div>
+                      </div>
+                      <button
+                        className="btn btn-color w-25"
+                        onClick={closeQuoteViewModal}
+                      >
+                        Ok
                       </button>
                     </div>
                   </div>
