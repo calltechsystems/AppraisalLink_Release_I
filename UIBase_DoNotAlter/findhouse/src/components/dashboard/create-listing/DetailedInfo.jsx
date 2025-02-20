@@ -81,31 +81,31 @@ const DetailedInfo = ({
 
   const downloadAllAttachments = async () => {
     const zip = new JSZip();
-    const folder = zip.folder("Attachments"); 
-
+  
     for (const fileItem of attachment) {
       if (fileItem.uploadedUrl) {
         // Fetch file from uploaded URL (e.g., S3)
         const response = await fetch(fileItem.uploadedUrl);
         const blob = await response.blob();
         const fileName = fileItem.file?.name || "downloaded_file";
-        folder.file(fileName, blob); // Add to 'Attachments' folder in ZIP
+        zip.file(fileName, blob); // Add file directly to ZIP (no folder)
       } else if (fileItem.file) {
-        // Add local files directly
-        folder.file(fileItem.file.name, fileItem.file);
+        // Add local files directly to ZIP (no folder)
+        zip.file(fileItem.file.name, fileItem.file);
       }
     }
-
-    // Generate the zip file with attachments inside the 'Attachments' folder
+  
+    // Generate and download ZIP file directly (without a folder inside)
     zip.generateAsync({ type: "blob" }).then((content) => {
-      saveAs(content, "attachments.zip"); // Final zip file name
+      saveAs(content, "attachments.zip"); // Final ZIP file name
     });
   };
+  
 
   const handleUpload = async (e) => {
     const file = e.target.files[0];
     const maxTotalSize = 25 * 1024 * 1024;
-  
+
     const allowedFileTypes = [
       "application/zip",
       "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
@@ -123,28 +123,26 @@ const DetailedInfo = ({
       "audio/mpeg",
       "video/mp4",
     ];
-  
+
     // If not a ZIP file, check directly
-    if (file?.type !== "application/zip" && file?.type !== "application/x-zip-compressed") {
-      if (!allowedFileTypes.includes(file?.type)) {
-        toast.error(
-          `Invalid file type. Allowed types: .zip`
-        );
+    if (
+      file?.type !== "application/zip" &&
+      file?.type !== "application/x-zip-compressed"
+    ) {
+      toast.error(`Invalid file type. Allowed types: .zip`);
         return;
-      }
-  
-      const currentTotalSize = attachment.reduce(
-        (total, item) => total + item.file.size,
-        0
+    }
+
+    const currentTotalSize = attachment.reduce(
+      (total, item) => total + item.file.size,
+      0
+    );
+
+    if (currentTotalSize + file.size > maxTotalSize) {
+      toast.error(
+        "Total attachments size exceeds 25 MB. Please remove some files or upload smaller ones."
       );
-  
-      if (currentTotalSize + file.size > maxTotalSize) {
-        toast.error(
-          "Total attachments size exceeds 25 MB. Please remove some files or upload smaller ones."
-        );
-        return;
-      }
-  
+
       setAttachment([
         ...attachment,
         {
@@ -156,33 +154,33 @@ const DetailedInfo = ({
       ]);
       return;
     }
-  
+
     const zip = new JSZip();
     try {
       const zipContents = await zip.loadAsync(file);
       const invalidFiles = [];
-  
+
       // Loop through files in ZIP
       for (const fileName in zipContents.files) {
         const zipFile = zipContents.files[fileName];
-  
+
         // Skip folders
         if (zipFile.dir) continue;
-  
+
         // Get file extension
         const ext = fileName.split(".").pop().toLowerCase();
         const mimeType = getMimeType(ext);
-  
+
         if (!allowedFileTypes.includes(mimeType)) {
           invalidFiles.push(fileName);
         }
       }
-  
+
       if (invalidFiles.length > 0) {
         toast.error(`Invalid files in ZIP: ${invalidFiles.join(", ")}`);
         return;
       }
-  
+
       setAttachment([
         ...attachment,
         {
@@ -197,7 +195,7 @@ const DetailedInfo = ({
       console.error("ZIP Processing Error:", error);
     }
   };
-  
+
   // Utility function to get MIME type from file extension
   const getMimeType = (ext) => {
     const mimeTypes = {

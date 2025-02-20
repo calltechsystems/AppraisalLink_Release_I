@@ -289,11 +289,28 @@ const ProfileInfo = ({
 
   const handleUpload = async (e, type) => {
     const file = e.target.files[0];
+    
+    // Allowed image formats for profile images
+    const allowedImageTypes = ["image/jpeg", "image/png", "image/gif", "image/jpg"];
 
-    // Check file size if type is "LenderList"
-    if (type === "LenderList" && file.size > 10 * 1024 * 1024) {
-      toast.error("File size should be less than 10MB");
-      return;
+    if (type === "profileImage") {
+      if (!allowedImageTypes.includes(file.type)) {
+        toast.error("Only image files (JPG, JPEG, PNG, GIF) are allowed.");
+        return;
+      }
+    }
+
+    // Check file type for LenderList
+    if (type === "LenderList") {
+      if (file.type !== "application/pdf") {
+        toast.error("Only PDF files are allowed for Lender List.");
+        return;
+      }
+      
+      if (file.size > 10 * 1024 * 1024) {
+        toast.error("File size should be less than 10MB.");
+        return;
+      }
     }
 
     const updatedFiles = {
