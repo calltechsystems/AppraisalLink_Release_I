@@ -227,6 +227,7 @@ const Index = () => {
   const [assignPropertyId, setAssignPropertyId] = useState(-1);
 
   const assignAppraiserUpdateHandler = () => {
+    setAssignModal(false);
     const data = JSON.parse(localStorage.getItem("user"));
     const payload = {
       companyid: data.appraiserCompany_Datails.appraiserCompanyId,
@@ -259,7 +260,7 @@ const Index = () => {
         toast.success("Successfully assigned the property!");
         setTimeout(() => {
           location.reload(true); // Reload the page after a short delay
-        }, 2000); // Adjust the delay (in milliseconds) as needed
+        }, 1000); // Adjust the delay (in milliseconds) as needed
       })
       .catch((err) => {
         toast.dismiss();

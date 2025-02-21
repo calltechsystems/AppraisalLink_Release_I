@@ -183,14 +183,17 @@ const Modal = ({
   const openConfirmModal = () => {
     if (!value) {
       toast.error("Quoted amount should be filled !");
+      return; // Prevent further execution if value is empty
     }
+
     if (!alreadyBidded && !selectedImage) {
       toast.error("Please upload the lender list document !");
       return;
-    } else {
-      setToggle(true);
     }
+
+    setToggle(true);
   };
+
   return (
     <div>
       {modalOpen && (
@@ -329,6 +332,7 @@ const Modal = ({
                             className="form-control"
                             id="formGroupExampleInput3"
                             maxLength={30}
+                            required
                           />
                         </div>
                       </div>

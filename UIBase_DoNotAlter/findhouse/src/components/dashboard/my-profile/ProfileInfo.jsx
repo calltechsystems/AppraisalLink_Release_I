@@ -262,7 +262,7 @@ const ProfileInfo = ({
   const zipCodeInputRef = useRef(null);
 
   const handleInputChangeName = (value, setValue, setValid, setError) => {
-    if (value.length <= 30) {
+    if (value.length <= 100) {
       setValue(value);
 
       // Validate: Check if length is between 3 and 10
@@ -603,19 +603,21 @@ const ProfileInfo = ({
       });
       setIsLoading(false);
       return false;
-    } else if (
-      companyName.trim().length < 1 ||
-      companyName.trim().length > 30 
-    ) {
-      setCompanyNameError(true);
-      toast.error("Please enter a valid company name");
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth",
-      });
-      setIsLoading(false);
-      return false;
-    } else if (cellNumberRegex.test(phoneNumber) === false || !phoneNumber) {
+    } 
+    // else if (
+    //   companyName.trim().length < 1 ||
+    //   companyName.trim().length > 100 
+    // ) {
+    //   setCompanyNameError(true);
+    //   toast.error("Please enter a valid company name");
+    //   window.scrollTo({
+    //     top: 0,
+    //     behavior: "smooth",
+    //   });
+    //   setIsLoading(false);
+    //   return false;
+    // } 
+    else if (cellNumberRegex.test(phoneNumber) === false || !phoneNumber) {
       setPhoneNumberError(true);
       toast.error("Please enter a valid phone number");
       window.scrollTo({
@@ -832,11 +834,11 @@ const ProfileInfo = ({
       setFirstNameError,
       firstNameInputRef
     );
-    const isCompanyeNameValid = validateField(
-      companyNameRef,
-      setCompanyNameError,
-      companyNameInputRef
-    );
+    // const isCompanyeNameValid = validateField(
+    //   companyNameRef,
+    //   setCompanyNameError,
+    //   companyNameInputRef
+    // );
     const isLastNameValid = validateField(
       lastNameRef,
       setLastNameError,

@@ -31,6 +31,7 @@ const TableData = ({
   setModalOpen,
   setIsCancelProperty,
   setIsHoldProperty,
+  setHoldModalOpen,
 }) => {
   console.log(properties);
 
@@ -241,6 +242,7 @@ const TableData = ({
           setWishlist={setWishlist}
           searchInput={searchInput}
           setModalOpen={setModalOpen}
+          setHoldModalOpen={setHoldModalOpen}
           setIsCancelProperty={setIsCancelProperty}
           setIsHoldProperty={setIsHoldProperty}
         />

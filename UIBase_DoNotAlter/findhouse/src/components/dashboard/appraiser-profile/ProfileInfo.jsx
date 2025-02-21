@@ -225,7 +225,7 @@ const ProfileInfo = ({
   const [isLoading, setIsLoading] = useState(false);
 
   const handleInputChangeName = (value, setValue, setValid, setError) => {
-    if (value.length <= 30) {
+    if (value.length <= 100) {
       setValue(value);
 
       // Validate: Check if length is between 3 and 10
@@ -508,10 +508,10 @@ const ProfileInfo = ({
     // Validate fields individually
 
     const isFirstNameValid = validateField(firstNameRef, setFirstNameError);
-    const isCompanyeNameValid = validateField(
-      companyNameRef,
-      setCompanyNameError
-    );
+    // const isCompanyeNameValid = validateField(
+    //   companyNameRef,
+    //   setCompanyNameError
+    // );
     const isLastNameValid = validateField(lastNameRef, setLastNameError);
     // const isPhoneNumberValid = validateFieldNumber(
     //   phoneNumberRef,

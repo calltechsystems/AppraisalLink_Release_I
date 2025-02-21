@@ -178,6 +178,7 @@ export default function Exemple({
   setIsHoldProperty,
   setCurrentProperty,
   setPropertyId,
+  setIsLoading,
 }) {
   const [updatedData, setUpdatedData] = useState([]);
   const [allBids, setBids] = useState([]);
@@ -240,6 +241,7 @@ export default function Exemple({
   }
 
   const onUnarchiveHandler = (id) => {
+    setIsLoading(true);
     const data = JSON.parse(localStorage.getItem("user"));
 
     toast.loading("Un-archiving the property!!...");
@@ -258,12 +260,14 @@ export default function Exemple({
       })
       .then((res) => {
         toast.dismiss();
+        setIsLoading(false);
         toast.success("Successfully unarchived the property!");
         location.reload();
         // setRefresh(true);
       })
       .catch((err) => {
         toast.dismiss();
+        setIsLoading(false);
         toast.error("Try again!");
       });
   };
@@ -705,7 +709,10 @@ export default function Exemple({
               <button
                 // disabled={disable}
                 className="btn btn-color w-25"
-                onClick={() => onUnarchiveHandler(selectedProperty?.orderId)}
+                onClick={() => {
+                  onUnarchiveHandler(selectedProperty?.orderId);
+                  setArchiveModal(false);
+                }}
               >
                 Confirm
               </button>

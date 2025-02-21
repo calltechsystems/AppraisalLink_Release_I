@@ -137,6 +137,7 @@ export default function Exemple({
   setIsHoldProperty,
   openbrokerInfoModal,
   isBidded,
+  setHoldModalOpen,
 }) {
   const [updatedData, setUpdatedData] = useState([]);
   const [allBids, setBids] = useState([]);
@@ -506,57 +507,36 @@ export default function Exemple({
                     </Link>
                   </span>
                 </li>
-                {!isEditable && !isCancel && !isHold && (
+                {!isEditable && !isCancel && (
                   <li title="Quotes">
-                    {/* <Link href={`/my-property-bids/${property.propertyId}`}>
-                      <span className="btn btn-color w-100 mb-1"> Quotes </span>
-                    </Link>{" "} */}
-                    <Link
-                      className="btn btn-color-table"
-                      // style={{ marginLeft: "4.3rem" }}
-                      href={`/brokerage-properties-bid/${property.orderId}`}
-                    >
-                      <span className="flaticon-invoice">
-                        {/* <FaHandHoldingUsd /> */}
-                      </span>
-                    </Link>
+                    {isHold ? (
+                      <button
+                        className="btn btn-color-table"
+                        onClick={() => setHoldModalOpen(true)} // Assuming setModalOpen manages modal state
+                      >
+                        <span className="flaticon-invoice"></span>
+                      </button>
+                    ) : (
+                      <Link
+                        className="btn btn-color-table"
+                        href={`/brokerage-properties-bid/${property.orderId}`}
+                      >
+                        <span className="flaticon-invoice"></span>
+                      </Link>
+                    )}
                   </li>
+                  // <li title="Quotes">
+                  //   <Link
+                  //     className="btn btn-color-table"
+                  //     href={`/brokerage-properties-bid/${property.orderId}`}
+                  //   >
+                  //     <span className="flaticon-invoice"></span>
+                  //   </Link>
+                  // </li>
                 )}
-                {/* <li
-                className="list-inline-item"
-                data-toggle="tooltip"
-                data-placement="top"
-                title="Property Details"
-              >
-                <span
-                  className="btn btn-color-table"
-                  onClick={() => openPopupModal(property)}
-                >
-                  <Link href={"#"}>
-                    <span className="flaticon-view"></span>
-                  </Link>
-                </span>
-              </li>
-
-              <li
-                className="list-inline-item"
-                data-toggle="tooltip"
-                data-placement="top"
-                title="Bids"
-              >
-                <Link
-                  className="btn btn-color-table"
-                  href={`/my-property-bids/${property.propertyId}`}
-                >
-                  <span className="flaticon-invoice"></span>
-                </Link>
-              </li> */}
 
                 {(isEditable || isStatus === 1) && !isCancel && (
                   <li title="Edit Property">
-                    {/* <Link href={`/create-listing/${property.propertyId}`}>
-                      <span className="btn btn-color w-100 mb-1"> Edit </span>
-                    </Link>{" "} */}
                     <Link
                       className="btn btn-color-table"
                       href={`/create-listing-1/${property.orderId}`}
@@ -576,7 +556,9 @@ export default function Exemple({
                       onClick={() =>
                         openModal(property.orderId, 1, isHold ? 0 : property)
                       }
-                      title={isHold ? "Remove On Hold Property" : "On Hold Property"}
+                      title={
+                        isHold ? "Remove On Hold Property" : "On Hold Property"
+                      }
                     >
                       <Link href="#" className="text-light">
                         {isHold ? (

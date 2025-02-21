@@ -16,7 +16,7 @@ import LoadingSpinner from "../../common/LoadingSpinner";
 import NoDataFound from "../../common/NoDataFound";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
-import { getTheDownloadView } from "../../common/UserViewPDFDownload/page";
+import { getTheDownloadView } from "../../common/UserViewPDFDownload";
 
 function SmartTable(props) {
   const [loading, setLoading] = useState(false);

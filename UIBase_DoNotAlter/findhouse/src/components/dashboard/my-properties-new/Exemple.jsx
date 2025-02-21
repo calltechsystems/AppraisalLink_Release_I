@@ -125,6 +125,7 @@ export default function Exemple({
   setPropertyId,
   setPropValue,
   setModalOpen,
+  setHoldModalOpen,
   setIsCancelProperty,
   setIsHoldProperty,
   isBidded,
@@ -487,15 +488,33 @@ export default function Exemple({
                 </li>
                 {/* )} */}
 
-                {!isEditable && !isCancel && !isHold && (
+                {!isEditable && !isCancel && (
                   <li title="Quotes">
-                    <Link
-                      className="btn btn-color-table"
-                      href={`/my-property-bids/${property.orderId}`}
-                    >
-                      <span className="flaticon-invoice"></span>
-                    </Link>
+                    {isHold ? (
+                      <button
+                        className="btn btn-color-table"
+                        onClick={() => setHoldModalOpen(true)} // Assuming setModalOpen manages modal state
+                      >
+                        <span className="flaticon-invoice"></span>
+                      </button>
+                    ) : (
+                      <Link
+                        className="btn btn-color-table"
+                        href={`/my-property-bids/${property.orderId}`}
+                      >
+                        <span className="flaticon-invoice"></span>
+                      </Link>
+                    )}
                   </li>
+
+                  // <li title="Quotes">
+                  //   <Link
+                  //     className="btn btn-color-table"
+                  //     href={`/my-property-bids/${property.orderId}`}
+                  //   >
+                  //     <span className="flaticon-invoice"></span>
+                  //   </Link>
+                  // </li>
                 )}
 
                 {(isEditable || isStatus === 1) && !isCancel && (
@@ -716,9 +735,10 @@ export default function Exemple({
               <button
                 // disabled={disable}
                 className="btn btn-color w-25"
-                onClick={() =>
-                  archievePropertyHandler(selectedProperty?.orderId)
-                }
+                onClick={() => {
+                  archievePropertyHandler(selectedProperty?.orderId);
+                  setArchiveModal(false);
+                }}
               >
                 Confirm
               </button>

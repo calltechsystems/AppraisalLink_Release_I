@@ -222,7 +222,7 @@ const ProfileInfo = ({
     useState(false);
 
   const handleInputChangeName = (value, setValue, setValid, setError) => {
-    if (value.length <= 30) {
+    if (value.length <= 100) {
       setValue(value);
 
       // Validate: Check if length is between 3 and 10
@@ -416,19 +416,21 @@ const ProfileInfo = ({
       });
       setIsLoading(false);
       return false;
-    } else if (
-      brokerageName.trim().length < 1 ||
-      brokerageName.trim().length > 30
-    ) {
-      setBrokerageError(true);
-      toast.error("Please enter a valid brokerage name");
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth",
-      });
-      setIsLoading(false);
-      return false;
-    } else if (
+    }
+    // else if (
+    //   brokerageName.trim().length < 1 ||
+    //   brokerageName.trim().length > 30
+    // ) {
+    //   setBrokerageError(true);
+    //   toast.error("Please enter a valid brokerage name");
+    //   window.scrollTo({
+    //     top: 0,
+    //     behavior: "smooth",
+    //   });
+    //   setIsLoading(false);
+    //   return false;
+    // }
+    else if (
       streetNameRef.trim().length < 1 ||
       streetNameRef.trim().length > 30 ||
       !nameCityRegex.test(streetNameRef)
@@ -615,11 +617,7 @@ const ProfileInfo = ({
       setFirstNameError
       // firstNameInputRef
     );
-    const isBrokerageValid = validateField(
-      brokerageNameRef,
-      setBrokerageError
-      // companyNameInputRef
-    );
+    // const isBrokerageValid = validateField(brokerageNameRef, setBrokerageError);
     const isLastNameValid = validateField(
       lastNameRef,
       setLastNameError
