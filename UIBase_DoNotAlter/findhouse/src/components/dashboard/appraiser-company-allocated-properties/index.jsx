@@ -687,6 +687,7 @@ const Index = () => {
   const [selectedAppraiser, setSelectedAppraiser] = useState({});
 
   const assignAppraiserUpdateHandler = async () => {
+    setAssignModal(false);
     if (!selectedAppraiser) {
       toast.error("Please select an appropriate appraiser!");
       return;

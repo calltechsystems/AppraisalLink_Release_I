@@ -529,6 +529,16 @@ export default function Exemple({
                       </Link>
                     </span>
                   </li>
+                  {/* {!isEditable && !isCancel && (
+                    <li title="Quotes">
+                      <Link
+                        className="btn btn-color-table"
+                        href={`/my-property-bids/${property.orderId}`}
+                      >
+                        <span className="flaticon-invoice"></span>
+                      </Link>
+                    </li>
+                  )} */}
                   <li title="Un-Archive Property">
                     <span
                       className="btn btn-color-table"
@@ -694,7 +704,10 @@ export default function Exemple({
               <button
                 // disabled={disable}
                 className="btn btn-color w-25"
-                onClick={() => onUnarchiveHandler(selectedProperty?.orderId)}
+                onClick={() => {
+                  onUnarchiveHandler(selectedProperty?.orderId);
+                  setArchiveModal(false);
+                }}
               >
                 Confirm
               </button>

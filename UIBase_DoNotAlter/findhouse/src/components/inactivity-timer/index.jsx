@@ -140,9 +140,9 @@ const InactivityTimer = ({
             },
           }}
         >
-          <h3>Please do some activity</h3>
+          <h2 className="text-color">Session Expiring Soon</h2>
           <p className="fs-5">
-            You will be logged out in {logoutCountdown} seconds due to
+            Your session will expire in {logoutCountdown} seconds due to
             inactivity.
           </p>
           {/* <button onClick={stayLoggedIn}>Stay Logged In</button> */}

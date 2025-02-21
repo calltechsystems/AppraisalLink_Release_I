@@ -32,6 +32,7 @@ const TableData = ({
   setModalOpen,
   setIsCancelProperty,
   setIsHoldProperty,
+  setHoldModalOpen
 }) => {
   console.log(properties);
 
@@ -245,6 +246,7 @@ const TableData = ({
           setModalOpen={setModalOpen}
           setIsCancelProperty={setIsCancelProperty}
           setIsHoldProperty={setIsHoldProperty}
+          setHoldModalOpen={setHoldModalOpen}
         />
       )}
     </>

@@ -243,7 +243,7 @@ const ProfileInfo = ({
   }, [TimesTrigerredSubmission, isSubmitInProgress]);
 
   const handleInputChangeName = (value, setValue, setValid, setError) => {
-    if (value.length <= 30) {
+    if (value.length <= 100) {
       setValue(value);
 
       // Validate: Check if length is between 3 and 10
@@ -505,19 +505,21 @@ const ProfileInfo = ({
         behavior: "smooth",
       });
       return false;
-    } else if (
-      companyName.trim().length < 1 ||
-      companyName.trim().length > 30
-    ) {
-      setCompanyNameError(true);
-      toast.error("Please enter a valid appraiser company name");
-      resetTriggeredValues()
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth",
-      });
-      return false;
-    } else if (cellNumberRegex.test(phoneNumber) === false || !phoneNumber) {
+    } 
+    // else if (
+    //   companyName.trim().length < 1 ||
+    //   companyName.trim().length > 30
+    // ) {
+    //   setCompanyNameError(true);
+    //   toast.error("Please enter a valid appraiser company name");
+    //   resetTriggeredValues()
+    //   window.scrollTo({
+    //     top: 0,
+    //     behavior: "smooth",
+    //   });
+    //   return false;
+    // } 
+    else if (cellNumberRegex.test(phoneNumber) === false || !phoneNumber) {
       setPhoneNumberError(true);
       toast.error("Please enter a valid phone number");
       resetTriggeredValues()
@@ -669,10 +671,10 @@ const ProfileInfo = ({
     // Validate fields individually
 
     const isFirstNameValid = validateField(firstNameRef, setFirstNameError);
-    const isCompanyeNameValid = validateField(
-      companyNameRef,
-      setCompanyNameError
-    );
+    // const isCompanyeNameValid = validateField(
+    //   companyNameRef,
+    //   setCompanyNameError
+    // );
     const isLastNameValid = validateField(lastNameRef, setLastNameError);
     // const isPhoneNumberValid = validateFieldNumber(
     //   phoneNumberRef,

@@ -152,6 +152,7 @@ export default function Exemple({
   setIsCancelProperty,
   setIsHoldProperty,
   isBidded,
+  setHoldModalOpen,
 }) {
   const [updatedData, setUpdatedData] = useState([]);
   const [allBids, setBids] = useState([]);
@@ -664,21 +665,32 @@ export default function Exemple({
                 </li>
                 {/* )} */}
 
-                {!isEditable && !isCancel && !isHold && (
+                {!isEditable && !isCancel && (
                   <li title="Quotes">
-                    {/* <Link href={`/my-property-bids/${property.propertyId}`}>
-                      <span className="btn btn-color w-100 mb-1"> Quotes </span>
-                    </Link>{" "} */}
-                    <Link
-                      className="btn btn-color-table"
-                      // style={{ marginLeft: "4.3rem" }}
-                      href={`/brokerage-properties-bid/${property.orderId}`}
-                    >
-                      <span className="flaticon-invoice">
-                        {/* <FaHandHoldingUsd /> */}
-                      </span>
-                    </Link>
+                    {isHold ? (
+                      <button
+                        className="btn btn-color-table"
+                        onClick={() => setHoldModalOpen(true)} // Assuming setModalOpen manages modal state
+                      >
+                        <span className="flaticon-invoice"></span>
+                      </button>
+                    ) : (
+                      <Link
+                        className="btn btn-color-table"
+                        href={`/brokerage-properties-bid/${property.orderId}`}
+                      >
+                        <span className="flaticon-invoice"></span>
+                      </Link>
+                    )}
                   </li>
+                  // <li title="Quotes">
+                  //   <Link
+                  //     className="btn btn-color-table"
+                  //     href={`/brokerage-properties-bid/${property.orderId}`}
+                  //   >
+                  //     <span className="flaticon-invoice"></span>
+                  //   </Link>
+                  // </li>
                 )}
 
                 {(isEditable || isStatus === 1) && !isCancel && (
@@ -956,9 +968,10 @@ export default function Exemple({
               <button
                 // disabled={disable}
                 className="btn btn-color w-25"
-                onClick={() =>
-                  archievePropertyHandler(selectedProperty?.orderId)
-                }
+                onClick={() => {
+                  archievePropertyHandler(selectedProperty?.orderId);
+                  setArchiveModal(false);
+                }}
               >
                 Confirm
               </button>

@@ -29,6 +29,7 @@ const TableData = ({
   setModalIsOpenError,
   setErrorMessage,
   setModalOpen,
+  setHoldModalOpen,
   setIsCancelProperty,
   setIsHoldProperty,
 }) => {
@@ -241,6 +242,7 @@ const TableData = ({
           setFilterQuery={setFilterQuery}
           setSearchInput={setSearchInput}
           setModalOpen={setModalOpen}
+          setHoldModalOpen={setHoldModalOpen}
           setIsCancelProperty={setIsCancelProperty}
           setIsHoldProperty={setIsHoldProperty}
         />

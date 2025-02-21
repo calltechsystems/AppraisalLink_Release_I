@@ -29,6 +29,7 @@ const TableData = ({
   setCurrentProperty,
   onHoldHandler,
   onCancelHandler,
+  setIsLoading
 }) => {
   console.log(properties);
 
@@ -241,6 +242,7 @@ const TableData = ({
           setIsCancelProperty={setIsCancelProperty}
           setIsHoldProperty={setIsHoldProperty}
           setCurrentProperty={setCurrentProperty}
+          setIsLoading={setIsLoading}
         />
       )}
     </>

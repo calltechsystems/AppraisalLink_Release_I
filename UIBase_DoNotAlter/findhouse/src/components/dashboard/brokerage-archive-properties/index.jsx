@@ -18,6 +18,7 @@ import Image from "next/image";
 import millify from "millify";
 import { FaDownload } from "react-icons/fa";
 import { useModal } from "../../../context/ModalContext";
+import CommonLoader from "../../common/CommonLoader/page";
 
 const Index = () => {
   const { isModalOpen, setIsModalOpen } = useModal();
@@ -40,6 +41,8 @@ const Index = () => {
   const [propertyId, setPropertyId] = useState(null);
   const [isCancelProperty, setIsCancelProperty] = useState(0);
   const [isHoldProperty, setIsHoldProperty] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+
   const [lastActivityTimestamp, setLastActivityTimestamp] = useState(
     Date.now()
   );
@@ -324,6 +327,8 @@ const Index = () => {
       {/* <!-- Main Header Nav --> */}
       <Header userData={userData} />
 
+      {isLoading && <CommonLoader />}
+
       {/* <!--  Mobile Menu --> */}
       <MobileMenu />
 
@@ -426,6 +431,7 @@ const Index = () => {
                           setIsCancelProperty={setIsCancelProperty}
                           setIsHoldProperty={setIsHoldProperty}
                           setModalOpen={setModalOpen}
+                          setIsLoading={setIsLoading}
                         />
 
                         {modalIsPopupOpen && (

@@ -1323,9 +1323,10 @@ export default function Exemple({
               <button
                 // disabled={disable}
                 className="btn btn-color w-25"
-                onClick={() =>
-                  onArchivePropertyHandler(selectedProperty?.orderId)
-                }
+                onClick={() => {
+                  onArchivePropertyHandler(selectedProperty?.orderId);
+                  setArchiveModal(false);
+                }}
               >
                 Confirm
               </button>
@@ -1398,7 +1399,10 @@ export default function Exemple({
               <button
                 // disabled={disable}
                 className="btn btn-color w-25"
-                onClick={() => onWishlistHandler(selectedProperty.propertyId)}
+                onClick={() => {
+                  onWishlistHandler(selectedProperty.propertyId);
+                  setWishlistModal(false);
+                }}
               >
                 Confirm
               </button>
