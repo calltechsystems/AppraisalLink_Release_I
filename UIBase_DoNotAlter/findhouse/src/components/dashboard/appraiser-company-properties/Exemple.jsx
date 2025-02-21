@@ -1226,10 +1226,9 @@ export default function Exemple({
 
   useEffect(() => {
     fetchData();
-
     intervalRef.current = setInterval(() => {
       fetchData();
-    }, 600000);
+    }, 180000);
 
     return () => clearInterval(intervalRef.current);
   }, [refresh]);
