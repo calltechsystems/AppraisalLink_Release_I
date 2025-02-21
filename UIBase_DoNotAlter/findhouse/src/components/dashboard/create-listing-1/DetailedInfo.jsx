@@ -79,7 +79,6 @@ const DetailedInfo = ({
 
   const downloadAllAttachments = async () => {
     const zip = new JSZip();
-    const folder = zip.folder("Attachments"); // Create a folder named 'Attachments'
 
     for (const fileItem of attachment) {
       if (fileItem.uploadedUrl) {
@@ -87,29 +86,56 @@ const DetailedInfo = ({
         const response = await fetch(fileItem.uploadedUrl);
         const blob = await response.blob();
         const fileName = fileItem.file?.name || "downloaded_file";
-        folder.file(fileName, blob); // Add to 'Attachments' folder in ZIP
+        zip.file(fileName, blob); // Add file directly to ZIP (no folder)
       } else if (fileItem.file) {
         // Add local files directly
-        folder.file(fileItem.file.name, fileItem.file);
+        zip.file(fileItem.file.name, fileItem.file);
       }
     }
 
-    // Generate the zip file with attachments inside the 'Attachments' folder
+    // Generate the ZIP file and trigger download
     zip.generateAsync({ type: "blob" }).then((content) => {
-      saveAs(content, "attachments.zip"); // Final zip file name
+      saveAs(content, "attachments.zip"); // Download ZIP directly
     });
   };
 
   const handleUpload = async (e) => {
     const file = e.target.files[0];
-    const maxTotalSize = 25 * 1024 * 1024; // 25 MB in bytes
+    const maxTotalSize = 25 * 1024 * 1024;
 
-    // Calculate current total size of attachments
+    const allowedFileTypes = [
+      "application/zip",
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      "application/msword",
+      "application/pdf",
+      "application/vnd.ms-excel",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      "application/vnd.ms-powerpoint",
+      "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+      "image/jpeg",
+      "image/png",
+      "image/gif",
+      "text/plain",
+      "text/csv",
+      "audio/mpeg",
+      "video/mp4",
+    ];
+
+    // If not a ZIP file, check directly
+
+    if (
+      file?.type !== "application/zip" &&
+      file?.type !== "application/x-zip-compressed"
+    ) {
+      toast.error(`Invalid file type. Allowed types: .zip`);
+      return;
+    }
+
     const currentTotalSize = attachment.reduce(
       (total, item) => total + item.file.size,
       0
     );
-    // Check if adding the new file exceeds the limit
+
     if (currentTotalSize + file.size > maxTotalSize) {
       toast.error(
         "Total attachments size exceeds 25 MB. Please remove some files or upload smaller ones."
@@ -117,17 +143,45 @@ const DetailedInfo = ({
       return;
     }
 
-    const updatedAttachment = [
-      ...attachment,
-      {
-        file,
-        type: file.type,
-        previewUrl: getPreviewUrl(file),
-        uploadedUrl: "",
-      },
-    ];
+    const zip = new JSZip();
+    try {
+      const zipContents = await zip.loadAsync(file);
+      const invalidFiles = [];
 
-    setAttachment(updatedAttachment);
+      // Loop through files in ZIP
+      for (const fileName in zipContents.files) {
+        const zipFile = zipContents.files[fileName];
+
+        // Skip folders
+        if (zipFile.dir) continue;
+
+        // Get file extension
+        const ext = fileName.split(".").pop().toLowerCase();
+        const mimeType = getMimeType(ext);
+
+        if (!allowedFileTypes.includes(mimeType)) {
+          invalidFiles.push(fileName);
+        }
+      }
+
+      if (invalidFiles.length > 0) {
+        toast.error(`Invalid files in ZIP: ${invalidFiles.join(", ")}`);
+        return;
+      }
+
+      setAttachment([
+        ...attachment,
+        {
+          file,
+          type: file.type,
+          previewUrl: getPreviewUrl(file),
+          uploadedUrl: "",
+        },
+      ]);
+    } catch (error) {
+      toast.error("Error processing ZIP file.");
+      console.error("ZIP Processing Error:", error);
+    }
   };
 
   // Handle delete file

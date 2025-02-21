@@ -56,7 +56,6 @@ const OurMission = () => {
           </ul>
         </div>
       </div>
-      
       <div className="col-lg-4 col-xl-5">
         <div className="about_thumb">
           <Image

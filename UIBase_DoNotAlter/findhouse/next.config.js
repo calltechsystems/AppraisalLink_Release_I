@@ -13,6 +13,7 @@ const nextConfig = {
     AWS_API_SECRET: "NWHcFajWoHjSP9VaHVvUO0x6MuUeQYytomfTmpQ7",
     AWS_BUCKET: "appraisalfile",
     AWS_REGION: "us-east-1",
+    AUTO_RELOADING_DELAY:180000,
     BACKEND_DOMAIN:
       "http://appraisalland-prod.us-east-1.elasticbeanstalk.com/api",
     BACKEND_DOMAIN2:

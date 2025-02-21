@@ -290,10 +290,23 @@ const ProfileInfo = ({
   const handleUpload = async (e, type) => {
     const file = e.target.files[0];
 
-    // Check file size if type is "LenderList"
-    if (type === "LenderList" && file.size > 10 * 1024 * 1024) {
-      toast.error("File size should be less than 10MB");
-      return;
+    // Check file type and size
+    if (type === "LenderList") {
+      if (file.type !== "application/pdf") {
+        toast.error("Only PDF files are allowed for Lender List.");
+        return;
+      }
+      if (file.size > 10 * 1024 * 1024) {
+        toast.error("File size should be less than 10MB.");
+        return;
+      }
+    }
+
+    if (type === "profileImage") {
+      if (!file.type.startsWith("image/")) {
+        toast.error("Only image files are allowed for Profile Image.");
+        return;
+      }
     }
 
     const updatedFiles = {
@@ -321,7 +334,6 @@ const ProfileInfo = ({
 
       // Create an array of promises only for files that need uploading
       const uploadPromises = Object.values(uploadingFiles).map(async (file) => {
-
         if (file.uploadedUrl === "" && file.file instanceof File) {
           const generatedURL = await uploadFile(file.file);
           return {
@@ -354,7 +366,7 @@ const ProfileInfo = ({
         setTimesTrigerredSubmission(0);
         setIsLoading(false);
         toast.error("Got error while saving, trying again.");
-        console.error({"profileError": err});
+        console.error({ profileError: err });
       } else {
         setTimesTrigerredSubmission(TimesTrigerredSubmission + 1);
       }
@@ -367,7 +379,7 @@ const ProfileInfo = ({
     setTimesTrigerredSubmission(0);
     setdisable(false);
     setIsLoading(false);
-  }
+  };
 
   const onUpdatHandler = (updatedList) => {
     const firstName =
@@ -454,7 +466,7 @@ const ProfileInfo = ({
     if (missingFields.length === 1) {
       // Show specific error for a single missing field
       toast.error(missingFields[0].message);
-      resetTriggeredValues()
+      resetTriggeredValues();
       window.scrollTo({
         top: 0,
         behavior: "smooth",
@@ -463,7 +475,7 @@ const ProfileInfo = ({
     } else if (missingFields.length > 1) {
       // Show generic error for multiple missing fields
       toast.error("Please fill all required fields!");
-      resetTriggeredValues()
+      resetTriggeredValues();
       window.scrollTo({
         top: 0,
         behavior: "smooth",
@@ -486,7 +498,7 @@ const ProfileInfo = ({
     ) {
       setFirstNameError(true);
       toast.error("Please enter a valid first name");
-      resetTriggeredValues()
+      resetTriggeredValues();
       window.scrollTo({
         top: 0,
         behavior: "smooth",
@@ -499,13 +511,13 @@ const ProfileInfo = ({
     ) {
       setLastNameError(true);
       toast.error("Please enter a valid last name");
-      resetTriggeredValues()
+      resetTriggeredValues();
       window.scrollTo({
         top: 0,
         behavior: "smooth",
       });
       return false;
-    } 
+    }
     // else if (
     //   companyName.trim().length < 1 ||
     //   companyName.trim().length > 30
@@ -518,11 +530,11 @@ const ProfileInfo = ({
     //     behavior: "smooth",
     //   });
     //   return false;
-    // } 
+    // }
     else if (cellNumberRegex.test(phoneNumber) === false || !phoneNumber) {
       setPhoneNumberError(true);
       toast.error("Please enter a valid phone number");
-      resetTriggeredValues()
+      resetTriggeredValues();
       window.scrollTo({
         top: 0,
         behavior: "smooth",
@@ -533,11 +545,11 @@ const ProfileInfo = ({
       cellNumber.trim() !== ""
     ) {
       toast.error("Please enter a valid cell number");
-      resetTriggeredValues()
+      resetTriggeredValues();
     } else if (emailRegex.test(emailIdRef) === false) {
       setEmailError(true);
       toast.error("Please enter a valid email address");
-      resetTriggeredValues()
+      resetTriggeredValues();
       window.scrollTo({
         top: 0,
         behavior: "smooth",
@@ -550,7 +562,7 @@ const ProfileInfo = ({
     ) {
       setStreetNameError(true); // Set error state to true
       toast.error("Please enter a valid street name");
-      resetTriggeredValues()
+      resetTriggeredValues();
       window.scrollTo({
         top: 0,
         behavior: "smooth",
@@ -563,7 +575,7 @@ const ProfileInfo = ({
     ) {
       setCityError(true); // Set error state to true
       toast.error("Please enter a valid city name");
-      resetTriggeredValues()
+      resetTriggeredValues();
       window.scrollTo({
         top: 0,
         behavior: "smooth",
@@ -572,7 +584,7 @@ const ProfileInfo = ({
     } else if (alphanumericWithSpacesRegex.test(zipCode) === false) {
       setZipCodeError(true);
       toast.error("Please enter a valid postal code");
-      resetTriggeredValues()
+      resetTriggeredValues();
       window.scrollTo({
         top: 0,
         behavior: "smooth",
@@ -586,7 +598,7 @@ const ProfileInfo = ({
     ) {
       setOfficeContactFirstNameError(true);
       toast.error("Please enter a valid office first name");
-      resetTriggeredValues()
+      resetTriggeredValues();
     } else if (
       // Assistant Last Name
       officeContactLastName.trim() !== "" &&
@@ -596,21 +608,21 @@ const ProfileInfo = ({
     ) {
       setOfficeContactLastNameError(true);
       toast.error("Please enter a valid office last name");
-      resetTriggeredValues()
+      resetTriggeredValues();
     } else if (
       emailRegex.test(officeContactEmail) === false &&
       officeContactEmail.trim() !== ""
     ) {
       setOfficeContactEmailError(true);
       toast.error("Please enter a valid office email address");
-      resetTriggeredValues()
+      resetTriggeredValues();
     } else if (
       cellNumberRegex.test(officeContactPhone) === false &&
       officeContactPhone.trim() !== ""
     ) {
       setOfficeContactPhoneError(true);
       toast.error("Please enter a valid office phone number");
-      resetTriggeredValues()
+      resetTriggeredValues();
     } else if (
       (!firstNameRef ||
         !lastNameRef ||
@@ -626,7 +638,7 @@ const ProfileInfo = ({
       !userData
     ) {
       toast.error("All marked field's are not filled !!");
-      resetTriggeredValues()
+      resetTriggeredValues();
     } else {
       let count = 9;
 
@@ -634,7 +646,7 @@ const ProfileInfo = ({
         toast.error(
           "As SMS Alert is selected but phone number is not provided so SMS Alert will not work properly!"
         );
-        resetTriggeredValues()
+        resetTriggeredValues();
       } else {
         toast.loading("Updating Profile");
         setIsLoading(true);
@@ -643,7 +655,7 @@ const ProfileInfo = ({
           .put("/api/updateAppraiserCompanyProfile", payload)
           .then((res) => {
             toast.success("Successfully Updated !");
-            console.log("user is",res.data.userData);
+            console.log("user is", res.data.userData);
             let data = userData;
             data.smsNotification = res.data.userData.isSms;
             data.emailNotification = res.data.userData.isEmail;

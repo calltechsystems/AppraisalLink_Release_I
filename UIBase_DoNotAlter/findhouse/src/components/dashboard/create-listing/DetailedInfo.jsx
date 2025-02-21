@@ -81,7 +81,6 @@ const DetailedInfo = ({
 
   const downloadAllAttachments = async () => {
     const zip = new JSZip();
-    const folder = zip.folder("Attachments");
 
     for (const fileItem of attachment) {
       if (fileItem.uploadedUrl) {
@@ -89,16 +88,16 @@ const DetailedInfo = ({
         const response = await fetch(fileItem.uploadedUrl);
         const blob = await response.blob();
         const fileName = fileItem.file?.name || "downloaded_file";
-        folder.file(fileName, blob); // Add to 'Attachments' folder in ZIP
+        zip.file(fileName, blob); // Add file directly to ZIP (no folder)
       } else if (fileItem.file) {
         // Add local files directly
-        folder.file(fileItem.file.name, fileItem.file);
+        zip.file(fileItem.file.name, fileItem.file);
       }
     }
 
-    // Generate the zip file with attachments inside the 'Attachments' folder
+    // Generate the ZIP file and trigger download
     zip.generateAsync({ type: "blob" }).then((content) => {
-      saveAs(content, "attachments.zip"); // Final zip file name
+      saveAs(content, "attachments.zip"); // Download ZIP directly
     });
   };
 
@@ -126,33 +125,23 @@ const DetailedInfo = ({
 
     // If not a ZIP file, check directly
 
-    if (file?.type !== "application/zip" && file?.type !== "application/x-zip-compressed") {
-      if (!allowedFileTypes.includes(file?.type)) {
-        toast.error(`Invalid file type. Allowed types: .zip`);
-        return;
-      }
+    if (
+      file?.type !== "application/zip" &&
+      file?.type !== "application/x-zip-compressed"
+    ) {
+      toast.error(`Invalid file type. Allowed types: .zip`);
+      return;
+    }
 
-      const currentTotalSize = attachment.reduce(
-        (total, item) => total + item.file.size,
-        0
+    const currentTotalSize = attachment.reduce(
+      (total, item) => total + item.file.size,
+      0
+    );
+
+    if (currentTotalSize + file.size > maxTotalSize) {
+      toast.error(
+        "Total attachments size exceeds 25 MB. Please remove some files or upload smaller ones."
       );
-
-      if (currentTotalSize + file.size > maxTotalSize) {
-        toast.error(
-          "Total attachments size exceeds 25 MB. Please remove some files or upload smaller ones."
-        );
-        return;
-      }
-
-      setAttachment([
-        ...attachment,
-        {
-          file,
-          type: file.type,
-          previewUrl: getPreviewUrl(file),
-          uploadedUrl: "",
-        },
-      ]);
       return;
     }
 
