@@ -138,6 +138,9 @@ const Index = ({ isView, propertyData }) => {
   const [isSubmitInProgress, setIsSubmitInProgress] = useState(false);
 
   const [isLoading, setisLoading] = useState(false);
+
+  const isEditMode = /\/create-listing-1\/\w+/.test(location.pathname);
+
   // Handle input changes to mark form as dirty
   const handleInputChangeNew = (e, setter) => {
     setter(e.target.value);
@@ -147,7 +150,7 @@ const Index = ({ isView, propertyData }) => {
   // Intercept route changes
   useEffect(() => {
     const handleRouteChange = (url) => {
-      if (isFormDirty) {
+      if (!isEditMode && isFormDirty) {
         setShowModal(true);
         router.events.emit("routeChangeError");
         throw "Navigation blocked";
@@ -158,7 +161,7 @@ const Index = ({ isView, propertyData }) => {
     return () => {
       router.events.off("routeChangeStart", handleRouteChange);
     };
-  }, [isFormDirty, router]);
+  }, [isFormDirty, isEditMode, router]);
 
   // Warn user before refreshing/closing the tab
   useEffect(() => {
@@ -1874,7 +1877,7 @@ const Index = ({ isView, propertyData }) => {
               )}
 
               {/* Modal for Unsaved Changes Warning */}
-              {showModal && (
+              {showModal && !isEditMode && (
                 <div className="modal">
                   <div className="modal-content" style={{ width: "25%" }}>
                     <div className="row">

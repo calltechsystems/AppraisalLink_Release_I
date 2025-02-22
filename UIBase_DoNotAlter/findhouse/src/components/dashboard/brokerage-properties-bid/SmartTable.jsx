@@ -14,10 +14,8 @@ import NoDataFound from "../../common/NoDataFound";
 function SmartTable(props) {
   const [loading, setLoading] = useState(false);
   const [sortDesc, setSortDesc] = useState({});
-
   const [tableWidth, setTableWidth] = useState(1000);
   const [data, setData] = useState(props.data);
-
   const [search, setSearch] = useState("");
   const [rowsPerPage, setRowsPerPage] = useState(props.rowsPerPage ?? 10);
   const [rowsPerPageOptions] = useState(

@@ -81,11 +81,12 @@ const Index = ({ propertyId }) => {
       })
       .then((res) => {
         toast.dismiss();
-        toast.success("Successfully accepted the Quote");
         setIsLoading(false);
+        toast.success("Successfully accepted the Quote");
         router.push("/my-properties");
       })
       .catch((err) => {
+        setIsLoading(false);
         const status = err.response.request.status;
         if (String(status) === String(403)) {
           toast.dismiss();
@@ -94,7 +95,6 @@ const Index = ({ propertyId }) => {
           toast.dismiss();
           toast.error(err.message);
         }
-        setIsLoading(false);
         // toast.dismiss();
         // console.log(err);
         // toast.error(err?.response?.data?.error);

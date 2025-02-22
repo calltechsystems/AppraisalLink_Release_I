@@ -207,18 +207,18 @@ export default function Exemple({
     axios
       .put("/api/reAssignAppraiser", encryptedBpdy)
       .then((res) => {
-        // console.log(res);
-        // toast.dismiss();
-        toast.success("Successfully Re assigned Appraiser");
+        console.log(res);
+        toast.dismiss();
         setIsLoading(false);
+        toast.success("Successfully Re assigned Appraiser");
         setTimeout(() => {
           window.location.reload(); // Reload after the success message is shown
         }, 1000); // Add a slight delay to allow the success message to show
       })
       .catch((err) => {
         toast.dismiss();
-        toast.error("Try Again!!");
         setIsLoading(false);
+        toast.error("Try Again!!");
       });
   };
 

@@ -17,6 +17,7 @@ import Exemple from "./Exemple";
 import { encryptionData } from "../../../utils/dataEncryption";
 import { FaDownload } from "react-icons/fa";
 import { useModal } from "../../../context/ModalContext";
+import CommonLoader from "../../common/CommonLoader/page";
 
 const Index = ({ propertyId }) => {
   const [disable, setDisable] = useState(false);
@@ -41,6 +42,7 @@ const Index = ({ propertyId }) => {
   const [modalIsOpenError, setModalIsOpenError] = useState(false);
   const [modalIsBidError, setModalIsBidError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const router = useRouter();
 
@@ -65,6 +67,7 @@ const Index = ({ propertyId }) => {
 
   const acceptRequestHandler = () => {
     setDisable(true);
+    setIsLoading(true);
     setIsModalOpenBid(false);
     const data = JSON.parse(localStorage.getItem("user"));
     toast.loading("Accepting the Quote ...");
@@ -85,11 +88,12 @@ const Index = ({ propertyId }) => {
       })
       .then((res) => {
         toast.dismiss();
-
+        setIsLoading(false);
         toast.success("Successfully accepted the Quote");
         router.push("/brokerage-properties");
       })
       .catch((err) => {
+        setIsLoading(false);
         const status = err.response.request.status;
         if (String(status) === String(403)) {
           toast.dismiss();
@@ -313,6 +317,8 @@ const Index = ({ propertyId }) => {
       {/* <!-- Main Header Nav --> */}
       <Header userData={userData} />
 
+      {isLoading && <CommonLoader />}
+
       {/* <!--  Mobile Menu --> */}
       <MobileMenu />
 
@@ -390,6 +396,7 @@ const Index = ({ propertyId }) => {
                           setAppInfo={setAppInfo}
                           refresh={refresh}
                           setRefresh={setRefresh}
+                          setIsLoading={setIsLoading}
                         />
 
                         {modalIsOpenError && (
