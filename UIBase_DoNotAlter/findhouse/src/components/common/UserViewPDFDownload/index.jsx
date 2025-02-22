@@ -104,7 +104,8 @@ export const getTheDownloadView = (userFieldType, allData, pdfTitle) => {
 }
 
 .logo {
-  height: 50px; /* Adjust size accordingly */
+  height: 70px; /* Adjust size accordingly */
+  width:80px;
 }
 
 .table-container {

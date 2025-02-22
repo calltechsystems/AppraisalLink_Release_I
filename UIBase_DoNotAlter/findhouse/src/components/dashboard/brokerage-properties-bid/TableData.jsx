@@ -24,7 +24,8 @@ const TableData = ({
   setAllAppraiser,
   refresh,
   setRefresh,
-  setProperty
+  setProperty,
+  setIsLoading,
 }) => {
   console.log(properties);
 
@@ -228,7 +229,7 @@ const TableData = ({
           setId={setid}
           refresh={refresh}
           start={start}
-         
+          setIsLoading={setIsLoading}
           end={end}
           setRefresh={setRefresh}
         />

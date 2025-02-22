@@ -976,10 +976,10 @@ const Index = () => {
                               <div className="row">
                                 <div className="col-lg-12 text-center">
                                   <h2 className=" text-color mt-1">
-                                    Mortgage Broker Details – Property Id{"  "}
-                                    <span style={{ color: "#97d700" }}>
+                                    Mortgage Broker Details
+                                    {/* <span style={{ color: "#97d700" }}>
                                       #{broker?.orderId}
-                                    </span>
+                                    </span> */}
                                   </h2>
                                 </div>
                               </div>
@@ -1346,78 +1346,78 @@ const Index = () => {
                         </div>
                       )}
 
-{holdModalOpen && (
-                          <div className="modal">
-                            <div
-                              className="modal-content"
-                              style={{ width: "25%" }}
-                            >
-                              <div className="row">
-                                <div className="col-lg-12">
-                                  <Link href="/" className="">
-                                    <Image
-                                      width={50}
-                                      height={45}
-                                      className="logo1 img-fluid"
-                                      style={{ marginTop: "-20px" }}
-                                      src="/assets/images/logo.png"
-                                      alt="header-logo2.png"
-                                    />
-                                    <span
-                                      style={{
-                                        color: "#2e008b",
-                                        fontWeight: "bold",
-                                        fontSize: "24px",
-                                        // marginTop: "20px",
-                                      }}
-                                    >
-                                      Appraisal
-                                    </span>
-                                    <span
-                                      style={{
-                                        color: "#97d700",
-                                        fontWeight: "bold",
-                                        fontSize: "24px",
-                                        // marginTop: "20px",
-                                      }}
-                                    >
-                                      {" "}
-                                      Land
-                                    </span>
-                                  </Link>
-                                </div>
-                              </div>
-                              <h3
-                                className="text-center mt-3"
-                                style={{ color: "#2e008b" }}
-                              >
-                                Information{" "}
-                                <span style={{ color: "#97d700" }}></span>
-                              </h3>
-                              <div
-                                className="mb-2"
-                                style={{ border: "2px solid #97d700" }}
-                              ></div>
-                              <p className="fs-5 text-center text-dark mt-4">
-                                The quotes are accessible for the active
-                                properties only.
-                              </p>
-                              <div
-                                className="mb-3 mt-4"
-                                style={{ border: "2px solid #97d700" }}
-                              ></div>
-                              <div className="col-lg-12 d-flex justify-content-center gap-2">
-                                <button
-                                  // disabled={disable}
-                                  className="btn btn-color w-25"
-                                  onClick={() => setHoldModalOpen(false)}
-                                >
-                                  Ok
-                                </button>
+                      {holdModalOpen && (
+                        <div className="modal">
+                          <div
+                            className="modal-content"
+                            style={{ width: "25%" }}
+                          >
+                            <div className="row">
+                              <div className="col-lg-12">
+                                <Link href="/" className="">
+                                  <Image
+                                    width={50}
+                                    height={45}
+                                    className="logo1 img-fluid"
+                                    style={{ marginTop: "-20px" }}
+                                    src="/assets/images/logo.png"
+                                    alt="header-logo2.png"
+                                  />
+                                  <span
+                                    style={{
+                                      color: "#2e008b",
+                                      fontWeight: "bold",
+                                      fontSize: "24px",
+                                      // marginTop: "20px",
+                                    }}
+                                  >
+                                    Appraisal
+                                  </span>
+                                  <span
+                                    style={{
+                                      color: "#97d700",
+                                      fontWeight: "bold",
+                                      fontSize: "24px",
+                                      // marginTop: "20px",
+                                    }}
+                                  >
+                                    {" "}
+                                    Land
+                                  </span>
+                                </Link>
                               </div>
                             </div>
+                            <h3
+                              className="text-center mt-3"
+                              style={{ color: "#2e008b" }}
+                            >
+                              Information{" "}
+                              <span style={{ color: "#97d700" }}></span>
+                            </h3>
+                            <div
+                              className="mb-2"
+                              style={{ border: "2px solid #97d700" }}
+                            ></div>
+                            <p className="fs-5 text-center text-dark mt-4">
+                              The quotes are accessible for the active
+                              properties only.
+                            </p>
+                            <div
+                              className="mb-3 mt-4"
+                              style={{ border: "2px solid #97d700" }}
+                            ></div>
+                            <div className="col-lg-12 d-flex justify-content-center gap-2">
+                              <button
+                                // disabled={disable}
+                                className="btn btn-color w-25"
+                                onClick={() => setHoldModalOpen(false)}
+                              >
+                                Ok
+                              </button>
+                            </div>
                           </div>
-                        )}
+                        </div>
+                      )}
 
                       {/* End .table-responsive */}
                     </div>

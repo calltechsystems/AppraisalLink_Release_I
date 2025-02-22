@@ -18,6 +18,7 @@ import LoadingSpinner from "../../common/LoadingSpinner";
 import CommonLoader from "../../common/CommonLoader/page";
 import { Modal } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
+// import { useLocation } from "react-router-dom";
 
 const Index = ({ isView, propertyData }) => {
   const router = useRouter();
@@ -25,6 +26,7 @@ const Index = ({ isView, propertyData }) => {
   const [userData, setUserData] = useState({});
   // const userData = JSON.parse(localStorage.getItem("user"));
   const data = JSON.parse(localStorage.getItem("user"));
+  // const location = useLocation();
   const [isFormDirty, setIsFormDirty] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [updateView, setUpdateView] = useState(propertyData);
@@ -138,6 +140,9 @@ const Index = ({ isView, propertyData }) => {
   const [isSubmitInProgress, setIsSubmitInProgress] = useState(false);
 
   const [isLoading, setisLoading] = useState(false);
+
+  const isEditMode = /\/create-listing\/\w+/.test(location.pathname);
+
   // Handle input changes to mark form as dirty
   const handleInputChangeNew = (e, setter) => {
     setter(e.target.value);
@@ -147,7 +152,7 @@ const Index = ({ isView, propertyData }) => {
   // Intercept route changes
   useEffect(() => {
     const handleRouteChange = (url) => {
-      if (isFormDirty) {
+      if (!isEditMode && isFormDirty) {
         setShowModal(true);
         router.events.emit("routeChangeError");
         throw "Navigation blocked";
@@ -158,7 +163,7 @@ const Index = ({ isView, propertyData }) => {
     return () => {
       router.events.off("routeChangeStart", handleRouteChange);
     };
-  }, [isFormDirty, router]);
+  }, [isFormDirty, isEditMode, router]);
 
   // Warn user before refreshing/closing the tab
   useEffect(() => {
@@ -604,9 +609,9 @@ const Index = ({ isView, propertyData }) => {
           })
           .then((res) => {
             toast.dismiss();
-            // toast.success("Successfully updated the property!");
+            toast.success("Successfully updated the property!");
             setIsFormDirty(false);
-            setSuccessModal(true);
+            // setSuccessModal(true);
             setModalIsOpen(false);
             router.push("/my-properties");
             setIsSubmitInProgress(false);
@@ -957,10 +962,9 @@ const Index = ({ isView, propertyData }) => {
                 );
                 setModalIsOpenError_01(true);
               }
-              
+
               setIsSubmitInProgress(false);
               setTimesTrigerredSubmission(0);
-              
             } else {
               setTimesTrigerredSubmission(TimesTrigerredSubmission + 1);
             }
@@ -1087,7 +1091,8 @@ const Index = ({ isView, propertyData }) => {
                           {propertyData?.orderId && (
                             <>
                               {" "}
-                              - Property Id <span style={{ color: "#000" }}>
+                              - Property Id{" "}
+                              <span style={{ color: "#000" }}>
                                 #{propertyData.orderId}
                               </span>
                             </>
@@ -1873,7 +1878,7 @@ const Index = ({ isView, propertyData }) => {
               )}
 
               {/* Modal for Unsaved Changes Warning */}
-              {showModal && (
+              {showModal && !isEditMode && (
                 <div className="modal">
                   <div className="modal-content" style={{ width: "25%" }}>
                     <div className="row">
