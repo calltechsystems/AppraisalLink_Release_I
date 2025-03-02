@@ -13,40 +13,40 @@ namespace DAL.Repository
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="AppraisallandContext"></param>
-        public BrokerageService(AppraisallandsContext AppraisallandContext)
+        /// <param name="appraisallandContext"></param>
+        public BrokerageService(AppraisallandsContext appraisallandContext)
         {
-            _context = AppraisallandContext;
+            _context = appraisallandContext;
         }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="BrokerageID"></param>
+        /// <param name="brokerageId"></param>
         /// <returns></returns>
-        public Brokerage GetBrokerageById(int BrokerageID)
+        public Brokerage GetBrokerageById(int brokerageId)
         {
-            return _context.Brokerages.Where(x => x.Id == BrokerageID).FirstOrDefault();
+            return _context.Brokerages.Where(x => x.Id == brokerageId).FirstOrDefault();
         }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="UserId"></param>
+        /// <param name="userId"></param>
         /// <returns></returns>
-        public Brokerage GetBrokerageByUserId(int UserId)
+        public Brokerage GetBrokerageByUserId(int userId)
         {
-            return _context.Brokerages.Where(x => x.UserId == UserId).FirstOrDefault();
+            return _context.Brokerages.Where(x => x.UserId == userId).FirstOrDefault();
         }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="BrokerageID"></param>
+        /// <param name="brokerageId"></param>
         /// <returns></returns>
-        public List<Broker> GetBrokerByBrokerage(int BrokerageID)
+        public List<Broker> GetBrokerByBrokerage(int brokerageId)
         {
-            var brokers = _context.Brokers.Where(x => x.Brokerageid == BrokerageID).ToList();
+            var brokers = _context.Brokers.Where(x => x.BrokerageId == brokerageId).ToList();
             if (brokers.Count != 0)
             {
                 return brokers;
@@ -57,54 +57,54 @@ namespace DAL.Repository
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="BrokerID"></param>
-        /// <param name="Brokeragerequest"></param>
+        /// <param name="brokerId"></param>
+        /// <param name="brokerageRequest"></param>
         /// <returns></returns>
-        public async Task<Brokerage> UpdateBrokerAsync(int BrokerID, ClsBrokerage Brokeragerequest)
+        public async Task<Brokerage> UpdateBrokerAsync(int brokerId, ClsBrokerage brokerageRequest)
         {
-            var Brokerage = _context.Brokerages.Where(x => x.UserId == BrokerID).FirstOrDefault();
-            var user_Details = _context.UserInformations.Where(x => x.UserId == BrokerID).FirstOrDefault();
-            if (Brokerage != null)
+            var brokerage = _context.Brokerages.Where(x => x.UserId == brokerId).FirstOrDefault();
+            var userDetails = _context.UserInformations.Where(x => x.UserId == brokerId).FirstOrDefault();
+            if (brokerage != null)
             {
-                Brokerage.FirstName = Brokeragerequest.FirstName;
-                Brokerage.MiddleName = Brokeragerequest.MiddleName;
-                Brokerage.LastName = Brokeragerequest.LastName;
-                Brokerage.CompanyName = Brokeragerequest.CompanyName;
-                Brokerage.LicenseNo = Brokeragerequest.LicenseNo;
-                Brokerage.BrokerageName = Brokeragerequest.BrokerageName;
-                Brokerage.StreetNumber = Brokeragerequest.StreetNumber;
-                Brokerage.StreetName = Brokeragerequest.StreetName;
-                Brokerage.ApartmentNo = Brokeragerequest.ApartmentNo;
-                Brokerage.City = Brokeragerequest.City;
-                Brokerage.Province = Brokeragerequest.Province;
-                Brokerage.PostalCode = Brokeragerequest.PostalCode;
-                Brokerage.Area = Brokeragerequest.Area;
-                Brokerage.PhoneNumber = Brokeragerequest.PhoneNumber;
-                Brokerage.MortageBrokerageLicNo = Brokeragerequest.MortageBrokerageLicNo;
-                Brokerage.MortageBrokerLicNo = Brokeragerequest.MortageBrokerLicNo;
-                Brokerage.AssistantFirstName = Brokeragerequest.AssistantFirstName;
-                Brokerage.AssistantPhoneNumber = Brokeragerequest.AssistantPhoneNumber;
-                Brokerage.AssistantEmailAddress = Brokeragerequest.AssistantEmailAddress;
-                Brokerage.ProfileImage = Brokeragerequest.ProfileImage;
-                Brokerage.IsActive = Brokeragerequest.IsActive;
-                Brokerage.FaxNumber = Brokeragerequest.FaxNumber;
-                Brokerage.Description = Brokeragerequest.Description;
-                Brokerage.Cellnumber = Brokeragerequest.CellNumber;
-                Brokerage.EmailId = Brokeragerequest.EmailId;
-                Brokerage.AssistantTwoPhoneNumber = Brokeragerequest.AssistantTwoPhoneNumber;
-                Brokerage.AssistantTwoEmailAddress = Brokeragerequest.AssistantTwoEmailAddress;
-                Brokerage.AssistantLastName = Brokeragerequest.AssistantLastName;
-                Brokerage.AssistantTwoFirstName = Brokeragerequest.AssistantTwoFirstName;
-                Brokerage.AssistantTwoLastName = Brokeragerequest.AssistantTwoLastName;
-                Brokerage.ModifiedDateTime = DateTime.UtcNow;
-                _context.Brokerages.Update(Brokerage);
+                brokerage.FirstName = brokerageRequest.FirstName;
+                brokerage.MiddleName = brokerageRequest.MiddleName;
+                brokerage.LastName = brokerageRequest.LastName;
+                brokerage.CompanyName = brokerageRequest.CompanyName;
+                brokerage.LicenseNo = brokerageRequest.LicenseNo;
+                brokerage.BrokerageName = brokerageRequest.BrokerageName;
+                brokerage.StreetNumber = brokerageRequest.StreetNumber;
+                brokerage.StreetName = brokerageRequest.StreetName;
+                brokerage.ApartmentNo = brokerageRequest.ApartmentNo;
+                brokerage.City = brokerageRequest.City;
+                brokerage.Province = brokerageRequest.Province;
+                brokerage.PostalCode = brokerageRequest.PostalCode;
+                brokerage.Area = brokerageRequest.Area;
+                brokerage.PhoneNumber = brokerageRequest.PhoneNumber;
+                brokerage.MortageBrokerageLicNo = brokerageRequest.MortageBrokerageLicNo;
+                brokerage.MortageBrokerLicNo = brokerageRequest.MortageBrokerLicNo;
+                brokerage.AssistantFirstName = brokerageRequest.AssistantFirstName;
+                brokerage.AssistantPhoneNumber = brokerageRequest.AssistantPhoneNumber;
+                brokerage.AssistantEmailAddress = brokerageRequest.AssistantEmailAddress;
+                brokerage.ProfileImage = brokerageRequest.ProfileImage;
+                brokerage.IsActive = brokerageRequest.IsActive;
+                brokerage.FaxNumber = brokerageRequest.FaxNumber;
+                brokerage.Description = brokerageRequest.Description;
+                brokerage.Cellnumber = brokerageRequest.CellNumber;
+                brokerage.EmailId = brokerageRequest.EmailId;
+                brokerage.AssistantTwoPhoneNumber = brokerageRequest.AssistantTwoPhoneNumber;
+                brokerage.AssistantTwoEmailAddress = brokerageRequest.AssistantTwoEmailAddress;
+                brokerage.AssistantLastName = brokerageRequest.AssistantLastName;
+                brokerage.AssistantTwoFirstName = brokerageRequest.AssistantTwoFirstName;
+                brokerage.AssistantTwoLastName = brokerageRequest.AssistantTwoLastName;
+                brokerage.ModifiedDateTime = DateTime.UtcNow;
+                _context.Brokerages.Update(brokerage);
                 _context.SaveChanges();
                 //user_Details.GetSms = Brokeragerequest.GetSms;
                 //user_Details.GetEmail= Brokeragerequest.GetEmail;
                 //_context.UserInformations.Update(user_Details);
                 //_context.SaveChanges(); 
 
-                return Brokerage;
+                return brokerage;
             }
             return null;
         }

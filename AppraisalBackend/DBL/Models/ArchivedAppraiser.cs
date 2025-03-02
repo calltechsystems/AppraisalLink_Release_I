@@ -7,8 +7,8 @@
     {
         public long Id { get; set; }
 
-        public long? Orderid { get; set; }
+        public long? OrderId { get; set; }
 
-        public long? Userid { get; set; }
+        public long? UserId { get; set; }
     }
 }

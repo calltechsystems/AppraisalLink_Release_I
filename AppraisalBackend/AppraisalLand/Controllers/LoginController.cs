@@ -1,6 +1,7 @@
 ﻿using AppraisalLand.Class;
 using DAL.Classes;
 using DAL.Repository;
+using DAL.Common.Enums;
 using DBL.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -61,17 +62,17 @@ namespace AppraisalLand.Controllers
             try
             {
                 var user = await _authService.GetUserByEmailAsync(model.Email);
-                var AppraiserCompany = "";
+                var appraiserCompany = "";
                 if (user == null)
                 {
                     return Unauthorized(new { Message = "User does not exist" });
                 }
                 if (user.IsActive && model.Password != null)
                 {
-                    if (user.UserType == 5)
+                    if (user.UserType == (short)UserType.SubAppraiser)
                     {
-                        var SubAppraiser = _authService.GetAppraiserdetails(user.UserId);
-                        if (SubAppraiser.Result.IsActive == false)
+                        var subAppraiser = _authService.GetAppraiserDetails(user.UserId);
+                        if (subAppraiser.Result.IsActive == false)
                         {
                             //return new JsonResult(new
                             //{
@@ -81,17 +82,17 @@ namespace AppraisalLand.Controllers
                             //});
                             return BadRequest(new { Message = "Your access to Appraisal Land has been revoked. Please contact your Appraiser Company for further assistance." });
                         }
-                        var AppraiserComp = _context.AppraiserCompanies.Where(x => x.AppraiserCompanyId == SubAppraiser.Result.CompanyId).FirstOrDefault();
-                        if (AppraiserComp != null)
+                        var appraiserCompanyDetail = _context.AppraiserCompanies.Where(x => x.AppraiserCompanyId == subAppraiser.Result.CompanyId).FirstOrDefault();
+                        if (appraiserCompanyDetail != null)
                         {
-                            var UserInfo = _context.UserInformations.Where(x => x.UserId == AppraiserComp.UserId).FirstOrDefault();
-                            AppraiserCompany = UserInfo.Email;
+                            var userInfo = _context.UserInformations.Where(x => x.UserId == appraiserCompanyDetail.UserId).FirstOrDefault();
+                            appraiserCompany = userInfo.Email;
                         }
                     }
-                    else if (user.UserType == 6)
+                    else if (user.UserType == (short)UserType.SubBroker)
                     {
-                        var sub_Broker = _authService.GetBrokerdetails(user.UserId);
-                        if (sub_Broker.Result.Isactive1 == false || sub_Broker.Result.IsActive == false)
+                        var subBroker = _authService.GetBrokerDetails(user.UserId);
+                        if (subBroker.Result.IsActive1 == false || subBroker.Result.IsActive == false)
                         {
                             //return StatusCode(StatusCodes.Status403Forbidden, new
                             //{
@@ -111,67 +112,66 @@ namespace AppraisalLand.Controllers
                     //if (IsEmailVerified)
                     //{
                     var token = _authService.GenerateJwtToken(user);
-                    var UserType = user.UserType;
-                    var User_Id = user.UserId;
-                    var Broker_Details = _authService.GetBrokerdetails(User_Id);
-                    var Brokerage_Details = _authService.GetBrokerageDetails(User_Id);
-                    if (Brokerage_Details.Result == null)
+                    var userType = user.UserType;
+                    var userId = user.UserId;
+                    var brokerDetail = _authService.GetBrokerDetails(userId);
+                    var brokerageDetail = _authService.GetBrokerageDetails(userId);
+                    if (brokerageDetail.Result == null)
                     {
-                        Brokerage_Details = null;
+                        brokerageDetail = null;
                     }
-                    if (Broker_Details.Result == null)
+                    if (brokerDetail.Result == null)
                     {
-                        Broker_Details = null;
+                        brokerDetail = null;
                     }
-                    var Appraiser_Details = _authService.GetAppraiserdetails(User_Id);
-                    if (Appraiser_Details.Result == null)
+                    var appraiserDetail = _authService.GetAppraiserDetails(userId);
+                    if (appraiserDetail.Result == null)
                     {
-                        Appraiser_Details = null;
+                        appraiserDetail = null;
                     }
-                    var AppraiserCompany_Datails = _authService.GetAppraiserCompanydetails(User_Id);
-                    if (AppraiserCompany_Datails.Result == null)
+                    var appraiserCompanyDatail = _authService.GetAppraiserCompanyDetails(userId);
+                    if (appraiserCompanyDatail.Result == null)
                     {
-                        AppraiserCompany_Datails = null;
+                        appraiserCompanyDatail = null;
                     }
                     List<Plan> plans = new List<Plan>();
 
-                    if (UserType == 6)
+                    if (userType == (short)UserType.SubBroker)
                     {
-                        var broker_details = _context.Brokers.Where(x => x.UserId == User_Id).FirstOrDefault();
-                        var BrokerageUserId = _context.Brokerages.Where(x => x.Id == broker_details.Brokerageid).FirstOrDefault();
-                        User_Id = (long)BrokerageUserId.UserId;
-
+                        var subBrokerDetail = _context.Brokers.Where(x => x.UserId == userId).FirstOrDefault();
+                        var subBrokerageDetail = _context.Brokerages.Where(x => x.Id == subBrokerDetail.BrokerageId).FirstOrDefault();
+                        userId = (long)subBrokerageDetail.UserId;
                     }
-                    if (UserType == 5)
+                    if (userType == (short)UserType.SubAppraiser)
                     {
-                        var Appraiser_details = _context.Appraisers.Where(x => x.UserId == User_Id).FirstOrDefault();
-                        var AppraiserCompanyUserId = _context.Brokerages.Where(x => x.Id == Appraiser_details.CompanyId).FirstOrDefault();
-                        User_Id = (long)AppraiserCompanyUserId.UserId;
+                        var subAppraiserDetail = _context.Appraisers.Where(x => x.UserId == userId).FirstOrDefault();
+                        var subAppraiserCompanyDetail = _context.Brokerages.Where(x => x.Id == subAppraiserDetail.CompanyId).FirstOrDefault();
+                        userId = (long)subAppraiserCompanyDetail.UserId;
                     }
 
                     List<Subscription> subscriptionDTOs = new List<Subscription>();
-                    var objsub = _authService.GetSubscriptiondetails(User_Id);
-                    var transtion_log = _context.TransactionLogs
-                                 .Where(x => x.UserId == User_Id && x.IsActive == true)
+                    var subscriptionDetail = _authService.GetSubscriptionDetails(userId);
+                    var transactionLog = _context.TransactionLogs
+                                 .Where(x => x.UserId == userId && x.IsActive == true)
                                  .FirstOrDefault();
 
-                    long? Usedproperty = 0;
+                    long? usedProperty = 0;
 
-                    if (objsub != null)
+                    if (subscriptionDetail != null)
                     {
-                        foreach (var item in objsub)
+                        foreach (var item in subscriptionDetail)
                         {
-                            if (transtion_log.Paymentid == item.PaymentId)
+                            if (transactionLog.PaymentId == item.PaymentId)
                             {
                                 subscriptionDTOs.Add(item);
-                                Usedproperty = transtion_log.UsedProperties;
+                                usedProperty = transactionLog.UsedProperties;
                             }
                         }
                     }
                     var planLimitExceed = 0;
-                    if (transtion_log != null)
+                    if (transactionLog != null)
                     {
-                        if (transtion_log.UsedProperties < transtion_log.TotalProperties)
+                        if (transactionLog.UsedProperties < transactionLog.TotalProperties)
                         {
                             planLimitExceed = 0;
                         }
@@ -181,7 +181,7 @@ namespace AppraisalLand.Controllers
                         }
                     }
 
-                    var UserSubscription = subscriptionDTOs.Select(sub => new SubscriptionDto
+                    var userSubscription = subscriptionDTOs.Select(sub => new SubscriptionDto
                     {
                         SubscriptionId = sub.SubscriptionId,
                         StartDate = sub.StartDate,
@@ -203,10 +203,8 @@ namespace AppraisalLand.Controllers
                     //             .FirstOrDefault();
                     if (subscriptionDTOs.Count > 0)
                     {
-
                         var plan = _context.Plans.Where(x => x.Id == subscriptionDTOs[0].PlanId).FirstOrDefault();
                         plans.Add(plan);
-
                     }
                     return Ok(new
                     {
@@ -219,15 +217,15 @@ namespace AppraisalLand.Controllers
                         planLimitExceed = planLimitExceed,
                         UserType = user.UserType,
                         message = "Login successful",
-                        UserSubscription = UserSubscription,
-                        usedProperties = Usedproperty,
-                        totalNoOfProperties = transtion_log?.TotalProperties ?? 0,
+                        UserSubscription = userSubscription,
+                        usedProperties = usedProperty,
+                        totalNoOfProperties = transactionLog?.TotalProperties ?? 0,
                         plans = plans,
-                        Broker_Details = Broker_Details != null ? await Broker_Details : null,
-                        Brokerage_Details = Brokerage_Details != null ? await Brokerage_Details : null,
-                        Appraiser_Details = Appraiser_Details != null ? await Appraiser_Details : null,
-                        AppraiserCompany_Datails = AppraiserCompany_Datails != null ? await AppraiserCompany_Datails : null,
-                        AppraiserCompanyEmail = AppraiserCompany
+                        brokerDetail = brokerDetail != null ? await brokerDetail : null,
+                        Brokerage_Details = brokerageDetail != null ? await brokerageDetail : null,
+                        Appraiser_Details = appraiserDetail != null ? await appraiserDetail : null,
+                        AppraiserCompany_Datails = appraiserCompanyDatail != null ? await appraiserCompanyDatail : null,
+                        AppraiserCompanyEmail = appraiserCompany
                     });
                 }
                 else
@@ -283,10 +281,8 @@ namespace AppraisalLand.Controllers
                 }
 
                 CreatePasswordHash(model.NewPassword, out byte[] passwordHash, out byte[] passwordSalt);
-                var PasswordHash = passwordHash;
-                var PasswordSalt = passwordSalt;
 
-                var Success = _broker.UpdateNewPassword(model, PasswordHash, PasswordSalt);
+                var Success = _broker.UpdateNewPassword(model, passwordHash, passwordSalt);
                 if (Success)
                 {
                     return Ok(new { message = "Password changed successfully." });

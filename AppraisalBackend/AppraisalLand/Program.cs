@@ -47,12 +47,13 @@ builder.Services.AddScoped<IForgotPasswordService, ForgotPasswordService>();
 builder.Services.AddScoped<IAppraiserIndividual, AppraiserIndividualService>();
 builder.Services.AddScoped<IAppraiserCompany, AppraiserCompanyService>();
 builder.Services.AddScoped<IWishlistService, WishlistService>();
-builder.Services.AddScoped<Ibid, IbidService>();
+builder.Services.AddScoped<Ibid, BidRepositoryService>();
 builder.Services.AddScoped<IContactusRepository, ContactusRepository>();
 builder.Services.AddScoped<IAdmin, AdminService>();
+builder.Services.AddScoped<IEmailSmsNotification, EmailSmsNotificationService>();
 builder.Services.Configure<EncryptionSettings>(builder.Configuration.GetSection("EncryptionSettings"));
 builder.Services.AddScoped<EncryptionHelper>();
-builder.Services.AddScoped<HelperService>();
+builder.Services.AddScoped<NotificationHelper>();
 //builder.Services.AddScoped<IServicesMiddlewareTopUp, ServicesMiddlewareTopUp>();
 builder.Services.AddScoped<ITwilioSms>(provider =>
     new TwilioSmsService(

@@ -11,7 +11,7 @@
 
         public long? UserId { get; set; }
 
-        public string? Paymentid { get; set; }
+        public string? PaymentId { get; set; }
 
         public DateTime? CreatedTime { get; set; }
 

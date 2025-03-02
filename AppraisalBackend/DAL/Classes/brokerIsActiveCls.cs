@@ -1,6 +1,6 @@
 ﻿namespace DAL.Classes
 {
-    public class brokerIsActiveCls
+    public class BrokerIsActiveCls
     {
         public long BrokerageId { get; set; }
         public int BrokerId { get; set; }

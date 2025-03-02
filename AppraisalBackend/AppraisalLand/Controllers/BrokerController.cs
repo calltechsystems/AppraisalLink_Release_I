@@ -1,5 +1,6 @@
 ﻿using AppraisalLand.Helper;
 using DAL.Classes;
+using DAL.Common.Enums;
 using DAL.Repository;
 using DBL.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -16,63 +17,73 @@ namespace AppraisalLand.Controllers
     {
         private readonly Ibid _bidService;
         private readonly IBroker _broker;
-        private readonly AppraisallandsContext _AppraisallandContext;
+        private readonly AppraisallandsContext _appraisallandContext;
+        private IEmailSmsNotification _emailSmsNotification;
         Log log = new Log();
-        private HelperService _smtpEmailService;
+        private NotificationHelper _smtpEmailService;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="broker"></param>
         /// <param name="bidService"></param>
-        /// <param name="AppraisallandContext"></param>
+        /// <param name="appraisallandContext"></param>
         /// <param name="smtpEmailService"></param>
 
-        public BrokerController(IBroker broker, Ibid bidService, AppraisallandsContext AppraisallandContext, HelperService smtpEmailService)
+        public BrokerController(IBroker broker, Ibid bidService, AppraisallandsContext appraisallandContext, NotificationHelper smtpEmailService, IEmailSmsNotification emailSmsNotification)
         {
             _broker = broker;
             _bidService = bidService;
-            _AppraisallandContext = AppraisallandContext;
+            _appraisallandContext = appraisallandContext;
             _smtpEmailService = smtpEmailService;
+            _emailSmsNotification = emailSmsNotification;
         }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="BrokerId"></param>
+        /// <param name="brokerId"></param>
         /// <param name="updateRequest"></param>
         /// <returns></returns>
         [Authorize]
         [HttpPut("updateBrokerProfile")]
-        public async Task<IActionResult> updateBrokerProfile(int BrokerId, [FromBody] ClsBrokerUpdateDto updateRequest)
+        public async Task<IActionResult> updateBrokerProfile(int brokerId, [FromBody] ClsBrokerUpdateDto updateRequest)
         {
             log.WriteLog("updateBrokerProfile Function started");
             try
             {
-                var updatedBrokerage = await _broker.UpdateBrokerAsync(BrokerId, updateRequest);
+                var updatedBrokerage = await _broker.UpdateBrokerAsync(brokerId, updateRequest);
 
                 if (updatedBrokerage == null)
                 {
-                    return NotFound($"Broker not found with ID {BrokerId} or update failed");
+                    return NotFound($"Broker not found with ID {brokerId} or update failed");
                 }
-                var get_SMS = updateRequest.GetSms;
-                var get_Email = updateRequest.GetEmail;
+                var getSMS = updateRequest.GetSms;
+                var getEmail = updateRequest.GetEmail;
 
-                var user = _AppraisallandContext.UserInformations.Where(x => x.UserId == BrokerId).FirstOrDefault();
+                var user = _appraisallandContext.UserInformations.Where(x => x.UserId == brokerId).FirstOrDefault();
                 if (user != null)
                 {
-                    user.GetEmail = get_Email;
-                    user.GetSms = get_SMS;
-                    _AppraisallandContext.UserInformations.Update(user);
-                    _AppraisallandContext.SaveChanges();
+                    user.GetEmail = getEmail;
+                    user.GetSms = getSMS;
+                    _appraisallandContext.UserInformations.Update(user);
+                    _appraisallandContext.SaveChanges();
                 }
-                var Broker_Details = _AppraisallandContext.UserInformations.Where(x => x.UserId == BrokerId).FirstOrDefault();
+                var brokerDetail = _appraisallandContext.UserInformations.Where(x => x.UserId == brokerId).FirstOrDefault();
+                List<string> email = new List<string>();
+                email.Add(user.Email);
+                var notificationDetail = await _emailSmsNotification.getEmailSmsBody((int)MessageCode.ProfileUpdate);
+                if (notificationDetail != null)
+                {
+                    Task.Run(async () => await _smtpEmailService.SendEmailToUser(email, "Common", "0", notificationDetail.EmailContent, notificationDetail.TriggerPoint));
+                }
+                                
                 return Ok(new
                 {
-                    Message = $"Broker with ID {BrokerId} updated successfully",
+                    Message = $"Broker with ID {brokerId} updated successfully",
                     Brokerage = updatedBrokerage,
-                    IsEmail = Broker_Details.GetEmail,
-                    IsSms = Broker_Details.GetSms
+                    IsEmail = brokerDetail.GetEmail,
+                    IsSms = brokerDetail.GetSms
                 });
             }
             catch (Exception ex)
@@ -122,62 +133,59 @@ namespace AppraisalLand.Controllers
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="QuoteID"></param>
+        /// <param name="quoteId"></param>
         /// <returns></returns>
         [Authorize]
         [HttpPut("quoteActionByBroker")]
-        public async Task<IActionResult> quoteActionByBroker(int QuoteID)
+        public async Task<IActionResult> quoteActionByBroker(int quoteId)
         {
             log.WriteLog("quoteActionByBroker started");
             try
             {
-                var BidDetails_ = _AppraisallandContext.Bids.Where(x => x.BidId == QuoteID).FirstOrDefault();
-                var Bid = _AppraisallandContext.Bids.Where(x => x.OrderId == BidDetails_.OrderId && x.Status == 1).FirstOrDefault();
-                if (Bid != null)
+                var bidDetail = _appraisallandContext.Bids.Where(x => x.BidId == quoteId).FirstOrDefault();
+                var bid = _appraisallandContext.Bids.Where(x => x.OrderId == bidDetail.OrderId && x.Status == 1).FirstOrDefault();
+                if (bid != null)
                 {
                     return BadRequest(new { massage = "Appraisal for the property is in progress; quotes cannot be submitted at this stage" });
                 }
                 var restProperty = 0;
-                var userid = _AppraisallandContext.Bids.Where(x => x.BidId == QuoteID).Select(x => x.AppraiserUserId).FirstOrDefault();
-                long? user_id = userid;
-                List<List<DBL.Models.Bid>> Obj_bids = new List<List<DBL.Models.Bid>>();
-                var user_type = _AppraisallandContext.UserInformations.Where(x => x.UserId == userid).Select(x => x.UserType).FirstOrDefault();
-                if (user_type == 5)
+                var userId = _appraisallandContext.Bids.Where(x => x.BidId == quoteId).Select(x => x.AppraiserUserId).FirstOrDefault();
+                long? appraiserUserId = userId;
+                List<List<DBL.Models.Bid>> bidList = new List<List<DBL.Models.Bid>>();
+                var userType = _appraisallandContext.UserInformations.Where(x => x.UserId == userId).Select(x => x.UserType).FirstOrDefault();
+                if (userType == (short)UserType.SubAppraiser)
                 {
-                    var details = _AppraisallandContext.Appraisers.Where(x => x.UserId == userid).FirstOrDefault();
-                    if (details == null)
+                    var subAppraiserDetail = _appraisallandContext.Appraisers.Where(x => x.UserId == userId).FirstOrDefault();
+                    if (subAppraiserDetail == null)
                     {
-                        var AppraiserComapny = _AppraisallandContext.AppraiserCompanies.Where(x => x.AppraiserCompanyId == details.CompanyId).FirstOrDefault();
-                        user_id = AppraiserComapny.UserId;
+                        var appraiserComapny = _appraisallandContext.AppraiserCompanies.Where(x => x.AppraiserCompanyId == subAppraiserDetail.CompanyId).FirstOrDefault();
+                        appraiserUserId = appraiserComapny.UserId;
 
-                        var Total_Appraisers = _AppraisallandContext.Appraisers.Where(x => x.CompanyId == details.Id).ToList();
-                        foreach (var item in Total_Appraisers)
+                        var totalAppraisers = _appraisallandContext.Appraisers.Where(x => x.CompanyId == subAppraiserDetail.Id).ToList();
+                        foreach (var item in totalAppraisers)
                         {
-
-                            var Total_quotes = _AppraisallandContext.Bids.Where(x => x.UserId == item.UserId && x.Status == 1).ToList();
-                            Obj_bids.Add(Total_quotes);
+                            var totalQuotes = _appraisallandContext.Bids.Where(x => x.UserId == item.UserId && x.Status == 1).ToList();
+                            bidList.Add(totalQuotes);
                         }
                     }
                 }
 
-                var subscription = _AppraisallandContext.Subscriptions
-                                      .Where(x => x.UserId == user_id && x.EndDate >= DateTime.Today && x.PlanId != 0)
+                var subscription = _appraisallandContext.Subscriptions
+                                      .Where(x => x.UserId == appraiserUserId && x.EndDate >= DateTime.Today && x.PlanId != 0)
                                       .OrderBy(x => x.EndDate)
                                       .FirstOrDefault();
-                var TranstionLog = _AppraisallandContext.TransactionLogs.Where(x => x.UserId == user_id && x.IsActive == true).FirstOrDefault();
+                var transactionLog = _appraisallandContext.TransactionLogs.Where(x => x.UserId == appraiserUserId && x.IsActive == true).FirstOrDefault();
                 if (subscription != null)
                 {
+                    var plan = _appraisallandContext.Plans.Where(x => x.Id == subscription.PlanId).FirstOrDefault();
+                    var topUpProperty = 0;
+                    var noOfProperty = plan.NoOfProperties;
 
-                    var plan = _AppraisallandContext.Plans.Where(x => x.Id == subscription.PlanId).FirstOrDefault();
-                    var topUp_property = 0;
-                    var No_of_property = plan.NoOfProperties;
+                    var propertiesInfo = _appraisallandContext.TransactionLogs.Where(x => x.UserId == appraiserUserId && x.IsActive == true).FirstOrDefault();
 
-                    var PropertiesInfo = _AppraisallandContext.TransactionLogs.Where(x => x.UserId == user_id && x.IsActive == true).FirstOrDefault();
-
-                    var UserProperty = _AppraisallandContext.Bids.Where(x => x.AppraiserUserId == user_id && x.Status == 1).ToList();
-                    int topUpTotalProperties = topUp_property == 0 ? 0 : topUp_property;
-                    restProperty = (short)PropertiesInfo.TotalProperties - (short)PropertiesInfo.UsedProperties;
-                }
+                    var userProperties = _appraisallandContext.Bids.Where(x => x.AppraiserUserId == appraiserUserId && x.Status == 1).ToList();
+                    int topUpTotalProperties = topUpProperty == 0 ? 0 : topUpProperty;
+                    restProperty = (short)propertiesInfo.TotalProperties - (short)propertiesInfo.UsedProperties;                }
                 else
                 {
                     return NotFound(new
@@ -189,81 +197,83 @@ namespace AppraisalLand.Controllers
 
                 if (restProperty > 0)
                 {
-                    var result = _bidService.AcceptBidAsync(QuoteID);
+                    var result = _bidService.AcceptBidAsync(quoteId);
                     if (result != null)
                     {
-                        var order_id = result.Result.OrderId;
-                        var Bids_Details = _AppraisallandContext.Bids.Where(x => x.OrderId == order_id).ToList();
-                        foreach (var bid in Bids_Details)
+                        var orderId = result.Result.OrderId;
+                        var bidDetails = _appraisallandContext.Bids.Where(x => x.OrderId == orderId).ToList();
+                        foreach (var objbid in bidDetails)
                         {
-                            bid.AppraiserAssign = false;
-                            _AppraisallandContext.Bids.Update(bid);
-                            _AppraisallandContext.SaveChanges();
+                            objbid.AppraiserAssign = false;
+                            _appraisallandContext.Bids.Update(objbid);
+                            _appraisallandContext.SaveChanges();
                         }
 
-                        var Bidid = result.Result.BidId;
-                        var OrderId = result.Result.OrderId;
-                        var BidDetails = _AppraisallandContext.Bids.Where(x => x.OrderId == OrderId).ToList();
-                        var PropertyDetails = _AppraisallandContext.Properties.Where(x => x.OrderId == OrderId).FirstOrDefault();
-                        if (PropertyDetails != null)
+                        var BidId = result.Result.BidId;
+                        var bidOrderDetails = _appraisallandContext.Bids.Where(x => x.OrderId == orderId).ToList();
+                        var propertyDetails = _appraisallandContext.Properties.Where(x => x.OrderId == orderId).FirstOrDefault();
+                        if (propertyDetails != null)
                         {
-                            PropertyDetails.IsCompleted = 1;
-                            _AppraisallandContext.Properties.Update(PropertyDetails);
-                            _AppraisallandContext.SaveChanges();
+                            propertyDetails.IsCompleted = 1;
+                            _appraisallandContext.Properties.Update(propertyDetails);
+                            _appraisallandContext.SaveChanges();
                         }
-                        foreach (var bid in BidDetails)
+                        foreach (var bidOrderDetail in bidOrderDetails)
                         {
-                            if (bid.BidId != Bidid)
+                            if (bidOrderDetail.BidId != BidId)
                             {
-                                bid.Status = 2;
-                                _AppraisallandContext.Bids.Update(bid);
-                                _AppraisallandContext.SaveChanges();
+                                bidOrderDetail.Status = 2;
+                                _appraisallandContext.Bids.Update(bidOrderDetail);
+                                _appraisallandContext.SaveChanges();
                             }
                         }
 
                         log.WriteLog("Bid accepted successfully");
                         var acceptedbid = 0;
-                        List<List<DBL.Models.Bid>> Obj_bids2 = new List<List<DBL.Models.Bid>>();
-                        if (user_type != 5)
+                        List<List<DBL.Models.Bid>> bidQuotes = new List<List<DBL.Models.Bid>>();
+                        if (userType != (short)UserType.SubAppraiser)
                         {
-                            acceptedbid = _AppraisallandContext.Bids
-                                .Where(x => x.AppraiserUserId == user_id && x.Status == 1).Count();
+                            acceptedbid = _appraisallandContext.Bids
+                                .Where(x => x.AppraiserUserId == appraiserUserId && x.Status == 1).Count();
                         }
                         else
                         {
-                            var details = _AppraisallandContext.Appraisers.Where(x => x.UserId == userid).FirstOrDefault();
-                            if (details == null)
+                            var appraiserDetail = _appraisallandContext.Appraisers.Where(x => x.UserId == userId).FirstOrDefault();
+                            if (appraiserDetail == null)
                             {
-                                var AppraiserComapny = _AppraisallandContext.AppraiserCompanies
-                                    .Where(x => x.AppraiserCompanyId == details.CompanyId).FirstOrDefault();
-                                user_id = AppraiserComapny.UserId;
+                                var appraiserComapnyDetail = _appraisallandContext.AppraiserCompanies
+                                    .Where(x => x.AppraiserCompanyId == appraiserDetail.CompanyId).FirstOrDefault();
 
-                                var Total_Appraisers = _AppraisallandContext.Appraisers
-                                    .Where(x => x.CompanyId == details.Id).ToList();
-                                foreach (var item in Total_Appraisers)
+                                appraiserUserId = appraiserComapnyDetail.UserId;
+
+                                var totalAppraisers = _appraisallandContext.Appraisers
+                                    .Where(x => x.CompanyId == appraiserDetail.Id).ToList();
+                                foreach (var item in totalAppraisers)
                                 {
-                                    var Total_quotes = _AppraisallandContext.Bids
+                                    var totalQuotes = _appraisallandContext.Bids
                                         .Where(x => x.UserId == item.UserId && x.Status == 1).ToList();
-                                    Obj_bids2.Add(Total_quotes);
+                                    bidQuotes.Add(totalQuotes);
                                 }
                             }
-                            acceptedbid = Obj_bids2.SelectMany(innerList => innerList).Count();
+                            acceptedbid = bidQuotes.SelectMany(innerList => innerList).Count();
                         }
-                        var topUp_property = _AppraisallandContext.Subscriptions.Where(x => x.UserId == user_id && x.TopUpId != null).FirstOrDefault();
+                        var topUpProperty = _appraisallandContext.Subscriptions.Where(x => x.UserId == appraiserUserId && x.TopUpId != null).FirstOrDefault();
                         // int topUpTotalProperties = topUp_property?.TotalProperties ?? 0;
-                        var transaction = _AppraisallandContext.TransactionLogs.Where(x => x.UserId == user_id && x.IsActive == true).FirstOrDefault();
+                        var transaction = _appraisallandContext.TransactionLogs.Where(x => x.UserId == appraiserUserId && x.IsActive == true).FirstOrDefault();
                         short Count = 1;
                         transaction.UsedProperties = (short)((transaction.UsedProperties) + Count);
-                        _AppraisallandContext.TransactionLogs.Update(transaction);
-                        _AppraisallandContext.SaveChanges();
-                        var transtion_log = _AppraisallandContext.TransactionLogs
-                                                          .Where(x => x.UserId == user_id && x.IsActive == true)
+
+                        _appraisallandContext.TransactionLogs.Update(transaction);
+                        _appraisallandContext.SaveChanges();
+
+                        var transactionLogDetail = _appraisallandContext.TransactionLogs
+                                                          .Where(x => x.UserId == appraiserUserId && x.IsActive == true)
                                                           .FirstOrDefault();
 
                         var planLimitExceed = 0;
-                        if (transtion_log != null)
+                        if (transactionLogDetail != null)
                         {
-                            if (transtion_log.UsedProperties < transtion_log.TotalProperties)
+                            if (transactionLogDetail.UsedProperties < transactionLogDetail.TotalProperties)
                             {
                                 planLimitExceed = 0;
                             }
@@ -293,13 +303,13 @@ namespace AppraisalLand.Controllers
                         //    _AppraisallandContext.SaveChanges();
                         //}
 
-                        var BrokerDetails = _AppraisallandContext.UserInformations.Where(x => x.UserId == BidDetails_.UserId).Select(x => x.Email).ToList();
-                        Task.Run(async () => await _smtpEmailService.SendEmailToUser(BrokerDetails, "BrokerProperty", Convert.ToString(BidDetails_.OrderId)));
+                        var bidEmails = _appraisallandContext.UserInformations.Where(x => x.UserId == bidDetail.UserId).Select(x => x.Email).ToList();
+                        Task.Run(async () => await _smtpEmailService.SendEmailToUser(bidEmails, "BrokerProperty", Convert.ToString(bidDetail.OrderId), "body", "subject"));
                         return Ok(new
                         {
                             Message = "Bid accepted successfully",
-                            usedProperties = transtion_log.UsedProperties,
-                            totalNoOfProperties = transtion_log.TotalProperties,
+                            usedProperties = transactionLogDetail.UsedProperties,
+                            totalNoOfProperties = transactionLogDetail.TotalProperties,
                             planLimitExceed = planLimitExceed
                         });
                     }
@@ -329,50 +339,50 @@ namespace AppraisalLand.Controllers
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="QuoteID"></param>
+        /// <param name="quoteId"></param>
         /// <returns></returns>
         //  [Authorize]
         [HttpPut("quoteReActionByBroker")]
-        public async Task<IActionResult> quoteReActionByBroker(int QuoteID)
+        public async Task<IActionResult> quoteReActionByBroker(int quoteId)
         {
             log.WriteLog("quoteReActionByBroker started");
             try
             {
-                var Quotes = _AppraisallandContext.Bids.Where(x => x.BidId == QuoteID).FirstOrDefault();
-                if (Quotes != null)
+                var quotes = _appraisallandContext.Bids.Where(x => x.BidId == quoteId).FirstOrDefault();
+                if (quotes != null)
                 {
-                    var quotes_details = _bidService.AcceptBidAsync(QuoteID);
-                    if (quotes_details != null)
+                    var quotesDetails = _bidService.AcceptBidAsync(quoteId);
+                    if (quotesDetails != null)
                     {
-                        var order_id = quotes_details.Result.OrderId;
-                        var Bids_Details = _AppraisallandContext.Bids.Where(x => x.OrderId == order_id).ToList();
-                        foreach (var bid in Bids_Details)
+                        var orderId = quotesDetails.Result.OrderId;
+                        var bidsDetails = _appraisallandContext.Bids.Where(x => x.OrderId == orderId).ToList();
+                        foreach (var bid in bidsDetails)
                         {
                             bid.AppraiserAssign = true;
-                            bid.Orderstatus = null;
+                            bid.OrderStatus = null;
                             bid.Remark = null;
-                            _AppraisallandContext.Bids.Update(bid);
-                            _AppraisallandContext.SaveChanges();
+                            _appraisallandContext.Bids.Update(bid);
+                            _appraisallandContext.SaveChanges();
                         }
                     }
 
-                    var BidDetails = _AppraisallandContext.Bids.Where(x => x.OrderId == Quotes.OrderId).ToList();
-                    var PropertyDetails = _AppraisallandContext.Properties.Where(x => x.OrderId == Quotes.OrderId).FirstOrDefault();
+                    var bidList = _appraisallandContext.Bids.Where(x => x.OrderId == quotes.OrderId).ToList();
+                    var propertyDetail = _appraisallandContext.Properties.Where(x => x.OrderId == quotes.OrderId).FirstOrDefault();
 
-                    if (PropertyDetails != null)
+                    if (propertyDetail != null)
                     {
-                        PropertyDetails.IsCompleted = 1;
-                        _AppraisallandContext.Properties.Update(PropertyDetails);
-                        _AppraisallandContext.SaveChanges();
+                        propertyDetail.IsCompleted = 1;
+                        _appraisallandContext.Properties.Update(propertyDetail);
+                        _appraisallandContext.SaveChanges();
                     }
 
-                    foreach (var bid in BidDetails)
+                    foreach (var bid in bidList)
                     {
-                        if (bid.BidId != quotes_details.Result.BidId)
+                        if (bid.BidId != quotesDetails.Result.BidId)
                         {
                             bid.Status = 2;
-                            _AppraisallandContext.Bids.Update(bid);
-                            _AppraisallandContext.SaveChanges();
+                            _appraisallandContext.Bids.Update(bid);
+                            _appraisallandContext.SaveChanges();
                         }
 
                     }

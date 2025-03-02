@@ -8,10 +8,10 @@ namespace DAL.Repository
         bool IsEmailVerified(string email);
         bool VerifyPasswordHash(string password, string email);
         string GenerateJwtToken(UserInformation user);
-        Task<Broker> GetBrokerdetails(long UserId);
-        Task<Brokerage> GetBrokerageDetails(long UserId);
-        Task<Appraiser> GetAppraiserdetails(long UserId);
-        Task<AppraiserCompany> GetAppraiserCompanydetails(long UserId);
-        List<Subscription> GetSubscriptiondetails(long UserId);
+        Task<Broker> GetBrokerDetails(long userId);
+        Task<Brokerage> GetBrokerageDetails(long userId);
+        Task<Appraiser> GetAppraiserDetails(long userId);
+        Task<AppraiserCompany> GetAppraiserCompanyDetails(long userId);
+        List<Subscription> GetSubscriptionDetails(long userId);
     }
 }

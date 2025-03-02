@@ -11,11 +11,11 @@
 
         public int? NoOfProperties { get; set; }
 
-        public string? Topupname { get; set; }
+        public string? TopupName { get; set; }
 
         public string? TopupDescription { get; set; }
 
-        public string? Currencycode { get; set; }
+        public string? CurrencyCode { get; set; }
 
         public string? ReturnUrl { get; set; }
 

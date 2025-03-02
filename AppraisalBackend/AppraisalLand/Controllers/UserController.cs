@@ -39,63 +39,63 @@ namespace AppraisalLand.Controllers
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="UserId"></param>
+        /// <param name="userId"></param>
         /// <returns></returns>
         [Authorize]
         [HttpGet("UserProfile")]
-        public async Task<IActionResult> getUserDetails(int UserId)
+        public async Task<IActionResult> getUserDetails(int userId)
         {
             log.WriteLog("getUserDetails Function starting");
             try
             {
-                var User = _context.UserInformations.Where(x => x.UserId == UserId).FirstOrDefault();
-                if (User != null)
+                var userDetail = _context.UserInformations.Where(x => x.UserId == userId).FirstOrDefault();
+                if (userDetail != null)
                 {
-                    var UserType = User.UserType;
+                    var UserType = userDetail.UserType;
 
                     switch (UserType)
                     {
                         case 1:
-                            var Broker = _broker.GetBrokerByUserId(UserId);
-                            if (Broker != null)
+                            var broker = _broker.GetBrokerByUserId(userId);
+                            if (broker != null)
                             {
-                                return Ok(Broker);
+                                return Ok(broker);
                             }
                             break;
                         case 2:
-                            var Brokerage = _brokerage.GetBrokerageByUserId(UserId);
-                            if (Brokerage != null)
+                            var brokerage = _brokerage.GetBrokerageByUserId(userId);
+                            if (brokerage != null)
                             {
-                                return Ok(Brokerage);
+                                return Ok(brokerage);
                             }
                             break;
                         case 3:
 
-                            var Appraiser = _appraiserIndividual.GetAppraiserByUserId(UserId);
-                            if (Appraiser != null)
+                            var appraiser = _appraiserIndividual.GetAppraiserByUserId(userId);
+                            if (appraiser != null)
                             {
-                                return Ok(new { Appraiser });
+                                return Ok(new { appraiser });
                             }
                             break;
                         case 4:
-                            var AppraiserCompany = _appraiserCompany.GetAppraisersCompany(UserId);
-                            if (AppraiserCompany != null)
+                            var appraiserCompany = _appraiserCompany.GetAppraisersCompany(userId);
+                            if (appraiserCompany != null)
                             {
-                                return Ok(new { AppraiserCompany });
+                                return Ok(new { appraiserCompany });
                             }
                             break;
                         case 5:
-                            var AppraiserByCompany = _appraiserIndividual.GetAppraiserByUserId(UserId);
-                            if (AppraiserByCompany != null)
+                            var subAppraiserByCompany = _appraiserIndividual.GetAppraiserByUserId(userId);
+                            if (subAppraiserByCompany != null)
                             {
-                                return Ok(new { AppraiserByCompany });
+                                return Ok(new { subAppraiserByCompany });
                             }
                             break;
                         case 6:
-                            var BrokerByBrokerageCompany = _broker.GetBrokerByUserId(UserId);
-                            if (BrokerByBrokerageCompany != null)
+                            var subBrokerByBrokerageCompany = _broker.GetBrokerByUserId(userId);
+                            if (subBrokerByBrokerageCompany != null)
                             {
-                                return Ok(new { BrokerByBrokerageCompany });
+                                return Ok(new { subBrokerByBrokerageCompany });
                             }
                             break;
                         default:
@@ -105,7 +105,7 @@ namespace AppraisalLand.Controllers
                 }
                 else
                 {
-                    return NotFound($"User not found with UserID {UserId}");
+                    return NotFound($"User not found with UserID {userId}");
                 }
             }
             catch (Exception ex)

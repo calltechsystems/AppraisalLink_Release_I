@@ -83,15 +83,15 @@ namespace DAL.Repository
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="UserId"></param>
+        /// <param name="userId"></param>
         /// <returns></returns>
-        public ServiceResponse<string> PaymentUrl(long UserId)
+        public ServiceResponse<string> PaymentUrl(long userId)
         {
             var serviceResponse = new ServiceResponse<string>();
             try
             {
-                var userDetails = _AppraisallandContext.UserInformations.Where(x => x.UserId == UserId).FirstOrDefault();
-                var product = _AppraisallandContext.Topups.Where(X => X.UserType == userDetails.UserType).FirstOrDefault();
+                var userDetail = _AppraisallandContext.UserInformations.Where(x => x.UserId == userId).FirstOrDefault();
+                var topupDetail = _AppraisallandContext.Topups.Where(X => X.UserType == userDetail.UserType).FirstOrDefault();
                 double cartAmount = 0;
                 var itemList = new ItemList();
                 var items = new List<Item>();
@@ -99,24 +99,24 @@ namespace DAL.Repository
                 var apiContext = GetAPIContext(_applicationSettings.ClientId, _applicationSettings.ClientSecret);
 
                 var payment = new PaypalTopUpPayment();
-                payment.SiteURL = product.ReturnUrl;
+                payment.SiteURL = topupDetail.ReturnUrl;
                 payment.InvoiceNumber = $"{Guid.NewGuid()}";
-                payment.Currency = product.Currencycode;
+                payment.Currency = topupDetail.CurrencyCode;
                 //payment.Tax = $"{product.Tax}";
                 // payment.ShippingFee = $"{product.ShippingFee}";
-                payment.OrderDescription = $"{product.TopupDescription}";
-                payment.Currency = product.Currencycode;
-                payment.ProductList.Add(product);
+                payment.OrderDescription = $"{topupDetail.TopupDescription}";
+                payment.Currency = topupDetail.CurrencyCode;
+                payment.ProductList.Add(topupDetail);
 
 
                 itemList.items = items;
-                cartAmount = (double)product.TopUpAmount;
+                cartAmount = (double)topupDetail.TopUpAmount;
 
                 var payer = new Payer() { payment_method = "paypal" };
                 var redirUrls = new RedirectUrls()
                 {
                     cancel_url = payment.SiteURL + "?cancel=true",
-                    return_url = $"{payment.SiteURL}?UserId={UserId}&TopUp={product.Id}"
+                    return_url = $"{payment.SiteURL}?UserId={userId}&TopUp={topupDetail.Id}"
                 };
 
                 var details = new Details()
@@ -167,9 +167,9 @@ namespace DAL.Repository
         /// 
         /// </summary>
         /// <param name="email"></param>
-        /// <param name="TopUpname"></param>
+        /// <param name="topUpName"></param>
         /// <returns></returns>
-        public bool sendMailBuyTopUpPlan(string email, string TopUpname)
+        public bool sendMailBuyTopUpPlan(string email, string topUpName)
         {
             try
             {
@@ -181,7 +181,7 @@ namespace DAL.Repository
 
                 string appraiserMessage = $"Dear User,\n\n";
                 appraiserMessage += $"Congratulations! Your top-up plan has been purchased successfully with the following plan:\n";
-                appraiserMessage += $"[TopUp Name:{TopUpname}]\n\n";
+                appraiserMessage += $"[TopUp Name:{topUpName}]\n\n";
                 appraiserMessage += $"Thank you for choosing our services. If you have any queries, feel free to reach out.\n\n";
                 appraiserMessage += $"Best regards,\n";
                 appraiserMessage += $"Support Team\n";
@@ -190,11 +190,11 @@ namespace DAL.Repository
 
                 appraiserMail.Body = appraiserMessage;
 
-                NetworkCredential info = new NetworkCredential("pradhumn7078@gmail.com", pswd);
+                NetworkCredential credential = new NetworkCredential("pradhumn7078@gmail.com", pswd);
                 SmtpClient smtp = new SmtpClient("smtp.gmail.com")
                 {
                     Port = 587,
-                    Credentials = info,
+                    Credentials = credential,
                     EnableSsl = true
                 };
 

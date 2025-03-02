@@ -11,7 +11,7 @@ namespace DAL.Repository
     /// <summary>
     /// 
     /// </summary>
-    public class IbidService : Ibid
+    public class BidRepositoryService : Ibid
     {
         private readonly AppraisallandsContext _context;
 
@@ -19,7 +19,7 @@ namespace DAL.Repository
         /// 
         /// </summary>
         /// <param name="context"></param>
-        public IbidService(AppraisallandsContext context)
+        public BidRepositoryService(AppraisallandsContext context)
         {
             _context = context;
         }
@@ -27,18 +27,18 @@ namespace DAL.Repository
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="clsBid"></param>
+        /// <param name="bid"></param>
         /// <returns></returns>
-        public async Task<DBL.Models.Bid> AppraiserBidAsync(DAL.Classes.Bid clsBid)
+        public async Task<DBL.Models.Bid> AppraiserBidAsync(DAL.Classes.Bid bid)
         {
-            long? Appraiser_Id = clsBid.appraiserId;
-            int? BidLowerRange = 0;
-            int? BidUpperRange = 0;
-            DateTime? request_time = DateTime.Now;
+            long? appraiserId = bid.AppraiserId;
+            int? bidLowerRange = 0;
+            int? bidUpperRange = 0;
+            DateTime? requestTime = DateTime.Now;
 
             int status = 0;
-            var Quotes_Details = _context.Bids.Where(x => x.OrderId == clsBid.OrderId).ToList();
-            foreach (var item in Quotes_Details)
+            var quotesDetails = _context.Bids.Where(x => x.OrderId == bid.OrderId).ToList();
+            foreach (var item in quotesDetails)
             {
                 var t = item.Status;
                 if (t == 1)
@@ -48,78 +48,77 @@ namespace DAL.Repository
             }
 
             //var bid_data=_context.Appraisers.Where(x=>x.UserId==user_id).FirstOrDefault();
-            var Property_data = _context.Properties.Where(x => x.OrderId == clsBid.OrderId).FirstOrDefault();
+            var propertyDetail = _context.Properties.Where(x => x.OrderId == bid.OrderId).FirstOrDefault();
             //var user = _context.UserInformations.Where(x => x.UserId == clsBid.appraiserId).FirstOrDefault();
-            if (Property_data != null)
+            if (propertyDetail != null)
             {
-
-                BidLowerRange = Property_data.BidLowerRange;
-                BidUpperRange = Property_data.BidUpperRange;
-
+                bidLowerRange = propertyDetail.BidLowerRange;
+                bidUpperRange = propertyDetail.BidUpperRange;
             }
             else
             {
                 return null;
             }
-            var AppraiserName = "";
-            var User_ID = Property_data.UserId;
-            var UserDetails = _context.UserInformations.Where(x => x.UserId == User_ID).FirstOrDefault();
-            if (UserDetails != null)
+
+            var appraiserName = "";
+            var userId = propertyDetail.UserId;
+            var userDetail = _context.UserInformations.Where(x => x.UserId == userId).FirstOrDefault();
+            if (userDetail != null)
             {
-                var UserEmail = UserDetails.Email;
-                SendEmail(UserEmail, clsBid);
+                var userEmail = userDetail.Email;
+                SendEmail(userEmail, bid);
                 // SendSms(clsBid);
             }
-            var LenderListUrl = "";
-            var AppraiserDetails = _context.Appraisers.Where(x => x.UserId == clsBid.AppraiserUserId).FirstOrDefault();
-            if (AppraiserDetails != null)
+            var lenderListUrl = "";
+            var appraiserDetail = _context.Appraisers.Where(x => x.UserId == bid.AppraiserUserId).FirstOrDefault();
+            if (appraiserDetail != null)
             {
-                AppraiserName = AppraiserDetails.FirstName + " " + AppraiserDetails.LastName;
-                LenderListUrl = AppraiserDetails.LenderListUrl;
+                appraiserName = appraiserDetail.FirstName + " " + appraiserDetail.LastName;
+                lenderListUrl = appraiserDetail.LenderListUrl;
             }
             else
             {
-                var appraiserCompanyDetails = _context.AppraiserCompanies.Where(x => x.UserId == clsBid.AppraiserUserId).FirstOrDefault();
-                AppraiserName = appraiserCompanyDetails.FirstName + appraiserCompanyDetails.LastName;
-                LenderListUrl = appraiserCompanyDetails.LenderListUrl;
+                var appraiserCompanyDetail = _context.AppraiserCompanies.Where(x => x.UserId == bid.AppraiserUserId).FirstOrDefault();
+                appraiserName = appraiserCompanyDetail.FirstName + appraiserCompanyDetail.LastName;
+                lenderListUrl = appraiserCompanyDetail.LenderListUrl;
             }
-            DBL.Models.Bid bid = new DBL.Models.Bid();
-            bid.UserId = UserDetails.UserId;
-            bid.Description = clsBid.Description;
-            bid.Status = status;
-            bid.AppraiserUserId = Appraiser_Id;
-            bid.BidLowerRange = BidLowerRange;
-            bid.BidUpperRange = BidUpperRange;
-            bid.RequestTime = request_time;
-            bid.OrderId = clsBid.OrderId;
-            bid.BidAmount = clsBid.BidAmount;
-            bid.AppraiserName = AppraiserName;
-            bid.LenderListUrl = LenderListUrl;
-            _context.Add(bid);
+            DBL.Models.Bid newBid = new DBL.Models.Bid();
+            newBid.UserId = userDetail.UserId;
+            newBid.Description = bid.Description;
+            newBid.Status = status;
+            newBid.AppraiserUserId = appraiserId;
+            newBid.BidLowerRange = bidLowerRange;
+            newBid.BidUpperRange = bidUpperRange;
+            newBid.RequestTime = requestTime;
+            newBid.OrderId = bid.OrderId;
+            newBid.BidAmount = bid.BidAmount;
+            newBid.AppraiserName = appraiserName;
+            newBid.LenderListUrl = lenderListUrl;
+            _context.Add(newBid);
             _context.SaveChanges();
 
-            return bid;
+            return newBid;
         }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="clsBid"></param>
+        /// <param name="bid"></param>
         /// <returns></returns>
-        public async Task<PublishResponse> SendSms(DBL.Models.Bid clsBid)
+        public async Task<PublishResponse> SendSms(DBL.Models.Bid bid)
         {
             try
             {
-                long? User_ID = 0;
-                var property = _context.Properties.Where(x => x.OrderId == clsBid.OrderId).FirstOrDefault();
-                if (property != null)
+                long? userId = 0;
+                var propertyDetail = _context.Properties.Where(x => x.OrderId == bid.OrderId).FirstOrDefault();
+                if (propertyDetail != null)
                 {
-                    User_ID = property.UserId;
+                    userId = propertyDetail.UserId;
                 }
-                var user = _context.Brokers.Where(x => x.UserId == User_ID).FirstOrDefault();
-                if (user != null)
+                var userDetail = _context.Brokers.Where(x => x.UserId == userId).FirstOrDefault();
+                if (userDetail != null)
                 {
-                    var Number = user.PhoneNumber;
+                    var phoneNumber = userDetail.PhoneNumber;
 
                     string awsKeyId = "AKIA463TBXUOCZ3E2BYH";
                     string awsKeySecret = "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";
@@ -130,7 +129,7 @@ namespace DAL.Repository
                     var publishRequest = new PublishRequest
                     {
                         Message = "A new bid has been placed on your property",
-                        PhoneNumber = Number
+                        PhoneNumber = phoneNumber
                     };
 
                     publishRequest.MessageAttributes.Add("AWS.SNS.SMS.SMSType", new MessageAttributeValue { StringValue = "Transactional", DataType = "String" });
@@ -151,13 +150,13 @@ namespace DAL.Repository
         /// 
         /// </summary>
         /// <param name="toEmail"></param>
-        /// <param name="clsBid"></param>
+        /// <param name="bid"></param>
         /// <returns></returns>
-        public bool SendEmail(string toEmail, DAL.Classes.Bid clsBid)
+        public bool SendEmail(string toEmail, DAL.Classes.Bid bid)
         {
             try
             {
-                var property = _context.Properties.Where(x => x.OrderId == clsBid.OrderId).FirstOrDefault();
+                var property = _context.Properties.Where(x => x.OrderId == bid.OrderId).FirstOrDefault();
                 string pswd = "odkzjyvtiwmtdjtq";
                 MailMessage appraiserMail = new MailMessage();
                 appraiserMail.From = new MailAddress("pradhumn7078@gmail.com");
@@ -168,7 +167,7 @@ namespace DAL.Repository
                 appraiserMessage += $"We're pleased to share that one of our esteemed appraisers has submitted a new quote for the property you listed.\n\n";
                 appraiserMessage += $"Appraiser's Quote Details:\n";
                 appraiserMessage += $"• Property: [{property.City},{property.StreetName},{property.StreetNumber},{property.ZipCode}]\n";
-                appraiserMessage += $"• Appraised Value: [{clsBid.BidAmount}]\n";
+                appraiserMessage += $"• Appraised Value: [{bid.BidAmount}]\n";
                 appraiserMessage += $"• Date of Appraisal: [{DateTime.Now}]\n\n";
                 appraiserMessage += $"Your prompt attention to this quote is appreciated. Please login to our platform to review the details and proceed accordingly.\n\n";
                 appraiserMessage += $"[Login](<a\"https://appraisal-eta.vercel.app/>) || [Appraisal Link](<a\"https://appraisal-eta.vercel.app/>)\n\n";
@@ -177,14 +176,13 @@ namespace DAL.Repository
                 appraiserMessage += $"Support Team\n";
                 appraiserMessage += $"Appraisal Land\n";
 
-
                 appraiserMail.Body = appraiserMessage;
 
-                NetworkCredential info = new NetworkCredential("pradhumn7078@gmail.com", pswd);
+                NetworkCredential credential = new NetworkCredential("pradhumn7078@gmail.com", pswd);
                 SmtpClient smtp = new SmtpClient("smtp.gmail.com")
                 {
                     Port = 587,
-                    Credentials = info,
+                    Credentials = credential,
                     EnableSsl = true
                 };
 
@@ -193,7 +191,6 @@ namespace DAL.Repository
             }
             catch (Exception)
             {
-
                 return false;
             }
         }
@@ -201,16 +198,16 @@ namespace DAL.Repository
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="OrderId"></param>
+        /// <param name="orderId"></param>
         /// <returns></returns>
-        public async Task<List<DBL.Models.Bid>> getAllAppraiserBidAsync(int OrderId)
+        public async Task<List<DBL.Models.Bid>> getAllAppraiserBidAsync(int orderId)
         {
-            var propertyDetails = _context.Properties.Where(x => x.OrderId == OrderId).FirstOrDefault();
-            if (propertyDetails != null)
+            var orderDetail = _context.Properties.Where(x => x.OrderId == orderId).FirstOrDefault();
+            if (orderDetail != null)
             {
-                var bid_data = _context.Bids.Where(x => x.OrderId == OrderId).OrderBy(x => x.RequestTime).ToList();
+                var bids = _context.Bids.Where(x => x.OrderId == orderId).OrderBy(x => x.RequestTime).ToList();
 
-                return bid_data;
+                return bids;
             }
             return null;
         }
@@ -218,14 +215,14 @@ namespace DAL.Repository
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="PropertyID"></param>
+        /// <param name="propertyId"></param>
         /// <returns></returns>
-        public Task<List<DBL.Models.Bid>> getAppraiserBidbyId(long PropertyID)
+        public Task<List<DBL.Models.Bid>> getAppraiserBidbyId(long propertyId)
         {
-            var bid_data = _context.Bids.Where(x => x.OrderId == PropertyID).OrderByDescending(x => x.RequestTime).ToList();
-            if (bid_data != null)
+            var bids = _context.Bids.Where(x => x.OrderId == propertyId).OrderByDescending(x => x.RequestTime).ToList();
+            if (bids != null)
             {
-                return Task.FromResult(bid_data);
+                return Task.FromResult(bids);
             }
             return null;
         }
@@ -241,15 +238,15 @@ namespace DAL.Repository
             TimeZoneInfo estZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
             DateTime estTime = TimeZoneInfo.ConvertTimeFromUtc(utcNow, estZone);
 
-            var data = _context.Bids.Where(x => x.BidId == bidId).FirstOrDefault();
-            if (data != null)
+            var bidDetail = _context.Bids.Where(x => x.BidId == bidId).FirstOrDefault();
+            if (bidDetail != null)
             {
-                data.Status = 1;
-                data.ResponseTime = estTime; // Need to convert to Est 
-                _context.Bids.Update(data);
+                bidDetail.Status = 1;
+                bidDetail.ResponseTime = estTime; // Need to convert to Est 
+                _context.Bids.Update(bidDetail);
                 _context.SaveChanges();
                 SendMailAcceptQuotes(bidId);
-                return Task.FromResult(data);
+                return Task.FromResult(bidDetail);
             }
             return null;
         }
@@ -263,12 +260,11 @@ namespace DAL.Repository
         {
             try
             {
-                var Bid_Details = _context.Bids.Where(x => x.BidId == bidId).FirstOrDefault();
+                var bidDetail = _context.Bids.Where(x => x.BidId == bidId).FirstOrDefault();
 
-                if (Bid_Details != null)
+                if (bidDetail != null)
                 {
-                    var email = _context.UserInformations.Where(x => x.UserId == Bid_Details.UserId).Select(x => x.Email).FirstOrDefault();
-
+                    var email = _context.UserInformations.Where(x => x.UserId == bidDetail.UserId).Select(x => x.Email).FirstOrDefault();
 
                     string pswd = "odkzjyvtiwmtdjtq";
                     MailMessage appraiserMail = new MailMessage();
@@ -287,28 +283,22 @@ namespace DAL.Repository
 
                     appraiserMail.Body = appraiserMessage;
 
-                    NetworkCredential info = new NetworkCredential("pradhumn7078@gmail.com", pswd);
+                    NetworkCredential credential = new NetworkCredential("pradhumn7078@gmail.com", pswd);
                     SmtpClient smtp = new SmtpClient("smtp.gmail.com")
                     {
                         Port = 587,
-                        Credentials = info,
+                        Credentials = credential,
                         EnableSsl = true
                     };
 
                     smtp.Send(appraiserMail);
-
-
                 }
-
-
                 return true;
             }
             catch (Exception)
             {
-
                 return false;
             }
-
         }
 
         /// <summary>
@@ -320,12 +310,11 @@ namespace DAL.Repository
         {
             try
             {
-                var Bid_Details = _context.Bids.Where(x => x.BidId == bidId).FirstOrDefault();
+                var bidDetail = _context.Bids.Where(x => x.BidId == bidId).FirstOrDefault();
 
-                if (Bid_Details != null)
+                if (bidDetail != null)
                 {
-                    var email = _context.UserInformations.Where(x => x.UserId == Bid_Details.UserId).Select(x => x.Email).FirstOrDefault();
-
+                    var email = _context.UserInformations.Where(x => x.UserId == bidDetail.UserId).Select(x => x.Email).FirstOrDefault();
 
                     string pswd = "odkzjyvtiwmtdjtq";
                     MailMessage appraiserMail = new MailMessage();
@@ -334,7 +323,7 @@ namespace DAL.Repository
                     appraiserMail.To.Add(new MailAddress(email));
 
                     string appraiserMessage = $"Dear Appraiser's,\n\n";
-                    appraiserMessage += $"We regret to inform you that the broker has rejected your quote for the property (order ID:{Bid_Details.OrderId}). Thank you for your time and effort.\n\n";
+                    appraiserMessage += $"We regret to inform you that the broker has rejected your quote for the property (order ID:{bidDetail.OrderId}). Thank you for your time and effort.\n\n";
                     appraiserMessage += "Thank you for being part of our community! If you have any queries, feel free to reach out.\n\n";
                     appraiserMessage += "Best regards,\n";
                     appraiserMessage += "Support Team\n";
@@ -342,28 +331,22 @@ namespace DAL.Repository
 
                     appraiserMail.Body = appraiserMessage;
 
-                    NetworkCredential info = new NetworkCredential("pradhumn7078@gmail.com", pswd);
+                    NetworkCredential credential = new NetworkCredential("pradhumn7078@gmail.com", pswd);
                     SmtpClient smtp = new SmtpClient("smtp.gmail.com")
                     {
                         Port = 587,
-                        Credentials = info,
+                        Credentials = credential,
                         EnableSsl = true
                     };
 
                     smtp.Send(appraiserMail);
-
-
                 }
-
-
                 return true;
             }
             catch (Exception)
             {
-
                 return false;
             }
-
         }
 
         /// <summary>
@@ -377,15 +360,15 @@ namespace DAL.Repository
             TimeZoneInfo estZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
             DateTime estTime = TimeZoneInfo.ConvertTimeFromUtc(utcNow, estZone);
 
-            var data = _context.Bids.Where(x => x.BidId == bidId).FirstOrDefault();
-            if (data != null)
+            var bidDetail = _context.Bids.Where(x => x.BidId == bidId).FirstOrDefault();
+            if (bidDetail != null)
             {
-                data.Status = 2;
-                data.ResponseTime = estTime;
-                _context.Bids.Update(data);
+                bidDetail.Status = 2;
+                bidDetail.ResponseTime = estTime;
+                _context.Bids.Update(bidDetail);
                 _context.SaveChanges();
                 SendMailDeclineQuotes(bidId);
-                return Task.FromResult(data);
+                return Task.FromResult(bidDetail);
             }
             return null;
         }
@@ -393,10 +376,10 @@ namespace DAL.Repository
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="bidiD"></param>
+        /// <param name="bidId"></param>
         /// <param name="bid"></param>
         /// <returns></returns>
-        public async Task<DBL.Models.Bid> UpdateBid(long bidiD, Classes.Bid bid)
+        public async Task<DBL.Models.Bid> UpdateBid(long bidId, Classes.Bid bid)
         {
             try
             {
@@ -404,23 +387,23 @@ namespace DAL.Repository
                 TimeZoneInfo estZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
                 DateTime estTime = TimeZoneInfo.ConvertTimeFromUtc(utcNow, estZone);
 
-                var BidDetails = _context.Bids.Where(x => x.BidId == bidiD).FirstOrDefault();
-                if (BidDetails != null)
+                var bidDetail = _context.Bids.Where(x => x.BidId == bidId).FirstOrDefault();
+                if (bidDetail != null)
                 {
-                    BidDetails.OrderId = bid.OrderId;
-                    BidDetails.UserId = bid.UserId;
-                    BidDetails.AppraiserUserId = bid.AppraiserUserId;
-                    BidDetails.RequestTime = estTime;
-                    BidDetails.Status = bid.Status;
-                    BidDetails.Description = bid.Description;
-                    BidDetails.BidAmount = bid.BidAmount;
-                    BidDetails.BidLowerRange = bid.BidLowerRange;
-                    BidDetails.BidUpperRange = bid.BidUpperRange;
+                    bidDetail.OrderId = bid.OrderId;
+                    bidDetail.UserId = bid.UserId;
+                    bidDetail.AppraiserUserId = bid.AppraiserUserId;
+                    bidDetail.RequestTime = estTime;
+                    bidDetail.Status = bid.Status;
+                    bidDetail.Description = bid.Description;
+                    bidDetail.BidAmount = bid.BidAmount;
+                    bidDetail.BidLowerRange = bid.BidLowerRange;
+                    bidDetail.BidUpperRange = bid.BidUpperRange;
 
-                    _context.Bids.Update(BidDetails);
+                    _context.Bids.Update(bidDetail);
                     _context.SaveChanges();
 
-                    return BidDetails;
+                    return bidDetail;
                 }
             }
             catch (Exception ex)
@@ -436,14 +419,14 @@ namespace DAL.Repository
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="Userid"></param>
+        /// <param name="userId"></param>
         /// <returns></returns>
-        public Task<List<DBL.Models.Bid>> getAppraiserBidbyUserID(long Userid)
+        public Task<List<DBL.Models.Bid>> getAppraiserBidbyUserID(long userId)
         {
-            var bid_data = _context.Bids.Where(x => x.UserId == Userid).ToList();
-            if (bid_data != null)
+            var bids = _context.Bids.Where(x => x.UserId == userId).ToList();
+            if (bids != null)
             {
-                return Task.FromResult(bid_data);
+                return Task.FromResult(bids);
             }
             return null;
         }
@@ -451,9 +434,9 @@ namespace DAL.Repository
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="quoteClass"></param>
+        /// <param name="quote"></param>
         /// <returns></returns>
-        public DBL.Models.Bid UpdateStatus(QuoteClass quoteClass)
+        public DBL.Models.Bid UpdateStatus(QuoteClass quote)
         {
             try
             {
@@ -461,16 +444,16 @@ namespace DAL.Repository
                 TimeZoneInfo estZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
                 DateTime estTime = TimeZoneInfo.ConvertTimeFromUtc(utcNow, estZone);
 
-                var Bid_Details = _context.Bids.Where(x => x.BidId == quoteClass.Quoteid).FirstOrDefault();
-                if (Bid_Details != null)
+                var bidDetail = _context.Bids.Where(x => x.BidId == quote.QuoteId).FirstOrDefault();
+                if (bidDetail != null)
                 {
-                    Bid_Details.Orderstatus = quoteClass.OrderStatus;
-                    Bid_Details.Remark = quoteClass.remark;
-                    Bid_Details.ModifiedDate = estTime;
-                    Bid_Details.Statusdate = quoteClass.statusDate;
-                    _context.Bids.Update(Bid_Details);
+                    bidDetail.OrderStatus = quote.OrderStatus;
+                    bidDetail.Remark = quote.Remark;
+                    bidDetail.ModifiedDate = estTime;
+                    bidDetail.StatusDate = quote.StatusDate;
+                    _context.Bids.Update(bidDetail);
                     _context.SaveChanges();
-                    return Bid_Details;
+                    return bidDetail;
                 }
             }
             catch (Exception ex)

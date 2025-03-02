@@ -1,5 +1,6 @@
 ﻿using DAL.Classes;
 using DBL.Models;
+using Microsoft.Extensions.Configuration;
 using System.Net;
 using System.Net.Mail;
 using System.Text.RegularExpressions;
@@ -11,15 +12,16 @@ namespace DAL.Repository
     /// </summary>
     public class SmtpEmailService : IEmailService
     {
-        private readonly AppraisallandsContext _AppraisallandContext;
+        private readonly AppraisallandsContext _appraisallandContext;
+        private IConfiguration _configuration;
         //private readonly HttpClient _httpClient;
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="AppraisallandContext"></param>
-        public SmtpEmailService(AppraisallandsContext AppraisallandContext)
+        /// <param name="appraisallandContext"></param>
+        public SmtpEmailService(AppraisallandsContext appraisallandContext)
         {
-            _AppraisallandContext = AppraisallandContext;
+            _appraisallandContext = appraisallandContext;
         }
 
         /// <summary>
@@ -32,19 +34,19 @@ namespace DAL.Repository
             try
             {
                 string pswd = "odkzjyvtiwmtdjtq";
-                MailMessage m = new MailMessage();
-                m.From = new MailAddress("pradhumn7078@gmail.com");
-                m.Subject = emailClass.subject;
-                m.To.Add(new MailAddress(emailClass.toEmail));
-                m.Body = emailClass.body;
-                NetworkCredential info = new NetworkCredential("pradhumn7078@gmail.com", pswd);
+                MailMessage message = new MailMessage();
+                message.From = new MailAddress("pradhumn7078@gmail.com");
+                message.Subject = emailClass.Subject;
+                message.To.Add(new MailAddress(emailClass.ToEmail));
+                message.Body = emailClass.Body;
+                NetworkCredential credential = new NetworkCredential("pradhumn7078@gmail.com", pswd);
                 SmtpClient smtp = new SmtpClient("smtp.gmail.com")
                 {
                     Port = 587,
-                    Credentials = info,
+                    Credentials = credential,
                     EnableSsl = true
                 };
-                smtp.Send(m);
+                smtp.Send(message);
                 return true;
             }
             catch (Exception ex)
@@ -77,11 +79,11 @@ namespace DAL.Repository
                 }
 
                 string pswd = "odkzjyvtiwmtdjtq";
-                MailMessage m = new MailMessage();
-                m.From = new MailAddress("pradhumn7078@gmail.com");
-                m.Subject = "Verify Your Email Address - Action Required";
-                m.To.Add(new MailAddress(toEmail));
-                m.IsBodyHtml = true;
+                MailMessage message = new MailMessage();
+                message.From = new MailAddress("pradhumn7078@gmail.com");
+                message.Subject = "Verify Your Email Address - Action Required";
+                message.To.Add(new MailAddress(toEmail));
+                message.IsBodyHtml = true;
 
                 //string emailBody = $"Dear User,\n\n";
                 //emailBody += $"Your profile has been created successfully. To complete the verification process and access your account, please click the link below:\n";
@@ -162,16 +164,16 @@ namespace DAL.Repository
                                      </html>";
 
 
-                m.Body = emailBody;
+                message.Body = emailBody;
 
-                NetworkCredential info = new NetworkCredential("pradhumn7078@gmail.com", pswd);
+                NetworkCredential credential = new NetworkCredential("pradhumn7078@gmail.com", pswd);
                 SmtpClient smtp = new SmtpClient("smtp.gmail.com")
                 {
                     Port = 587,
-                    Credentials = info,
+                    Credentials = credential,
                     EnableSsl = true
                 };
-                smtp.Send(m);
+                smtp.Send(message);
                 return true;
             }
             catch (Exception ex)
@@ -272,22 +274,21 @@ namespace DAL.Repository
         /// <returns></returns>
         public bool VerifyEmailToken(string token)
         {
-            var User = _AppraisallandContext.UserInformations.FirstOrDefault(x => x.VerifyEmailToken == token);
-            if (User == null)
+            var userDetail = _appraisallandContext.UserInformations.FirstOrDefault(x => x.VerifyEmailToken == token);
+            if (userDetail == null)
             {
                 return false;
             }
-            TimeSpan timeDifference = DateTime.Now - User.CreatedDateTime;
+            TimeSpan timeDifference = DateTime.Now - userDetail.CreatedDateTime;
             if (timeDifference.TotalHours >= 72)
             {
                 return false;
             }
             else
             {
-
-                User.IsActive = true;
-                _AppraisallandContext.Update(User);
-                _AppraisallandContext.SaveChanges();
+                userDetail.IsActive = true;
+                _appraisallandContext.Update(userDetail);
+                _appraisallandContext.SaveChanges();
                 return true;
             }
         }
@@ -299,17 +300,17 @@ namespace DAL.Repository
         /// <returns></returns>
         public UserInformation getdata(string token)
         {
-            var User = _AppraisallandContext.UserInformations.FirstOrDefault(x => x.Email.ToLower() == token.ToLower());
-            if (User == null)
+            var userDetail = _appraisallandContext.UserInformations.FirstOrDefault(x => x.Email.ToLower() == token.ToLower());
+            if (userDetail == null)
             {
                 return null;
             }
             else
             {
                 //User.IsPasswordSet = true;
-                _AppraisallandContext.Update(User);
-                _AppraisallandContext.SaveChanges();
-                return User;
+                _appraisallandContext.Update(userDetail);
+                _appraisallandContext.SaveChanges();
+                return userDetail;
             }
         }
 
@@ -320,37 +321,37 @@ namespace DAL.Repository
         /// <returns></returns>
         public UserInformation getUser(string emailId)
         {
-            var User = _AppraisallandContext.UserInformations.FirstOrDefault(x => x.Email.ToLower() == emailId.ToLower());
-            if (User == null)
+            var userInformation = _appraisallandContext.UserInformations.FirstOrDefault(x => x.Email.ToLower() == emailId.ToLower());
+            if (userInformation == null)
             {
                 return null;
             }
-            else { return User; }
+            else { return userInformation; }
         }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="email"></param>
-        /// <param name="brokerageCls"></param>
+        /// <param name="brokerage"></param>
         /// <returns></returns>
-        public bool sendEmailAddBrokerByBrokerageCompany(string email, BrokerageCls brokerageCls)
+        public bool sendEmailAddBrokerByBrokerageCompany(string email, BrokerageCls brokerage)
         {
             try
             {
-                var brokerage_Name = _AppraisallandContext.Brokerages.Where(x => x.Id == brokerageCls.BrokerageId).Select(x => x.BrokerageName).FirstOrDefault();
+                var brokerageName = _appraisallandContext.Brokerages.Where(x => x.Id == brokerage.BrokerageId).Select(x => x.BrokerageName).FirstOrDefault();
 
                 string pswd = "odkzjyvtiwmtdjtq";
                 MailMessage appraiserMail = new MailMessage();
                 appraiserMail.From = new MailAddress("pradhumn7078@gmail.com");
-                appraiserMail.Subject = $"Welcome to [{brokerage_Name}]!";
+                appraiserMail.Subject = $"Welcome to [{brokerageName}]!";
                 appraiserMail.To.Add(new MailAddress(email));
 
                 string appraiserMessage = $"Dear Broker's,\n\n";
                 appraiserMessage += $"We are thrilled to welcome you to the [Brokerage Company] family! Your expertise and dedication to the real estate industry make you a valuable addition to our team.\n\n";
                 appraiserMessage += $"Broker's Details:\n";
                 appraiserMessage += $"• Name: [Broker's Name]\n";
-                appraiserMessage += $"• Brokerage Company: [Brokerage Company Name:{brokerage_Name}]\n";
+                appraiserMessage += $"• Brokerage Company: [Brokerage Company Name:{brokerageName}]\n";
                 appraiserMessage += $"• Contact Information: [Broker's Contact Information]\n";
                 appraiserMessage += $"• Broker ID: [Broker ID]\n\n";
                 appraiserMessage += $"At [Brokerage Company], we are committed to providing you with the support and resources you need to thrive in your role. Whether you're an experienced broker or just starting your career, we're here to help you succeed.\n\n";
@@ -362,11 +363,11 @@ namespace DAL.Repository
 
                 appraiserMail.Body = appraiserMessage;
 
-                NetworkCredential info = new NetworkCredential("pradhumn7078@gmail.com", pswd);
+                NetworkCredential credential = new NetworkCredential("pradhumn7078@gmail.com", pswd);
                 SmtpClient smtp = new SmtpClient("smtp.gmail.com")
                 {
                     Port = 587,
-                    Credentials = info,
+                    Credentials = credential,
                     EnableSsl = true
                 };
 

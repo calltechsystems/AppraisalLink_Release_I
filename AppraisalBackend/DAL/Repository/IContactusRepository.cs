@@ -4,6 +4,6 @@ namespace DAL.Repository
 {
     public interface IContactusRepository
     {
-        Task CreateContactusAsync(ClsContactUs contactu);
+        Task CreateContactusAsync(ClsContactUs contactUs);
     }
 }

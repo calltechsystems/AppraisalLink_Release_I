@@ -47,7 +47,7 @@ namespace DAL.Repository
                 string resetToken = GenerateToken();
 
                 user.ForgotPasswordToken = resetToken;
-                user.Resettokenexpiry = DateTime.Now;
+                user.ResetTokenExpiry = DateTime.Now;
 
                 _callContext.UserInformations.Update(user);
                 _callContext.SaveChanges();
@@ -73,28 +73,28 @@ namespace DAL.Repository
             try
             {
                 string pswd = "odkzjyvtiwmtdjtq";
-                MailMessage m = new MailMessage();
-                m.From = new MailAddress("pradhumn7078@gmail.com");
-                m.Subject = "Password Reset Request for Your '" + toEmail + "' Account";
-                m.To.Add(new MailAddress(toEmail));
-                m.Body = $"Dear User,\n\n";
-                m.Body += $"As requested, here is your one-time password (OTP) for resetting your password:\n";
-                m.Body += $"[OTP Code: {key}]\n\n";
-                m.Body += $"Please enter this OTP on the password reset page to complete the process.\n";
-                m.Body += $"If you didn't initiate this request or need further assistance, please contact our support team immediately.\n\n";
-                m.Body += $"Best regards,\n";
-                m.Body += $"Support Team\n";
-                m.Body += $"Appraisal Land";
+                MailMessage mailMessage = new MailMessage();
+                mailMessage.From = new MailAddress("pradhumn7078@gmail.com");
+                mailMessage.Subject = "Password Reset Request for Your '" + toEmail + "' Account";
+                mailMessage.To.Add(new MailAddress(toEmail));
+                mailMessage.Body = $"Dear User,\n\n";
+                mailMessage.Body += $"As requested, here is your one-time password (OTP) for resetting your password:\n";
+                mailMessage.Body += $"[OTP Code: {key}]\n\n";
+                mailMessage.Body += $"Please enter this OTP on the password reset page to complete the process.\n";
+                mailMessage.Body += $"If you didn't initiate this request or need further assistance, please contact our support team immediately.\n\n";
+                mailMessage.Body += $"Best regards,\n";
+                mailMessage.Body += $"Support Team\n";
+                mailMessage.Body += $"Appraisal Land";
 
 
-                NetworkCredential info = new NetworkCredential("pradhumn7078@gmail.com", pswd);
+                NetworkCredential credential = new NetworkCredential("pradhumn7078@gmail.com", pswd);
                 SmtpClient smtp = new SmtpClient("smtp.gmail.com")
                 {
                     Port = 587,
-                    Credentials = info,
+                    Credentials = credential,
                     EnableSsl = true
                 };
-                smtp.Send(m);
+                smtp.Send(mailMessage);
                 return true;
             }
             catch (Exception ex)
@@ -110,20 +110,20 @@ namespace DAL.Repository
         /// </summary>
         /// <param name="email"></param>
         /// <param name="token"></param>
-        /// <param name="NewPassword"></param>
+        /// <param name="newPassword"></param>
         /// <returns></returns>
-        public async Task<bool> VerifyResetTokenAsync(string email, string token, string NewPassword)
+        public async Task<bool> VerifyResetTokenAsync(string email, string token, string newPassword)
         {
-            var User = _callContext.UserInformations.FirstOrDefault(x => x.Email == email);
-            if (User == null)
+            var user = _callContext.UserInformations.FirstOrDefault(x => x.Email == email);
+            if (user == null)
             {
                 return false;
             }
-            if (User.ForgotPasswordToken != token)
+            if (user.ForgotPasswordToken != token)
             {
                 return false;
             }
-            DateTime? resetTokenExpiry = User.Resettokenexpiry;
+            DateTime? resetTokenExpiry = user.ResetTokenExpiry;
 
             if (resetTokenExpiry.HasValue)
             {
@@ -131,14 +131,14 @@ namespace DAL.Repository
 
                 if (timeElapsed.TotalMinutes <= 10)
                 {
-                    User.ForgotPasswordToken = null;
-                    CreatePasswordHash(NewPassword, out byte[] _passwordHash, out byte[] _passwordSalt);
+                    user.ForgotPasswordToken = null;
+                    CreatePasswordHash(newPassword, out byte[] _passwordHash, out byte[] _passwordSalt);
                     var PasswordHash = _passwordHash;
                     var PasswordSalt = _passwordSalt;
-                    User.PasswordSalt = _passwordSalt;
-                    User.PasswordHash = _passwordHash;
-                    User.Password = NewPassword;
-                    _callContext.UserInformations.Update(User);
+                    user.PasswordSalt = _passwordSalt;
+                    user.PasswordHash = _passwordHash;
+                    user.Password = newPassword;
+                    _callContext.UserInformations.Update(user);
                     _callContext.SaveChanges();
                     return true;
                 }

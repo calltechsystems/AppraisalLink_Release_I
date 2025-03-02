@@ -1,4 +1,6 @@
-﻿using DAL.Classes;
+﻿using AppraisalLand.Helper;
+using DAL.Classes;
+using DAL.Common.Enums;
 using DAL.Repository;
 using DBL.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -15,6 +17,8 @@ namespace AppraisalLand.Controllers
     {
         private readonly AppraisallandsContext _context;
         private readonly IBrokerage _brokerage;
+        private NotificationHelper _smtpEmailService;
+        private IEmailSmsNotification _emailSmsNotification;
         Log log = new Log();
 
         /// <summary>
@@ -22,48 +26,58 @@ namespace AppraisalLand.Controllers
         /// </summary>
         /// <param name="brokerage"></param>
         /// <param name="context"></param>
-        public BrokerageController(IBrokerage brokerage, AppraisallandsContext context)
+        public BrokerageController(IBrokerage brokerage, AppraisallandsContext context, NotificationHelper smtpEmailService, IEmailSmsNotification emailSmsNotification)
         {
             _brokerage = brokerage;
             _context = context;
+            _smtpEmailService = smtpEmailService;
+            _emailSmsNotification = emailSmsNotification;
         }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="BrokerageId"></param>
+        /// <param name="brokerageId"></param>
         /// <param name="updateRequest"></param>
         /// <returns></returns>
         [Authorize]
         [HttpPut("updateMortgageBrokerageProfile")]
-        public async Task<IActionResult> updateMortgageBrokerageProfile(int BrokerageId, [FromBody] ClsBrokerage updateRequest)
+        public async Task<IActionResult> updateMortgageBrokerageProfile(int brokerageId, [FromBody] ClsBrokerage updateRequest)
         {
             log.WriteLog($"ApprisalLandAppError: BrokerageController->updateMortgageBrokerageProfile Method: Started");
             try
             {
-                var updatedBroker = await _brokerage.UpdateBrokerAsync(BrokerageId, updateRequest);
+                var updatedBroker = await _brokerage.UpdateBrokerAsync(brokerageId, updateRequest);
 
                 if (updatedBroker == null)
                 {
-                    return NotFound($"Brokerage not found with ID {BrokerageId} or update failed");
+                    return NotFound($"Brokerage not found with ID {brokerageId} or update failed");
                 }
 
-                var get_SMS = updateRequest.GetSms;
-                var get_Email = updateRequest.GetEmail;
+                var getSMS = updateRequest.GetSms;
+                var getEmail = updateRequest.GetEmail;
 
-                var user = _context.UserInformations.Where(x => x.UserId == BrokerageId).FirstOrDefault();
+                var user = _context.UserInformations.Where(x => x.UserId == brokerageId).FirstOrDefault();
 
                 if (user != null)
                 {
-                    user.GetEmail = get_Email;
-                    user.GetSms = get_SMS;
+                    user.GetEmail = getEmail;
+                    user.GetSms = getSMS;
                     _context.UserInformations.Update(user);
                     _context.SaveChanges();
                 }
 
-                var Broker_Details = _context.UserInformations.Where(x => x.UserId == BrokerageId).FirstOrDefault();
+                var brokerDetail = _context.UserInformations.Where(x => x.UserId == brokerageId).FirstOrDefault();
+                List<string> emailIds = new List<string>();
+                emailIds.Add(user.Email);
+                var notificationDetail = await _emailSmsNotification.getEmailSmsBody((int)MessageCode.ProfileUpdate);
+                if (notificationDetail != null)
+                {
+                    Task.Run(async () => await _smtpEmailService.SendEmailToUser(emailIds, "Common", "0", notificationDetail.EmailContent, notificationDetail.TriggerPoint));
+                }
+                
                 log.WriteLog($"ApprisalLandAppError: BrokerageController->updateMortgageBrokerageProfile Method: End");
-                return Ok(new { Message = $"Brokerage with ID {BrokerageId} updated successfully", Broker = updatedBroker, IsEmail = Broker_Details.GetEmail, IsSms = Broker_Details.GetSms });
+                return Ok(new { Message = $"Brokerage with ID {brokerageId} updated successfully", Broker = updatedBroker, IsEmail = brokerDetail.GetEmail, IsSms = brokerDetail.GetSms });
             }
             catch (Exception ex)
             {
@@ -95,11 +109,11 @@ namespace AppraisalLand.Controllers
             log.WriteLog($"ApprisalLandAppError: BrokerageController->getBrokerByBrokerage Method: Started");
             try
             {
-                var Brokerage = _brokerage.GetBrokerageById(brokerageId);
-                if (Brokerage != null)
+                var brokerage = _brokerage.GetBrokerageById(brokerageId);
+                if (brokerage != null)
                 {
                     var query = from b in _context.Brokerages
-                                join p in _context.Brokers on b.Id equals p.Brokerageid
+                                join p in _context.Brokers on b.Id equals p.BrokerageId
                                 join u in _context.UserInformations on p.UserId equals u.UserId
                                 where b.Id == brokerageId
                                 select new
@@ -108,9 +122,9 @@ namespace AppraisalLand.Controllers
                                     UserInformation = u.Email,
                                 };
 
-                    var BrokerageWithBroker = query.ToList();
+                    var brokerageWithBroker = query.ToList();
                     log.WriteLog($"ApprisalLandAppError: BrokerageController->getBrokerByBrokerage Method: End");
-                    return Ok(new { Brokerage = Brokerage, Brokers = BrokerageWithBroker });
+                    return Ok(new { Brokerage = brokerage, Brokers = brokerageWithBroker });
                 }
 
                 return NotFound($"No brokerage found with the ID: {brokerageId}");
@@ -134,8 +148,8 @@ namespace AppraisalLand.Controllers
             log.WriteLog($"ApprisalLandAppError: BrokerageController->getPropertiesByBrokerage Method: Started");
             try
             {
-                var Brokers = _brokerage.GetBrokerByBrokerage(brokerageId);
-                var itemsWithUserInfoAndProperties = Brokers
+                var brokers = _brokerage.GetBrokerByBrokerage(brokerageId);
+                var itemsWithUserInfoAndProperties = brokers
                                                     .Join(_context.UserInformations,
                                                           broker => broker.UserId,
                                                           userInfo => userInfo.UserId,
@@ -175,21 +189,21 @@ namespace AppraisalLand.Controllers
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="brokerIsActiveCls"></param>
+        /// <param name="brokerIsActive"></param>
         /// <returns></returns>
         [Authorize]
         [HttpPut("updateBrokerIsActive")]
-        public IActionResult updateBrokerIsActive(brokerIsActiveCls brokerIsActiveCls)
+        public IActionResult updateBrokerIsActive(BrokerIsActiveCls brokerIsActive)
         {
             log.WriteLog($"ApprisalLandAppError: BrokerageController->updateBrokerIsActive Method: Started");
             try
             {
-                var userDetails = _context.Brokers.Where(x => x.Brokerageid == brokerIsActiveCls.BrokerageId && x.Id == brokerIsActiveCls.BrokerId).FirstOrDefault();
-                if (userDetails != null)
+                var userDetail = _context.Brokers.Where(x => x.BrokerageId == brokerIsActive.BrokerageId && x.Id == brokerIsActive.BrokerId).FirstOrDefault();
+                if (userDetail != null)
                 {
-                    userDetails.IsActive = brokerIsActiveCls.value;
-                    userDetails.ModifiedDateTime = DateTime.UtcNow;
-                    _context.Update(userDetails);
+                    userDetail.IsActive = brokerIsActive.value;
+                    userDetail.ModifiedDateTime = DateTime.UtcNow;
+                    _context.Update(userDetail);
                     _context.SaveChanges();
                     log.WriteLog($"ApprisalLandAppError: BrokerageController->updateBrokerIsActive Method: End");
                     return Ok(new { Status = "Success" });

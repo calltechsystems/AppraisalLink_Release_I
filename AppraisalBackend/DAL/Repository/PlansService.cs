@@ -40,14 +40,14 @@ namespace DAL.Repository
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="planId"></param>
         /// <returns></returns>
-        public async Task<Plan> GetPlanById(int id)
+        public async Task<Plan> GetPlanById(int planId)
         {
-            var Plan = _context.Plans.Where(x => x.Id == id).FirstOrDefault();
-            if (Plan != null)
+            var plan = _context.Plans.Where(x => x.Id == planId).FirstOrDefault();
+            if (plan != null)
             {
-                return Plan;
+                return plan;
             }
             return null;
         }
@@ -55,26 +55,26 @@ namespace DAL.Repository
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="PlanID"></param>
+        /// <param name="planId"></param>
         /// <param name="plan"></param>
         /// <returns></returns>
-        public async Task<PlanClass> UpdatePlan(int PlanID, PlanClass plan)
+        public async Task<PlanClass> UpdatePlan(int planId, PlanClass plan)
         {
             try
             {
-                var Plan = _context.Plans.Where(x => x.Id == PlanID).FirstOrDefault();
-                if (Plan != null)
+                var planDetail = _context.Plans.Where(x => x.Id == planId).FirstOrDefault();
+                if (planDetail != null)
                 {
-                    Plan.PlanName = plan.PlanName;
-                    Plan.PlanValidity = plan.Amount;
-                    Plan.NoOfProperties = plan.NoOfProperties;
-                    Plan.Description = plan.Description;
-                    Plan.Returnurl = "http://calltech-prod.us-east-1.elasticbeanstalk.com/api/payments/payment"; ///need change 
-                    Plan.Currencycode = plan.Currencycode;
-                    Plan.MonthlyAmount = plan.MonthlyAmount;
-                    Plan.YearlyAmount = plan.YearlyAmount;
-                    Plan.Discount = plan.Discount;
-                    _context.Plans.Update(Plan);
+                    planDetail.PlanName = plan.PlanName;
+                    planDetail.PlanValidity = plan.Amount;
+                    planDetail.NoOfProperties = plan.NoOfProperties;
+                    planDetail.Description = plan.Description;
+                    planDetail.ReturnUrl = "http://calltech-prod.us-east-1.elasticbeanstalk.com/api/payments/payment"; ///need change 
+                    planDetail.CurrencyCode = plan.Currencycode;
+                    planDetail.MonthlyAmount = plan.MonthlyAmount;
+                    planDetail.YearlyAmount = plan.YearlyAmount;
+                    planDetail.Discount = plan.Discount;
+                    _context.Plans.Update(planDetail);
                     _context.SaveChanges();
                     return plan;
                 }

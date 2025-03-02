@@ -42,30 +42,30 @@ namespace DAL.Repository
 
             if (subscriptions.Any()) // Ensure there are subscriptions
             {
-                foreach (var sub in subscriptions)
+                foreach (var subscription in subscriptions)
                 {
-                    var PlanName = "";
+                    var planName = "";
                     DateTime dateTime = DateTime.Now;
-                    double PlanAmount = 0;
-                    if (sub.TopUpId != null)
+                    double planAmount = 0;
+                    if (subscription.TopUpId != null)
                     {
-                        var plan = _context.Plans.Where(x => sub.PlanId == x.Id).FirstOrDefault();
-                        var TopUpDetails = _context.Topups.Where(x => x.Id == sub.TopUpId).FirstOrDefault();
-                        PlanName = TopUpDetails.Topupname;
-                        PlanAmount = ((double)TopUpDetails.TopUpAmount);
-                        dateTime = sub.EndDate;
+                        var plan = _context.Plans.Where(x => subscription.PlanId == x.Id).FirstOrDefault();
+                        var topUpDetail = _context.Topups.Where(x => x.Id == subscription.TopUpId).FirstOrDefault();
+                        planName = topUpDetail.TopupName;
+                        planAmount = ((double)topUpDetail.TopUpAmount);
+                        dateTime = subscription.EndDate;
                     }
                     else
                     {
-                        var plan = _context.Plans
-                                .Where(x => sub.PlanId == x.Id).FirstOrDefault();
-                        PlanName = plan.PlanName;
-                        PlanAmount = (double)plan.MonthlyAmount;
-                        dateTime = sub.EndDate;
+                        var planDetail = _context.Plans
+                                .Where(x => subscription.PlanId == x.Id).FirstOrDefault();
+                        planName = planDetail.PlanName;
+                        planAmount = (double)planDetail.MonthlyAmount;
+                        dateTime = subscription.EndDate;
                     }
 
-                    var Trans = _context.TransactionLogs.Where(x => x.IsActive == true && x.UserId == userId).FirstOrDefault();
-                    if (Trans.Paymentid == sub.PaymentId)
+                    var transactionLogDetail = _context.TransactionLogs.Where(x => x.IsActive == true && x.UserId == userId).FirstOrDefault();
+                    if (transactionLogDetail.PaymentId == subscription.PaymentId)
                     {
                         isActive = true;
                     }
@@ -75,10 +75,10 @@ namespace DAL.Repository
                     }
                     transactionLogs.Add(new TransactionLog
                     {
-                        Paymentid = sub.PaymentId,
-                        PlanName = PlanName,
-                        PlanAmount = PlanAmount,
-                        StartDate = sub.StartDate,
+                        PaymentId = subscription.PaymentId,
+                        PlanName = planName,
+                        PlanAmount = planAmount,
+                        StartDate = subscription.StartDate,
                         EndDate = dateTime,
                         IsActive = isActive
                     });
@@ -87,7 +87,9 @@ namespace DAL.Repository
             return transactionLogs;
         }
 
-
+        /// <summary>
+        /// 
+        /// </summary>
         public void Send()
         {
             try
@@ -251,12 +253,12 @@ namespace DAL.Repository
                 // Set the email body
                 appraiserMail.Body = emailBody;
                 // Create NetworkCredential object for authentication
-                NetworkCredential info = new NetworkCredential("pradhumn7078@gmail.com", pswd);
+                NetworkCredential credential = new NetworkCredential("pradhumn7078@gmail.com", pswd);
                 // Create the SMTP client and configure it
                 SmtpClient smtp = new SmtpClient("smtp.gmail.com")
                 {
                     Port = 587, // Using the standard port for Gmail SMTP
-                    Credentials = info, // Provide credentials
+                    Credentials = credential, // Provide credentials
                     EnableSsl = true // Enable SSL for secure connection
                 };
                 // Send the email

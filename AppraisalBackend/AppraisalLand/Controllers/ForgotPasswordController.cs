@@ -53,8 +53,8 @@ namespace AppraisalLand.Controllers
         public async Task<IActionResult> VerifyResetPassword([FromBody] CLSForgotPassword request)
         {
             Log.WriteLog("VerifyResetPassword Function started");
-            var user_Details = _context.UserInformations.Where(p => p.Password == request.NewPassword && p.Email == request.Email.ToLower()).FirstOrDefault();
-            if (user_Details == null)
+            var userDetail = _context.UserInformations.Where(p => p.Password == request.NewPassword && p.Email == request.Email.ToLower()).FirstOrDefault();
+            if (userDetail == null)
             {
                 if (await _forgotPasswordService.VerifyResetTokenAsync(request.Email, request.Token, request.NewPassword))
                 {

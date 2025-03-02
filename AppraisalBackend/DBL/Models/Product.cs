@@ -5,10 +5,10 @@
     /// </summary>
     public partial class Product
     {
-        public int Productid { get; set; }
+        public int ProductId { get; set; }
 
-        public string? Productname { get; set; }
+        public string? ProductName { get; set; }
 
-        public string? Productdescription { get; set; }
+        public string? ProductDescription { get; set; }
     }
 }

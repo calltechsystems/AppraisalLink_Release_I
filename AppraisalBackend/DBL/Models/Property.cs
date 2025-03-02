@@ -71,13 +71,13 @@
 
         public string? QuoteRequiredDate { get; set; }
 
-        public int? Orderstatus { get; set; }
+        public int? OrderStatus { get; set; }
 
-        public bool? Isonhold { get; set; }
+        public bool? IsOnHold { get; set; }
 
-        public bool? Isoncancel { get; set; }
+        public bool? IsOnCancel { get; set; }
 
-        public bool? IsArchiveappraiser { get; set; }
+        public bool? IsArchiveAppraiser { get; set; }
 
         public string? ApartmentNumber { get; set; }
 

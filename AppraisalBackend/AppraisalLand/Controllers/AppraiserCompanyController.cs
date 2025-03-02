@@ -1,4 +1,6 @@
-﻿using DAL.Classes;
+﻿using AppraisalLand.Helper;
+using DAL.Classes;
+using DAL.Common.Enums;
 using DAL.Repository;
 using DBL.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -14,64 +16,77 @@ namespace AppraisalLand.Controllers
     public class AppraiserCompanyController : ControllerBase
     {
         private readonly IAppraiserCompany _appraiserCompany;
-        private readonly AppraisallandsContext _AppraisallandContext;
+        private readonly AppraisallandsContext _appraisallandContext;
+        private NotificationHelper _smtpEmailService;
+        private IEmailSmsNotification _emailSmsNotification;
+
         Log log = new Log();
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="appraiserCompany"></param>
-        /// <param name="AppraisallandContext"></param>
-        public AppraiserCompanyController(IAppraiserCompany appraiserCompany, AppraisallandsContext AppraisallandContext)
+        /// <param name="appraisallandContext"></param>
+        /// <param name="smtpEmailService"></param>
+        /// <param name="emailSmsNotification"></param>
+        public AppraiserCompanyController(IAppraiserCompany appraiserCompany, AppraisallandsContext appraisallandContext, NotificationHelper smtpEmailService, IEmailSmsNotification emailSmsNotification)
         {
             _appraiserCompany = appraiserCompany;
-            _AppraisallandContext = AppraisallandContext;
+            _appraisallandContext = appraisallandContext;
+            _smtpEmailService = smtpEmailService;
+            _emailSmsNotification = emailSmsNotification;
         }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="AppraiserCompanyID"></param>
+        /// <param name="appraiserCompanyId"></param>
         /// <param name="updateRequest"></param>
         /// <returns></returns>
         [Authorize]
         [HttpPut("updateAppraisalCompanyProfile")]
-        public async Task<IActionResult> updateAppraisalCompanyProfile(int AppraiserCompanyID, [FromBody] ClsAppraiserCompany updateRequest)
+        public async Task<IActionResult> updateAppraisalCompanyProfile(int appraiserCompanyId, [FromBody] ClsAppraiserCompany updateRequest)
         {
             log.WriteLog($"ApprisalLandAppError: AppraiserController->updateAppraisalCompanyProfile Method: Function Started");
             try
             {
-                var updatedAppraiserCompany = await _appraiserCompany.UpdateAppraiserCompanyAsync(AppraiserCompanyID, updateRequest);
+                var updatedAppraiserCompany = await _appraiserCompany.UpdateAppraiserCompanyAsync(appraiserCompanyId, updateRequest);
 
                 if (updatedAppraiserCompany == null)
                 {
                     log.WriteLog($"ApprisalLandAppError: AppraiserController->updateAppraisalCompanyProfile Method: Function End");
-                    return NotFound($"AppraiserCompany not found with ID {AppraiserCompanyID} or update failed");
+                    return NotFound($"AppraiserCompany not found with ID {appraiserCompanyId} or update failed");
                 }
-                var get_SMS = updateRequest.GetSms;
-                var get_Email = updateRequest.GetEmail;
+                var getSMS = updateRequest.GetSms;
+                var getEmail = updateRequest.GetEmail;
 
-                var user = _AppraisallandContext.UserInformations.Where(x => x.UserId == AppraiserCompanyID).FirstOrDefault();
+                var user = _appraisallandContext.UserInformations.Where(x => x.UserId == appraiserCompanyId).FirstOrDefault();
                 if (user != null)
                 {
-                    user.GetEmail = get_Email;
-                    user.GetSms = get_SMS;
-                    _AppraisallandContext.UserInformations.Update(user);
-                    _AppraisallandContext.SaveChanges();
+                    user.GetEmail = getEmail;
+                    user.GetSms = getSMS;
+                    _appraisallandContext.UserInformations.Update(user);
+                    _appraisallandContext.SaveChanges();
                 }
 
-                var Appraiser_Details = _AppraisallandContext.UserInformations.Where(x => x.UserId == AppraiserCompanyID).FirstOrDefault();
+                var appraiserDetails = _appraisallandContext.UserInformations.Where(x => x.UserId == appraiserCompanyId).FirstOrDefault();
 
                 log.WriteLog($"ApprisalLandAppError: AppraiserController->updateAppraisalCompanyProfile Method: Function End");
-
-                return Ok(new { Message = $"AppraiserCompany with ID {AppraiserCompanyID} updated successfully", AppraiserCompany = updatedAppraiserCompany, IsEmail = Appraiser_Details.GetEmail, IsSms = Appraiser_Details.GetSms });
+                List<string> emailIds = new List<string>();
+                emailIds.Add(user.Email);
+                var notificationDetail = await _emailSmsNotification.getEmailSmsBody((int)MessageCode.ProfileUpdate);
+                if (notificationDetail != null)
+                {
+                    Task.Run(async () => await _smtpEmailService.SendEmailToUser(emailIds, "Common", "0", notificationDetail.EmailContent, notificationDetail.TriggerPoint));
+                }
+                return Ok(new { Message = $"AppraiserCompany with ID {appraiserCompanyId} updated successfully", AppraiserCompany = updatedAppraiserCompany, IsEmail = appraiserDetails.GetEmail, IsSms = appraiserDetails.GetSms });
             }
             catch (Exception ex)
             {
                 log.WriteLog($"ApprisalLandAppError: AppraiserController->updateAppraisalCompanyProfile Method: {ex.Message}");
-                return StatusCode(500, new { Message = "An error occurred while Update Apraisal Company" });
-            }
-        }
+                return StatusCode(500, new { Message = "An error occurred while Update Apraisal Company" });            
+             }        
+       }
         //[Authorize]
         //[HttpGet("GetAppraiserCompany")]
         //public IActionResult GetAppraiserCompany(long Userid)
@@ -139,18 +154,18 @@ namespace AppraisalLand.Controllers
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="clsAssignProperty"></param>
+        /// <param name="assignProperty"></param>
         /// <returns></returns>
         [Route("assignPropopertyByAppCompany")]
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> assignPropopertyByAppCompany(ClsAssignProperty clsAssignProperty)
+        public async Task<IActionResult> assignPropopertyByAppCompany(ClsAssignProperty assignProperty)
         {
             log.WriteLog($"ApprisalLandAppError: AppraiserController->assignPropopertyByAppCompany Method: Started");
             try
             {
-                bool AssignProperty = await _appraiserCompany.AssignProperty(clsAssignProperty);
-                if (AssignProperty)
+                bool isAssignProperty = await _appraiserCompany.AssignProperty(assignProperty);
+                if (isAssignProperty)
                 {
                     log.WriteLog($"ApprisalLandAppError: AppraiserController->assignPropopertyByAppCompany Method: End");
                     return Ok("Property assigned successfully.");
@@ -171,21 +186,21 @@ namespace AppraisalLand.Controllers
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="appraiserIsActiveCls"></param>
+        /// <param name="appraiserIsActive"></param>
         /// <returns></returns>
         [Authorize]
         [HttpPut("updateAppraiserIsActive")]
-        public IActionResult updateIsActive(AppraiserIsActiveCls appraiserIsActiveCls)
+        public IActionResult updateIsActive(AppraiserIsActiveCls appraiserIsActive)
         {
             log.WriteLog($"ApprisalLandAppError: AppraiserController->updateIsActive Method: Started");
             try
             {
-                var userDetails = _AppraisallandContext.Appraisers.Where(x => x.CompanyId == appraiserIsActiveCls.CompanyId && x.Id == appraiserIsActiveCls.AppraiserId).FirstOrDefault();
-                if (userDetails != null)
+                var userDetail = _appraisallandContext.Appraisers.Where(x => x.CompanyId == appraiserIsActive.CompanyId && x.Id == appraiserIsActive.AppraiserId).FirstOrDefault();
+                if (userDetail != null)
                 {
-                    userDetails.IsActive = appraiserIsActiveCls.Value;
-                    _AppraisallandContext.Update(userDetails);
-                    _AppraisallandContext.SaveChanges();
+                    userDetail.IsActive = appraiserIsActive.Value;
+                    _appraisallandContext.Update(userDetail);
+                    _appraisallandContext.SaveChanges();
                     log.WriteLog($"ApprisalLandAppError: AppraiserController->updateIsActive Method: End");
                     return Ok(new { Status = "Success" });
                 }
@@ -205,25 +220,25 @@ namespace AppraisalLand.Controllers
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="companyid"></param>
+        /// <param name="companyId"></param>
         /// <returns></returns>
         [Authorize]
         [HttpGet("getAssignedPropertiesbyAppraiserCompany")]
-        public IActionResult getAssignedPropertiesbyAppraiseCompany(int companyid)
+        public IActionResult getAssignedPropertiesbyAppraiseCompany(int companyId)
         {
             log.WriteLog($"ApprisalLandAppError: AppraiserController->getAssignedPropertiesbyAppraiseCompany Method: Start");
             try
             {
-                var assignmentsList = _AppraisallandContext.AssignProperties
-                                     .Where(a => a.Companyid == companyid && a.IsSelfAssigned == true)
+                var assignmentsList = _appraisallandContext.AssignProperties
+                                     .Where(a => a.CompanyId == companyId && a.IsSelfAssigned == true)
                                      .ToList();
 
                 foreach (var assignment in assignmentsList)
                 {
-                    var propertyDetails = _AppraisallandContext.Properties
-                        .FirstOrDefault(p => p.PropertyId == assignment.Propertyid);
+                    var propertyDetail = _appraisallandContext.Properties
+                        .FirstOrDefault(p => p.PropertyId == assignment.PropertyId);
 
-                    assignment.Property = propertyDetails;
+                    assignment.Property = propertyDetail;
                 }
 
                 log.WriteLog($"ApprisalLandAppError: AppraiserController->getAssignedPropertiesbyAppraiseCompany Method: End");

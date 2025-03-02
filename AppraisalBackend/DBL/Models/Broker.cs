@@ -57,11 +57,11 @@
 
         public string? Description { get; set; }
 
-        public bool? Isactive1 { get; set; }
+        public bool? IsActive1 { get; set; }
 
-        public long? Brokerageid { get; set; }
+        public long? BrokerageId { get; set; }
 
-        public string? Cellnumber { get; set; }
+        public string? CellNumber { get; set; }
 
         public string? EmailId { get; set; }
 

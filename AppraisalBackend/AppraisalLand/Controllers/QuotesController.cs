@@ -1,5 +1,6 @@
 ﻿using AppraisalLand.Helper;
 using DAL.Classes;
+using DAL.Common.Enums;
 using DAL.Repository;
 using DBL.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -17,7 +18,7 @@ namespace AppraisalLand.Controllers
         private readonly AppraisallandsContext _context;
         private readonly Ibid _bid;
         Log log = new Log();
-        private HelperService _smtpEmailService;
+        private NotificationHelper _smtpEmailService;
 
         /// <summary>
         /// 
@@ -25,7 +26,7 @@ namespace AppraisalLand.Controllers
         /// <param name="bid"></param>
         /// <param name="context"></param>
         /// <param name="smtpEmailService"></param>
-        public QuotesController(Ibid bid, AppraisallandsContext context, HelperService smtpEmailService)
+        public QuotesController(Ibid bid, AppraisallandsContext context, NotificationHelper smtpEmailService)
         {
             _bid = bid;
             _context = context;
@@ -35,62 +36,60 @@ namespace AppraisalLand.Controllers
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="clsBid"></param>
+        /// <param name="bid"></param>
         /// <returns></returns>
         [AllowAnonymous]
         [HttpPost("setQuotes")]
-        public IActionResult setQuotes(DAL.Classes.Bid clsBid)
+        public IActionResult setQuotes(DAL.Classes.Bid bid)
         {
             log.WriteLog("AppraiserBid processing");
             try
             {
-                var Property = _context.Properties.Where(x => x.OrderId == clsBid.OrderId).FirstOrDefault();
-                if (Property.Isonhold == true)
+                var property = _context.Properties.Where(x => x.OrderId == bid.OrderId).FirstOrDefault();
+                if (property.IsOnHold == true)
                 {
                     return BadRequest(new { message = "The Quote cannot be updated as the order is On Hold" });
                 }
-                if (Property.Isoncancel == true)
+                if (property.IsOnCancel == true)
                 {
                     return BadRequest(new { message = "The Quote cannot be updated as the order is On Cancel" });
                 }
 
-                long? user_id = clsBid.appraiserId;
-                var user_type = _context.UserInformations.Where(x => x.UserId == clsBid.appraiserId).Select(x => x.UserType).FirstOrDefault();
-                if (user_type == 5)
+                long? userId = bid.AppraiserId;
+                var userType = _context.UserInformations.Where(x => x.UserId == bid.AppraiserId).Select(x => x.UserType).FirstOrDefault();
+                if (userType == (short)UserType.SubAppraiser)
                 {
-                    var details = _context.Appraisers.Where(x => x.UserId == clsBid.appraiserId).FirstOrDefault();
+                    var details = _context.Appraisers.Where(x => x.UserId == bid.AppraiserId).FirstOrDefault();
                     if (details == null)
                     {
-                        var AppraiserComapny = _context.AppraiserCompanies.Where(x => x.AppraiserCompanyId == details.CompanyId).FirstOrDefault();
-                        user_id = AppraiserComapny.UserId;
+                        var appraiserCompany = _context.AppraiserCompanies.Where(x => x.AppraiserCompanyId == details.CompanyId).FirstOrDefault();
+                        userId = appraiserCompany.UserId;
                     }
                 }
 
                 var subscription = _context.Subscriptions
-                                       .Where(x => x.UserId == user_id && x.EndDate >= DateTime.Today && x.PlanId != 0)
+                                       .Where(x => x.UserId == userId && x.EndDate >= DateTime.Today && x.PlanId != 0)
                                        .OrderBy(x => x.EndDate)
                                        .FirstOrDefault();
                 ////mail 
 
-                var BrokerUserDetails = _context.UserInformations.Where(x => x.UserId == Property.UserId).Select(x => x.Email).ToList();
-                var AppraiserDetails = _context.UserInformations.Where(x => x.UserId == user_id).Select(x => x.Email).ToList();
+                var brokerEmailIds = _context.UserInformations.Where(x => x.UserId == property.UserId).Select(x => x.Email).ToList();
+                var appraiserEmailIds = _context.UserInformations.Where(x => x.UserId == userId).Select(x => x.Email).ToList();
 
-                Task.Run(async () => await _smtpEmailService.SendEmailToUser(BrokerUserDetails, " QuotesBroker", Convert.ToString(clsBid.OrderId)));
-                Task.Run(async () => await _smtpEmailService.SendEmailToUser(AppraiserDetails, " QuotesAppraiser", Convert.ToString(clsBid.OrderId)));
+                Task.Run(async () => await _smtpEmailService.SendEmailToUser(brokerEmailIds, " QuotesBroker", Convert.ToString(bid.OrderId), "body", "subject"));
+                Task.Run(async () => await _smtpEmailService.SendEmailToUser(appraiserEmailIds, " QuotesAppraiser", Convert.ToString(bid.OrderId), "body", "subject"));
 
                 if (subscription != null)
                 {
-                    var Bids = _bid.AppraiserBidAsync(clsBid);
-                    if (Bids != null)
+                    var bids = _bid.AppraiserBidAsync(bid);
+                    if (bids != null)
                     {
-
                         return Ok(new { Message = "Bid Add Successfully" });
                     }
                     else
                     {
                         return NotFound("User or Property entities not found.");
                     }
-
                 }
                 else
                 {
@@ -100,7 +99,6 @@ namespace AppraisalLand.Controllers
                         suggestion = "Please get a subscription to access the full features."
                     });
                 }
-
             }
             catch (Exception ex)
             {
@@ -112,20 +110,20 @@ namespace AppraisalLand.Controllers
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="OrderId"></param>
+        /// <param name="orderId"></param>
         /// <returns></returns>
         [Authorize]
         [HttpGet("getQuotesByOrderID")]
-        public IActionResult getQuotesByOrderID(int OrderId)
+        public IActionResult getQuotesByOrderID(int orderId)
         {
             log.WriteLog("GetAllQuotes Function started");
             try
             {
-                var Bids = _bid.getAllAppraiserBidAsync(OrderId);
+                var bids = _bid.getAllAppraiserBidAsync(orderId);
 
-                if (Bids != null && Bids.Result.Any())
+                if (bids != null && bids.Result.Any())
                 {
-                    var lastBidsByAppraiser = Bids.Result
+                    var lastBidsByAppraiser = bids.Result
                         .GroupBy(b => b.AppraiserUserId)
                         .Select(group => group.OrderByDescending(b => b.RequestTime).First());
 
@@ -160,10 +158,10 @@ namespace AppraisalLand.Controllers
             log.WriteLog("getAllQuotesByAppraiser Function started");
             try
             {
-                var Quotes = _bid.getAllQuotesByAppraiser();
-                if (Quotes != null)
+                var quotes = _bid.getAllQuotesByAppraiser();
+                if (quotes != null)
                 {
-                    return Ok(Quotes.Result);
+                    return Ok(quotes.Result);
                 }
                 else
                 {
@@ -180,25 +178,25 @@ namespace AppraisalLand.Controllers
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="UserID"></param>
+        /// <param name="userId"></param>
         /// <returns></returns>
         [Authorize]
         [HttpGet("getQuotesByUserID")]
-        public async Task<IActionResult> getQuotesByUserID(long UserID)
+        public async Task<IActionResult> getQuotesByUserID(long userId)
         {
             log.WriteLog("GetQuotesByUserId Function started");
             try
             {
-                var Bid = _bid.getAppraiserBidbyUserID(UserID);
-                if (Bid != null)
+                var bid = _bid.getAppraiserBidbyUserID(userId);
+                if (bid != null)
                 {
-                    var Broker = _context.Brokers.Where(x => x.UserId == UserID).FirstOrDefault();
+                    var broker = _context.Brokers.Where(x => x.UserId == userId).FirstOrDefault();
 
-                    return Ok(new { Bid, BrokerDetails = Broker });
+                    return Ok(new { bid, BrokerDetails = broker });
                 }
                 else
                 {
-                    return NotFound($"User not found on the basis of {UserID} UserId");
+                    return NotFound($"User not found on the basis of {userId} UserId");
                 }
             }
             catch (Exception ex)
@@ -211,44 +209,42 @@ namespace AppraisalLand.Controllers
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="quoteClass"></param>
+        /// <param name="quote"></param>
         /// <returns></returns>
         [Authorize]
         [Route("updateApprasialStatus")]
         [HttpPut]
-        public IActionResult updateApprasialStatus(QuoteClass quoteClass)
+        public IActionResult updateApprasialStatus(QuoteClass quote)
         {
             log.WriteLog("updateApprasialStatus Function started");
             try
             {
-                var Bid_Details = _context.Bids.Where(x => x.BidId == quoteClass.Quoteid).FirstOrDefault();
-                var OrderId = Bid_Details.OrderId;
-                var Property = _context.Properties.Where(x => x.OrderId == OrderId).FirstOrDefault();
-                if (Property.Isonhold == true)
+                var bidDetail = _context.Bids.Where(x => x.BidId == quote.QuoteId).FirstOrDefault();
+                var orderId = bidDetail.OrderId;
+                var property = _context.Properties.Where(x => x.OrderId == orderId).FirstOrDefault();
+                if (property.IsOnHold == true)
                 {
                     return BadRequest(new { message = "The appraisal status cannot be updated as the order is On Hold" });
                 }
-                if (Property.Isoncancel == true)
+                if (property.IsOnCancel == true)
                 {
                     return BadRequest(new { message = "The appraisal status cannot be updated as the order is Cancelled" });
                 }
 
-                var bidDetails = _bid.UpdateStatus(quoteClass);
-                if (bidDetails != null)
+                var bidDetails = _bid.UpdateStatus(quote);
+                if (bidDetail != null)
                 {
-
-
-                    if (Property != null)
+                    if (property != null)
                     {
-                        Property.Orderstatus = quoteClass.OrderStatus;
-                        _context.Properties.Update(Property);
+                        property.OrderStatus = quote.OrderStatus;
+                        _context.Properties.Update(property);
                         _context.SaveChanges();
                     }
-                    return Ok(new { message = "Successfully updated status", QuoteDetails = bidDetails });
+                    return Ok(new { message = "Successfully updated status", QuoteDetails = bidDetail });
                 }
                 else
                 {
-                    return NotFound($"Not Found Quote with {quoteClass.Quoteid} Quote Id");
+                    return NotFound($"Not Found Quote with {quote.QuoteId} Quote Id");
                 }
             }
             catch (Exception ex)
@@ -261,25 +257,25 @@ namespace AppraisalLand.Controllers
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="QuoteId"></param>
+        /// <param name="quoteId"></param>
         /// <param name="appraiserId"></param>
         /// <returns></returns>
         [Authorize]
         [HttpPut("reasignQuote")]
-        public IActionResult reasignQuote(int QuoteId, int appraiserId)
+        public IActionResult reasignQuote(int quoteId, int appraiserId)
         {
-            var bidsDetails = _context.Bids.Where(x => x.BidId == QuoteId).FirstOrDefault();
-            if (bidsDetails != null)
+            var bidsDetail = _context.Bids.Where(x => x.BidId == quoteId).FirstOrDefault();
+            if (bidsDetail != null)
             {
-                bidsDetails.AppraiserUserId = appraiserId;
-                bidsDetails.Orderstatus = null;
-                _context.Bids.Update(bidsDetails);
+                bidsDetail.AppraiserUserId = appraiserId;
+                bidsDetail.OrderStatus = null;
+                _context.Bids.Update(bidsDetail);
                 _context.SaveChanges();
                 return Ok("Resign successfully");
             }
             else
             {
-                return NotFound($"No Quote found {QuoteId}");
+                return NotFound($"No Quote found {quoteId}");
             }
         }
         //[Authorize]

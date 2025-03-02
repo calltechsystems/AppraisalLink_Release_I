@@ -25,12 +25,18 @@ namespace AppraisalLand.Controllers
             _emailService = emailService;
             _twilioSms = twilioSms;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
         [HttpPost("send")]
-        public IActionResult SendVerificationEmail(EmailClass emailClass)
+        public IActionResult SendVerificationEmail(EmailClass email)
         {
             try
             {
-                bool isEmailSent = _emailService.Email(emailClass);
+                bool isEmailSent = _emailService.Email(email);
 
                 if (isEmailSent)
                 {
@@ -68,6 +74,10 @@ namespace AppraisalLand.Controllers
                 return BadRequest(new { Status = "Failure", Message = "Failed to send SMS." });
             }
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
         public class SmsRequest
         {
             public string ToPhoneNumber { get; set; }

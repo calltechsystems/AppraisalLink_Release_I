@@ -14,17 +14,17 @@ namespace AppraisalLand.Controllers
     public class TransactionController : ControllerBase
     {
         private readonly ITransactionService _transactionService;
-        private readonly AppraisallandsContext _AppraisallandContext;
+        private readonly AppraisallandsContext _appraisallandContext;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="transactionService"></param>
-        /// <param name="AppraisallandContext"></param>
-        public TransactionController(ITransactionService transactionService, AppraisallandsContext AppraisallandContext)
+        /// <param name="appraisallandContext"></param>
+        public TransactionController(ITransactionService transactionService, AppraisallandsContext appraisallandContext)
         {
             _transactionService = transactionService;
-            _AppraisallandContext = AppraisallandContext;
+            _appraisallandContext = appraisallandContext;
         }
 
         /// <summary>
@@ -45,7 +45,7 @@ namespace AppraisalLand.Controllers
                 PaymentHistory objpaymentHistory = new PaymentHistory  // New instance for each loop
                 {
                     UserId = userId,
-                    Paymentid = transaction.Paymentid,
+                    Paymentid = transaction.PaymentId,
                     PlanAmount = transaction.PlanAmount,
                     PlanName = transaction.PlanName,
                     IsActive = transaction.IsActive,
@@ -54,15 +54,14 @@ namespace AppraisalLand.Controllers
                 };
                 if (transaction.PlanName == "Top Up")
                 {
-                    objpaymentHistory.planType = "N.A.";
-
+                    objpaymentHistory.PlanType = "N.A.";
                 }
 
                 transactions.Add(objpaymentHistory);
             }
 
-            var property = _AppraisallandContext.Properties.Where(x => x.UserId == userId).ToList();
-            return Ok(new { transactions, NoUsedProperties = property.Count() });
+            var properties = _appraisallandContext.Properties.Where(x => x.UserId == userId).ToList();
+            return Ok(new { transactions, NoUsedProperties = properties.Count() });
         }
 
 

@@ -9,8 +9,8 @@
         public DateTime StartTime { get; set; }
         public string PaymentStatus { get; set; }
         public string paypalSubscriptionId { get; set; }
-        public string Paymenttype { get; set; }
-        public string Currencycode { get; set; }
+        public string PaymentType { get; set; }
+        public string CurrencyCode { get; set; }
         public SubscriberInfo Subscriber { get; set; }
         public PaymentSource PaymentSource { get; set; }
         public ApplicationContext ApplicationContext { get; set; }

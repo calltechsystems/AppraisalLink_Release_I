@@ -16,9 +16,7 @@ namespace DAL.Repository
         /// <param name="context"></param>
         public BrokerService(AppraisallandsContext context)
         {
-
             _context = context;
-
         }
 
         /// <summary>
@@ -27,10 +25,10 @@ namespace DAL.Repository
         /// <returns></returns>
         public List<Broker> AllBroker()
         {
-            var Brokers = _context.Brokers.ToList();
-            if (Brokers != null)
+            var brokers = _context.Brokers.ToList();
+            if (brokers != null)
             {
-                return Brokers;
+                return brokers;
             }
             return null;
         }
@@ -40,7 +38,7 @@ namespace DAL.Repository
         /// </summary>
         /// <param name="brokerId"></param>
         /// <returns></returns>
-        public Broker GeyByBrokerId(int brokerId)
+        public Broker GetByBrokerId(int brokerId)
         {
             return _context.Brokers.Where(x => x.Id == brokerId).FirstOrDefault();
         }
@@ -48,27 +46,27 @@ namespace DAL.Repository
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="Userid"></param>
+        /// <param name="userId"></param>
         /// <returns></returns>
-        public Broker GetBrokerByUserId(int Userid)
+        public Broker GetBrokerByUserId(int userId)
         {
-            return _context.Brokers.Where(x => x.UserId == Userid).FirstOrDefault();
+            return _context.Brokers.Where(x => x.UserId == userId).FirstOrDefault();
 
         }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="IsActive"></param>
+        /// <param name="brokerId"></param>
+        /// <param name="isActive"></param>
         /// <returns></returns>
-        public bool IsActive(long id, bool IsActive)
+        public bool IsActive(long brokerId, bool isActive)
         {
-            var Broker = _context.Brokers.Where(x => x.Id == id).FirstOrDefault();
-            if (Broker != null)
+            var broker = _context.Brokers.Where(x => x.Id == brokerId).FirstOrDefault();
+            if (broker != null)
             {
-                Broker.IsActive = IsActive;
-                _context.Brokers.Update(Broker);
+                broker.IsActive = isActive;
+                _context.Brokers.Update(broker);
                 _context.SaveChanges();
                 return true;
             }
@@ -78,50 +76,50 @@ namespace DAL.Repository
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="BrokerID"></param>
-        /// <param name="Brokers"></param>
+        /// <param name="brokerId"></param>
+        /// <param name="brokers"></param>
         /// <returns></returns>
-        public async Task<Broker> UpdateBrokerAsync(int BrokerID, ClsBrokerUpdateDto Brokers)
+        public async Task<Broker> UpdateBrokerAsync(int brokerId, ClsBrokerUpdateDto brokers)
         {
-            var broker = _context.Brokers.Where(x => x.UserId == BrokerID).FirstOrDefault();
-            var User_Details = _context.UserInformations.Where(x => x.UserId == BrokerID).FirstOrDefault();
+            var broker = _context.Brokers.Where(x => x.UserId == brokerId).FirstOrDefault();
+            var userDetails = _context.UserInformations.Where(x => x.UserId == brokerId).FirstOrDefault();
             if (broker != null)
             {
-                broker.FirstName = Brokers.FirstName;
-                broker.MiddleName = Brokers.MiddleName;
-                broker.LastName = Brokers.LastName;
-                broker.CompanyName = Brokers.CompanyName;
-                broker.LicenseNo = Brokers.LicenseNo;
-                broker.BrokerageName = Brokers.BrokerageName;
-                broker.StreetNumber = Brokers.StreetNumber;
-                broker.StreetName = Brokers.StreetName;
-                broker.ApartmentNo = Brokers.ApartmentNo;
-                broker.City = Brokers.City;
+                broker.FirstName = brokers.FirstName;
+                broker.MiddleName = brokers.MiddleName;
+                broker.LastName = brokers.LastName;
+                broker.CompanyName = brokers.CompanyName;
+                broker.LicenseNo = brokers.LicenseNo;
+                broker.BrokerageName = brokers.BrokerageName;
+                broker.StreetNumber = brokers.StreetNumber;
+                broker.StreetName = brokers.StreetName;
+                broker.ApartmentNo = brokers.ApartmentNo;
+                broker.City = brokers.City;
                 broker.IsActive = true;
-                broker.Isactive1 = true;
-                broker.Province = Brokers.Province;
-                broker.PostalCode = Brokers.PostalCode;
-                broker.Area = Brokers.Area;
-                broker.PhoneNumber = Brokers.PhoneNumber;
-                broker.MortageBrokerageLicNo = Brokers.MortageBrokerageLicNo;
-                broker.MortageBrokerLicNo = Brokers.MortageBrokerLicNo;
-                broker.AssistantFirstName = Brokers.AssistantFirstName;
-                broker.AssistantPhoneNumber = Brokers.AssistantPhoneNumber;
-                broker.AssistantEmailAddress = Brokers.AssistantEmailAddress;
-                broker.ProfileImage = Brokers.ProfileImage;
+                broker.IsActive1 = true;
+                broker.Province = brokers.Province;
+                broker.PostalCode = brokers.PostalCode;
+                broker.Area = brokers.Area;
+                broker.PhoneNumber = brokers.PhoneNumber;
+                broker.MortageBrokerageLicNo = brokers.MortageBrokerageLicNo;
+                broker.MortageBrokerLicNo = brokers.MortageBrokerLicNo;
+                broker.AssistantFirstName = brokers.AssistantFirstName;
+                broker.AssistantPhoneNumber = brokers.AssistantPhoneNumber;
+                broker.AssistantEmailAddress = brokers.AssistantEmailAddress;
+                broker.ProfileImage = brokers.ProfileImage;
                 broker.ModifiedDateTime = DateTime.UtcNow;
                 //broker.DateEstablished = DateTime.Now.Date;
                 broker.IsActive = true;
-                broker.Isactive1 = true;
-                broker.FaxNumber = Brokers.FaxNumber;
-                broker.Description = Brokers.Description;
-                broker.Cellnumber = Brokers.CellNumber;
-                broker.EmailId = Brokers.EmailId;
-                broker.AssistantTwoPhoneNumber = Brokers.AssistantTwoPhoneNumber;
-                broker.AssistantTwoEmailAddress = Brokers.AssistantTwoEmailAddress;
-                broker.AssistantLastName = Brokers.AssistantLastName;
-                broker.AssistantTwoFirstName = Brokers.AssistantTwoFirstName;
-                broker.AssistantTwoLastName = Brokers.AssistantTwoLastName;
+                broker.IsActive1 = true;
+                broker.FaxNumber = brokers.FaxNumber;
+                broker.Description = brokers.Description;
+                broker.CellNumber = brokers.CellNumber;
+                broker.EmailId = brokers.EmailId;
+                broker.AssistantTwoPhoneNumber = brokers.AssistantTwoPhoneNumber;
+                broker.AssistantTwoEmailAddress = brokers.AssistantTwoEmailAddress;
+                broker.AssistantLastName = brokers.AssistantLastName;
+                broker.AssistantTwoFirstName = brokers.AssistantTwoFirstName;
+                broker.AssistantTwoLastName = brokers.AssistantTwoLastName;
                 _context.Brokers.Update(broker);
                 _context.SaveChanges();
                 //User_Details.GetEmail = Brokers.GetEmail;
@@ -145,12 +143,12 @@ namespace DAL.Repository
         /// <returns></returns>
         public bool UpdateNewPassword(ClsChangePassword model, byte[] storedHash, byte[] storedSalt)
         {
-            var User = _context.UserInformations.Where(x => x.Email == model.Email).FirstOrDefault();
-            if (User != null)
+            var user = _context.UserInformations.Where(x => x.Email == model.Email).FirstOrDefault();
+            if (user != null)
             {
-                User.Password = model.NewPassword;
-                User.PasswordSalt = storedHash;
-                User.PasswordSalt = storedSalt;
+                user.Password = model.NewPassword;
+                user.PasswordSalt = storedHash;
+                user.PasswordSalt = storedSalt;
                 _context.SaveChanges();
                 return true;
             }
@@ -160,11 +158,11 @@ namespace DAL.Repository
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="Oldpassword"></param>
+        /// <param name="oldPassword"></param>
         /// <returns></returns>
-        public bool VerifyPasswordHash(string Oldpassword)
+        public bool VerifyPasswordHash(string oldPassword)
         {
-            var user = _context.UserInformations.Where(x => x.Password == Oldpassword).FirstOrDefault();
+            var user = _context.UserInformations.Where(x => x.Password == oldPassword).FirstOrDefault();
             if (user != null)
             {
                 return true;

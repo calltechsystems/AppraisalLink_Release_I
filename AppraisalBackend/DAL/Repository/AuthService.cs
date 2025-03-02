@@ -67,41 +67,41 @@ namespace DAL.Repository
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="UserId"></param>
+        /// <param name="userId"></param>
         /// <returns></returns>
-        public async Task<AppraiserCompany> GetAppraiserCompanydetails(long UserId)
+        public async Task<AppraiserCompany> GetAppraiserCompanyDetails(long userId)
         {
-            var Appraisers_Details = await context.AppraiserCompanies.Where(x => x.UserId == UserId).FirstOrDefaultAsync();
-            if (Appraisers_Details == null)
+            var appraisersDetails = await context.AppraiserCompanies.Where(x => x.UserId == userId).FirstOrDefaultAsync();
+            if (appraisersDetails == null)
             {
                 return null;
             }
             var Appraisers_Details_Dto = new AppraiserCompany
             {
-                AppraiserCompanyId = Appraisers_Details.AppraiserCompanyId,
-                UserId = Appraisers_Details.UserId,
-                LicenseNumber = Appraisers_Details.LicenseNumber,
-                AppraiserCompanyName = Appraisers_Details.AppraiserCompanyName,
-                AddressLineOne = Appraisers_Details.AddressLineOne,
-                AddressLineTwo = Appraisers_Details.AddressLineTwo,
-                City = Appraisers_Details.City,
-                State = Appraisers_Details.State,
-                PostalCode = Appraisers_Details.PostalCode,
-                PhoneNumber = Appraisers_Details.PhoneNumber,
-                FirstName = Appraisers_Details.FirstName,
-                LastName = Appraisers_Details.LastName,
-                OfficeContactFirstName = Appraisers_Details.OfficeContactFirstName,
-                OfficeContactLastName = Appraisers_Details.OfficeContactLastName,
-                OfficeContactEmail = Appraisers_Details.OfficeContactEmail,
-                OfficeContactPhone = Appraisers_Details.OfficeContactPhone,
-                CellNumber = Appraisers_Details.CellNumber,
-                EmailId = Appraisers_Details.EmailId,
-                ApartmentNumber = Appraisers_Details.ApartmentNumber,
-                StreetName = Appraisers_Details.StreetName,
-                StreetNumber = Appraisers_Details.StreetNumber,
-                ProfileImage = Appraisers_Details.ProfileImage,
-                LenderListUrl = Appraisers_Details.LenderListUrl,
-                ModifiedDateTime = Appraisers_Details.ModifiedDateTime
+                AppraiserCompanyId = appraisersDetails.AppraiserCompanyId,
+                UserId = appraisersDetails.UserId,
+                LicenseNumber = appraisersDetails.LicenseNumber,
+                AppraiserCompanyName = appraisersDetails.AppraiserCompanyName,
+                AddressLineOne = appraisersDetails.AddressLineOne,
+                AddressLineTwo = appraisersDetails.AddressLineTwo,
+                City = appraisersDetails.City,
+                State = appraisersDetails.State,
+                PostalCode = appraisersDetails.PostalCode,
+                PhoneNumber = appraisersDetails.PhoneNumber,
+                FirstName = appraisersDetails.FirstName,
+                LastName = appraisersDetails.LastName,
+                OfficeContactFirstName = appraisersDetails.OfficeContactFirstName,
+                OfficeContactLastName = appraisersDetails.OfficeContactLastName,
+                OfficeContactEmail = appraisersDetails.OfficeContactEmail,
+                OfficeContactPhone = appraisersDetails.OfficeContactPhone,
+                CellNumber = appraisersDetails.CellNumber,
+                EmailId = appraisersDetails.EmailId,
+                ApartmentNumber = appraisersDetails.ApartmentNumber,
+                StreetName = appraisersDetails.StreetName,
+                StreetNumber = appraisersDetails.StreetNumber,
+                ProfileImage = appraisersDetails.ProfileImage,
+                LenderListUrl = appraisersDetails.LenderListUrl,
+                ModifiedDateTime = appraisersDetails.ModifiedDateTime
             };
             return Appraisers_Details_Dto;
         }
@@ -109,99 +109,99 @@ namespace DAL.Repository
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="UserId"></param>
+        /// <param name="userId"></param>
         /// <returns></returns>
-        public async Task<Appraiser> GetAppraiserdetails(long UserId)
+        public async Task<Appraiser> GetAppraiserDetails(long userId)
         {
-            var Appraisers_Details = await context.Appraisers.Where(x => x.UserId == UserId).FirstOrDefaultAsync();
-            if (Appraisers_Details == null)
+            var appraisersDetails = await context.Appraisers.Where(x => x.UserId == userId).FirstOrDefaultAsync();
+            if (appraisersDetails == null)
             {
                 return null;
             }
-            var Appraisers_Details_Dto = new Appraiser
+            var appraisersDetailsDto = new Appraiser
             {
-                Id = Appraisers_Details.Id,
-                UserId = Appraisers_Details.UserId,
-                FirstName = Appraisers_Details.FirstName,
-                MiddleName = Appraisers_Details.MiddleName,
-                LastName = Appraisers_Details.LastName,
-                CompanyName = Appraisers_Details.CompanyName,
-                StreetNumber = Appraisers_Details.StreetNumber,
-                StreetName = Appraisers_Details.StreetName,
-                ApartmentNo = Appraisers_Details.ApartmentNo,
-                City = Appraisers_Details.City,
-                Province = Appraisers_Details.Province,
-                PostalCode = Appraisers_Details.PostalCode,
-                DateEstablished = Appraisers_Details.DateEstablished,
-                Area = Appraisers_Details.Area,
-                PhoneNumber = Appraisers_Details.PhoneNumber,
-                CommissionRate = Appraisers_Details.CommissionRate,
-                MaxNumberOfAssignedOrders = Appraisers_Details.MaxNumberOfAssignedOrders,
-                Designation = Appraisers_Details.Designation,
-                ProfileImage = Appraisers_Details.ProfileImage,
-                CellNumber = Appraisers_Details.CellNumber,
-                EmailId = Appraisers_Details.EmailId,
-                CompanyId = Appraisers_Details.CompanyId,
-                LenderListUrl = Appraisers_Details.LenderListUrl,
-                ModifiedDateTime = Appraisers_Details.ModifiedDateTime,
-                IsActive = Appraisers_Details.IsActive
+                Id = appraisersDetails.Id,
+                UserId = appraisersDetails.UserId,
+                FirstName = appraisersDetails.FirstName,
+                MiddleName = appraisersDetails.MiddleName,
+                LastName = appraisersDetails.LastName,
+                CompanyName = appraisersDetails.CompanyName,
+                StreetNumber = appraisersDetails.StreetNumber,
+                StreetName = appraisersDetails.StreetName,
+                ApartmentNo = appraisersDetails.ApartmentNo,
+                City = appraisersDetails.City,
+                Province = appraisersDetails.Province,
+                PostalCode = appraisersDetails.PostalCode,
+                DateEstablished = appraisersDetails.DateEstablished,
+                Area = appraisersDetails.Area,
+                PhoneNumber = appraisersDetails.PhoneNumber,
+                CommissionRate = appraisersDetails.CommissionRate,
+                MaxNumberOfAssignedOrders = appraisersDetails.MaxNumberOfAssignedOrders,
+                Designation = appraisersDetails.Designation,
+                ProfileImage = appraisersDetails.ProfileImage,
+                CellNumber = appraisersDetails.CellNumber,
+                EmailId = appraisersDetails.EmailId,
+                CompanyId = appraisersDetails.CompanyId,
+                LenderListUrl = appraisersDetails.LenderListUrl,
+                ModifiedDateTime = appraisersDetails.ModifiedDateTime,
+                IsActive = appraisersDetails.IsActive
             };
-            return Appraisers_Details_Dto;
+            return appraisersDetailsDto;
         }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="UserId"></param>
+        /// <param name="userId"></param>
         /// <returns></returns>
-        public async Task<Brokerage> GetBrokerageDetails(long UserId)
+        public async Task<Brokerage> GetBrokerageDetails(long userId)
         {
             var brokerDetailsDto = new Brokerage();
             try
             {
-                var Brokerage_Details = await context.Brokerages.Where(x => x.UserId == UserId).FirstOrDefaultAsync();
+                var brokerageDetails = await context.Brokerages.Where(x => x.UserId == userId).FirstOrDefaultAsync();
 
-                if (Brokerage_Details == null)
+                if (brokerageDetails == null)
                 {
                     return null;
                 }
 
                 brokerDetailsDto = new Brokerage
                 {
-                    Id = Brokerage_Details.Id,
-                    UserId = Brokerage_Details.UserId,
-                    FirstName = Brokerage_Details.FirstName,
-                    MiddleName = Brokerage_Details.MiddleName,
-                    LastName = Brokerage_Details.LastName,
-                    CompanyName = Brokerage_Details.CompanyName,
-                    LicenseNo = Brokerage_Details.LicenseNo,
-                    BrokerageName = Brokerage_Details.BrokerageName,
-                    StreetNumber = Brokerage_Details.StreetNumber,
-                    StreetName = Brokerage_Details.StreetName,
-                    ApartmentNo = Brokerage_Details.ApartmentNo,
-                    City = Brokerage_Details.City,
-                    Province = Brokerage_Details.Province,
-                    PostalCode = Brokerage_Details.PostalCode,
-                    Area = Brokerage_Details.Area,
-                    PhoneNumber = Brokerage_Details.PhoneNumber,
-                    MortageBrokerageLicNo = Brokerage_Details.MortageBrokerageLicNo,
-                    MortageBrokerLicNo = Brokerage_Details.MortageBrokerLicNo,
-                    AssistantFirstName = Brokerage_Details.AssistantFirstName,
-                    AssistantPhoneNumber = Brokerage_Details.AssistantPhoneNumber,
-                    AssistantEmailAddress = Brokerage_Details.AssistantEmailAddress,
-                    ProfileImage = Brokerage_Details.ProfileImage,
-                    DateEstablished = Brokerage_Details.DateEstablished,
-                    IsActive = Brokerage_Details.IsActive,
-                    FaxNumber = Brokerage_Details.FaxNumber,
-                    Description = Brokerage_Details.Description,
-                    Cellnumber = Brokerage_Details.Cellnumber,
-                    EmailId = Brokerage_Details.EmailId,
-                    AssistantLastName = Brokerage_Details.AssistantLastName,
-                    AssistantTwoFirstName = Brokerage_Details.AssistantTwoFirstName,
-                    AssistantTwoLastName = Brokerage_Details.AssistantTwoLastName,
-                    AssistantTwoEmailAddress = Brokerage_Details.AssistantTwoEmailAddress,
-                    AssistantTwoPhoneNumber = Brokerage_Details.AssistantTwoPhoneNumber,
-                    ModifiedDateTime = Brokerage_Details.ModifiedDateTime
+                    Id = brokerageDetails.Id,
+                    UserId = brokerageDetails.UserId,
+                    FirstName = brokerageDetails.FirstName,
+                    MiddleName = brokerageDetails.MiddleName,
+                    LastName = brokerageDetails.LastName,
+                    CompanyName = brokerageDetails.CompanyName,
+                    LicenseNo = brokerageDetails.LicenseNo,
+                    BrokerageName = brokerageDetails.BrokerageName,
+                    StreetNumber = brokerageDetails.StreetNumber,
+                    StreetName = brokerageDetails.StreetName,
+                    ApartmentNo = brokerageDetails.ApartmentNo,
+                    City = brokerageDetails.City,
+                    Province = brokerageDetails.Province,
+                    PostalCode = brokerageDetails.PostalCode,
+                    Area = brokerageDetails.Area,
+                    PhoneNumber = brokerageDetails.PhoneNumber,
+                    MortageBrokerageLicNo = brokerageDetails.MortageBrokerageLicNo,
+                    MortageBrokerLicNo = brokerageDetails.MortageBrokerLicNo,
+                    AssistantFirstName = brokerageDetails.AssistantFirstName,
+                    AssistantPhoneNumber = brokerageDetails.AssistantPhoneNumber,
+                    AssistantEmailAddress = brokerageDetails.AssistantEmailAddress,
+                    ProfileImage = brokerageDetails.ProfileImage,
+                    DateEstablished = brokerageDetails.DateEstablished,
+                    IsActive = brokerageDetails.IsActive,
+                    FaxNumber = brokerageDetails.FaxNumber,
+                    Description = brokerageDetails.Description,
+                    Cellnumber = brokerageDetails.Cellnumber,
+                    EmailId = brokerageDetails.EmailId,
+                    AssistantLastName = brokerageDetails.AssistantLastName,
+                    AssistantTwoFirstName = brokerageDetails.AssistantTwoFirstName,
+                    AssistantTwoLastName = brokerageDetails.AssistantTwoLastName,
+                    AssistantTwoEmailAddress = brokerageDetails.AssistantTwoEmailAddress,
+                    AssistantTwoPhoneNumber = brokerageDetails.AssistantTwoPhoneNumber,
+                    ModifiedDateTime = brokerageDetails.ModifiedDateTime
                 };
                 return brokerDetailsDto;
             }
@@ -216,52 +216,52 @@ namespace DAL.Repository
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="UserId"></param>
+        /// <param name="userId"></param>
         /// <returns></returns>
-        public async Task<Broker?> GetBrokerdetails(long UserId)
+        public async Task<Broker?> GetBrokerDetails(long userId)
         {
-            var Broker_Details = context.Brokers.Where(x => x.UserId == UserId).FirstOrDefault();
-            if (Broker_Details == null)
+            var brokerDetails = context.Brokers.Where(x => x.UserId == userId).FirstOrDefault();
+            if (brokerDetails == null)
             {
                 return null;
             }
             var brokerDetailsDto = new Broker
             {
-                Id = Broker_Details.Id,
-                UserId = Broker_Details.UserId,
-                FirstName = Broker_Details.FirstName,
-                MiddleName = Broker_Details.MiddleName,
-                LastName = Broker_Details.LastName,
-                CompanyName = Broker_Details.CompanyName,
-                LicenseNo = Broker_Details.LicenseNo,
-                BrokerageName = Broker_Details.BrokerageName,
-                StreetNumber = Broker_Details.StreetNumber,
-                StreetName = Broker_Details.StreetName,
-                ApartmentNo = Broker_Details.ApartmentNo,
-                City = Broker_Details.City,
-                Province = Broker_Details.Province,
-                PostalCode = Broker_Details.PostalCode,
-                Area = Broker_Details.Area,
-                PhoneNumber = Broker_Details.PhoneNumber,
-                MortageBrokerageLicNo = Broker_Details.MortageBrokerageLicNo,
-                MortageBrokerLicNo = Broker_Details.MortageBrokerLicNo,
-                AssistantFirstName = Broker_Details.AssistantFirstName,
-                AssistantPhoneNumber = Broker_Details.AssistantPhoneNumber,
-                AssistantEmailAddress = Broker_Details.AssistantEmailAddress,
-                ProfileImage = Broker_Details.ProfileImage,
-                DateEstablished = Broker_Details.DateEstablished,
-                IsActive = Broker_Details.IsActive,
-                FaxNumber = Broker_Details.FaxNumber,
-                Description = Broker_Details.Description,
-                Cellnumber = Broker_Details.Cellnumber,
-                EmailId = Broker_Details.EmailId,
-                AssistantLastName = Broker_Details.AssistantLastName,
-                AssistantTwoPhoneNumber = Broker_Details.AssistantTwoPhoneNumber,
-                AssistantTwoEmailAddress = Broker_Details.AssistantTwoEmailAddress,
-                AssistantTwoFirstName = Broker_Details.AssistantTwoFirstName,
-                AssistantTwoLastName = Broker_Details.AssistantTwoLastName,
-                Brokerageid = Broker_Details.Brokerageid,
-                ModifiedDateTime = Broker_Details.ModifiedDateTime
+                Id = brokerDetails.Id,
+                UserId = brokerDetails.UserId,
+                FirstName = brokerDetails.FirstName,
+                MiddleName = brokerDetails.MiddleName,
+                LastName = brokerDetails.LastName,
+                CompanyName = brokerDetails.CompanyName,
+                LicenseNo = brokerDetails.LicenseNo,
+                BrokerageName = brokerDetails.BrokerageName,
+                StreetNumber = brokerDetails.StreetNumber,
+                StreetName = brokerDetails.StreetName,
+                ApartmentNo = brokerDetails.ApartmentNo,
+                City = brokerDetails.City,
+                Province = brokerDetails.Province,
+                PostalCode = brokerDetails.PostalCode,
+                Area = brokerDetails.Area,
+                PhoneNumber = brokerDetails.PhoneNumber,
+                MortageBrokerageLicNo = brokerDetails.MortageBrokerageLicNo,
+                MortageBrokerLicNo = brokerDetails.MortageBrokerLicNo,
+                AssistantFirstName = brokerDetails.AssistantFirstName,
+                AssistantPhoneNumber = brokerDetails.AssistantPhoneNumber,
+                AssistantEmailAddress = brokerDetails.AssistantEmailAddress,
+                ProfileImage = brokerDetails.ProfileImage,
+                DateEstablished = brokerDetails.DateEstablished,
+                IsActive = brokerDetails.IsActive,
+                FaxNumber = brokerDetails.FaxNumber,
+                Description = brokerDetails.Description,
+                CellNumber = brokerDetails.CellNumber,
+                EmailId = brokerDetails.EmailId,
+                AssistantLastName = brokerDetails.AssistantLastName,
+                AssistantTwoPhoneNumber = brokerDetails.AssistantTwoPhoneNumber,
+                AssistantTwoEmailAddress = brokerDetails.AssistantTwoEmailAddress,
+                AssistantTwoFirstName = brokerDetails.AssistantTwoFirstName,
+                AssistantTwoLastName = brokerDetails.AssistantTwoLastName,
+                BrokerageId = brokerDetails.BrokerageId,
+                ModifiedDateTime = brokerDetails.ModifiedDateTime
             };
             return brokerDetailsDto;
         }
@@ -269,14 +269,14 @@ namespace DAL.Repository
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="UserId"></param>
+        /// <param name="userId"></param>
         /// <returns></returns>
-        public List<Subscription> GetSubscriptiondetails(long UserId)
+        public List<Subscription> GetSubscriptionDetails(long userId)
         {
             try
             {
                 var subscriptions = context.Subscriptions
-                                 .Where(x => x.UserId == UserId)
+                                 .Where(x => x.UserId == userId)
                                   .Select(x => new Subscription
                                   {
                                       SubscriptionId = x.SubscriptionId,
@@ -350,10 +350,10 @@ namespace DAL.Repository
         /// <returns></returns>
         public bool VerifyPasswordHash(string password, string email)
         {
-            var Isvalid = context.UserInformations.Where(x => x.Email == email.ToLower()).FirstOrDefault();
-            if (Isvalid != null)
+            var isValid = context.UserInformations.Where(x => x.Email == email.ToLower()).FirstOrDefault();
+            if (isValid != null)
             {
-                if (Isvalid.Password == password)
+                if (isValid.Password == password)
                 {
                     return true;
                 }

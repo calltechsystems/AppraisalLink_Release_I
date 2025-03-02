@@ -10,37 +10,37 @@ namespace DAL.Repository
     /// </summary>
     public class ContactusRepository : IContactusRepository
     {
-        private readonly AppraisallandsContext _AppraisallandContext;
+        private readonly AppraisallandsContext _appraisallandContext;
 
         /// <summary>
         /// /
         /// </summary>
-        /// <param name="AppraisallandContext"></param>
-        public ContactusRepository(AppraisallandsContext AppraisallandContext)
+        /// <param name="appraisallandContext"></param>
+        public ContactusRepository(AppraisallandsContext appraisallandContext)
         {
-            _AppraisallandContext = AppraisallandContext;
+            _appraisallandContext = appraisallandContext;
         }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="contactu"></param>
+        /// <param name="contactU"></param>
         /// <returns></returns>
-        public async Task CreateContactusAsync(ClsContactUs contactu)
+        public async Task CreateContactusAsync(ClsContactUs contactU)
         {
-            Contactu contactus = new Contactu();
-            contactus.FirstName = contactu.FirstName;
-            contactus.LastName = contactu.LastName;
-            contactus.EmailAddress = contactu.EmailAddress;
-            contactus.UserLoggedIn = contactu.UserLoggedIn;
-            contactus.PhoneNumber = contactu.PhoneNumber;
-            contactus.Company = contactu.Company;
-            contactus.State = contactu.State;
-            contactus.Subject = contactu.Subject;
-            contactus.Description = contactu.Description;
-            await _AppraisallandContext.Contactus.AddAsync(contactus);
-            await _AppraisallandContext.SaveChangesAsync();
-            sendMailContactUs(contactu.EmailAddress);
+            Contactu contactUs = new Contactu();
+            contactUs.FirstName = contactU.FirstName;
+            contactUs.LastName = contactU.LastName;
+            contactUs.EmailAddress = contactU.EmailAddress;
+            contactUs.UserLoggedIn = contactU.UserLoggedIn;
+            contactUs.PhoneNumber = contactU.PhoneNumber;
+            contactUs.Company = contactU.Company;
+            contactUs.State = contactU.State;
+            contactUs.Subject = contactU.Subject;
+            contactUs.Description = contactU.Description;
+            await _appraisallandContext.Contactus.AddAsync(contactUs);
+            await _appraisallandContext.SaveChangesAsync();
+            sendMailContactUs(contactU.EmailAddress);
         }
 
         /// <summary>
@@ -68,11 +68,11 @@ namespace DAL.Repository
 
                 appraiserMail.Body = appraiserMessage;
 
-                NetworkCredential info = new NetworkCredential("pradhumn7078@gmail.com", pswd);
+                NetworkCredential credential = new NetworkCredential("pradhumn7078@gmail.com", pswd);
                 SmtpClient smtp = new SmtpClient("smtp.gmail.com")
                 {
                     Port = 587,
-                    Credentials = info,
+                    Credentials = credential,
                     EnableSsl = true
                 };
 

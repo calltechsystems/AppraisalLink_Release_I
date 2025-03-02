@@ -4,7 +4,7 @@
     {
         public long? OrderId { get; set; }
 
-        public long? appraiserId { get; set; }
+        public long? AppraiserId { get; set; }
         public string? Description { get; set; }
 
         public double? BidAmount { get; set; }

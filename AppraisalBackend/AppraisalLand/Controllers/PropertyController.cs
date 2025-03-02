@@ -1,5 +1,6 @@
 ﻿using AppraisalLand.Helper;
 using DAL.Classes;
+using DAL.Common.Enums;
 using DAL.Repository;
 using DBL.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -17,8 +18,9 @@ namespace AppraisalLand.Controllers
     {
         private readonly IPropertyService _property;
         private readonly AppraisallandsContext _context;
+        private IEmailSmsNotification _emailSmsNotification;
         private IRegistrationService _registrationService;
-        private HelperService _smtpEmailService;
+        private NotificationHelper _smtpEmailService;
         Log Log = new Log();
 
         /// <summary>
@@ -27,12 +29,15 @@ namespace AppraisalLand.Controllers
         /// <param name="property"></param>
         /// <param name="context"></param>
         /// <param name="registrationService"></param>
-        public PropertyController(IPropertyService property, AppraisallandsContext context, IRegistrationService registrationService, HelperService smtpEmailService)
+        /// <param name="smtpEmailService"></param>
+        /// <param name="emailSmsNotification"></param>
+        public PropertyController(IPropertyService property, AppraisallandsContext context, IRegistrationService registrationService, NotificationHelper smtpEmailService, IEmailSmsNotification emailSmsNotification)
         {
             _property = property;
             _context = context;
             _registrationService = registrationService;
             _smtpEmailService = smtpEmailService;
+            _emailSmsNotification = emailSmsNotification;
         }
 
         /// <summary>
@@ -54,11 +59,11 @@ namespace AppraisalLand.Controllers
                 //                  from a in gj.DefaultIfEmpty()
                 //                  where a == null
                 //                  select p).ToList();
-                var Properties = _context.Properties.ToList();
-                var PropertiesCount = Properties.Count();
-                var IsCompleteProperties = _context.Properties.Where(x => x.IsCompleted == 1).ToList();
+                var properties = _context.Properties.ToList();
+                var propertiesCount = properties.Count();
+                var isCompleteProperties = _context.Properties.Where(x => x.IsCompleted == 1).ToList();
 
-                return Ok(new { Properties = Properties, TotalProperty = PropertiesCount, IsCompleteProperties = IsCompleteProperties.Count() });
+                return Ok(new { Properties = properties, TotalProperty = propertiesCount, IsCompleteProperties = isCompleteProperties.Count() });
             }
             catch (Exception ex)
             {
@@ -70,24 +75,24 @@ namespace AppraisalLand.Controllers
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="OrderId"></param>
+        /// <param name="orderId"></param>
         /// <param name="updateRequest"></param>
         /// <returns></returns>
         [Authorize]
         [HttpPut("updateProperty")]
-        public async Task<IActionResult> updateProperty(long OrderId, [FromBody] ClsProperty updateRequest)
+        public async Task<IActionResult> updateProperty(long orderId, [FromBody] ClsProperty updateRequest)
         {
             Log.WriteLog("UpdateProperty Function Started");
             try
             {
-                var updatedProperty = await _property.UpdatePropertyAsync(OrderId, updateRequest);
+                var updatedProperty = await _property.UpdatePropertyAsync(orderId, updateRequest);
 
                 if (updatedProperty != null)
                 {
-                    return Ok($"Property with ID {OrderId} updated successfully");
+                    return Ok($"Property with ID {orderId} updated successfully");
                 }
 
-                return BadRequest($"Property not found with ID {OrderId} or update failed");
+                return BadRequest($"Property not found with ID {orderId} or update failed");
             }
             catch (Exception ex)
             {
@@ -99,17 +104,17 @@ namespace AppraisalLand.Controllers
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="clsOrderStatus"></param>
+        /// <param name="orderStatus"></param>
         /// <returns></returns>
         [Authorize]
         [HttpPut("updateOrder_Cancel_OnHold")]
-        public IActionResult updateOrder_Cancel_OnHold(ClsOrderStatus clsOrderStatus)  ////updateOrder-Cancel-OnHold
+        public IActionResult updateOrder_Cancel_OnHold(ClsOrderStatus orderStatus)  ////updateOrder-Cancel-OnHold
         {
             Log.WriteLog("UpdateOrderStatus Function Started");
             try
             {
-                var Status = _property.IsOnHoldStatus(clsOrderStatus);
-                if (Status)
+                var status = _property.IsOnHoldStatus(orderStatus);
+                if (status)
                 {
                     return Ok(new { Message = "Property status changed successfully." });
                 }
@@ -128,29 +133,29 @@ namespace AppraisalLand.Controllers
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="UserID"></param>
+        /// <param name="userId"></param>
         /// <returns></returns>
         [Authorize]
         [HttpGet("getPropertyByUserId")]
-        public IActionResult getPropertyByUserId(long UserID)
+        public IActionResult getPropertyByUserId(long userId)
         {
             Log.WriteLog("getPropertyByUserId Function Started");
             try
             {
                 //  var property = _property.GetPropertyByUserIdAsync(UserID);
-                var property = (from p in _context.Properties
+                var properties = (from p in _context.Properties
                                 join a in _context.ArchivedProperties
                                 on (int?)p.OrderId equals (int?)a.OrderId into gj
                                 from a in gj.DefaultIfEmpty()
-                                where p.UserId == UserID && a == null
+                                where p.UserId == userId && a == null
                                 select p).ToList();
 
-                var TotalUserProperty = property.Count();
-                if (property == null)
+                var totalUserProperty = properties.Count();
+                if (properties == null)
                 {
-                    return NotFound($"Property with ID {UserID} not found");
+                    return NotFound($"Property with ID {userId} not found");
                 }
-                return Ok(new { property, TotalUserProperty });
+                return Ok(new { properties, totalUserProperty });
             }
             catch (Exception EX)
             {
@@ -162,26 +167,26 @@ namespace AppraisalLand.Controllers
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="clsarchive"></param>
+        /// <param name="archive"></param>
         /// <returns></returns>
         [Authorize]
         [HttpPost("archievePropertyByBroker")]
-        public async Task<IActionResult> archievePropertyByBroker(Clsarchive1 clsarchive)
+        public async Task<IActionResult> archievePropertyByBroker(ClsArchive1 archive)
         {
             Log.WriteLog("SetIsArchiveProperty Function Started");
             try
             {
-                var PropertyStatus = await _property.archivePropertyByBroker(clsarchive);
-                var property = _context.Properties.Where(x => x.OrderId == clsarchive.orderId).FirstOrDefault();
-                if (PropertyStatus)
+                var propertyStatus = await _property.archivePropertyByBroker(archive);
+                var property = _context.Properties.Where(x => x.OrderId == archive.OrderId).FirstOrDefault();
+                if (propertyStatus)
                 {
-                    var userid = property.UserId;
-                    var User_Details = _context.UserInformations.Where(x => x.UserId == userid).FirstOrDefault();
-                    return Ok(new { Message = "Property Archive status changed successfully", UserEmail = User_Details.Email, userid = User_Details.UserId });
+                    var userId = property.UserId;
+                    var userDetails = _context.UserInformations.Where(x => x.UserId == userId).FirstOrDefault();
+                    return Ok(new { Message = "Property Archive status changed successfully", UserEmail = userDetails.Email, userid = userDetails.UserId });
                 }
                 else
                 {
-                    return NotFound($"Alredy archive for OrderID: {clsarchive.orderId} and UserId :{clsarchive.userId}");
+                    return NotFound($"Alredy archive for OrderID: {archive.OrderId} and UserId :{archive.UserId}");
                 }
             }
             catch (Exception ex)
@@ -194,22 +199,22 @@ namespace AppraisalLand.Controllers
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="clsarchive"></param>
+        /// <param name="archive"></param>
         /// <returns></returns>
         [Authorize]
         [HttpPost("archievePropertyByApprasier")]
-        public async Task<IActionResult> archievePropertyByApprasier(Clsarchive1 clsarchive)
+        public async Task<IActionResult> archievePropertyByApprasier(ClsArchive1 archive)
         {
             Log.WriteLog("archievePropertyByApprasier Function Started");
             try
             {
-                var PropertyStatus = await _property.archievePropertyByApprasier(clsarchive);
-                var property = _context.Properties.Where(x => x.OrderId == clsarchive.orderId).FirstOrDefault();
-                if (PropertyStatus)
+                var propertyStatus = await _property.archievePropertyByApprasier(archive);
+                var property = _context.Properties.Where(x => x.OrderId == archive.OrderId).FirstOrDefault();
+                if (propertyStatus)
                 {
-                    var userid = property.UserId;
-                    var User_Details = _context.UserInformations.Where(x => x.UserId == userid).FirstOrDefault();
-                    return Ok(new { Message = "Property Archive status changed successfully", UserEmail = User_Details.Email, userid = User_Details.UserId });
+                    var userId = property.UserId;
+                    var userDetail = _context.UserInformations.Where(x => x.UserId == userId).FirstOrDefault();
+                    return Ok(new { Message = "Property Archive status changed successfully", UserEmail = userDetail.Email, userid = userDetail.UserId });
                 }
             }
             catch (Exception ex)
@@ -223,19 +228,19 @@ namespace AppraisalLand.Controllers
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="OrderId"></param>
+        /// <param name="orderId"></param>
         /// <returns></returns>
         [Authorize]
         [HttpGet("getPropertyByOrderID")]
-        public IActionResult getPropertyByOrderID(long OrderId)
+        public IActionResult getPropertyByOrderID(long orderId)
         {
             Log.WriteLog("getPropertyByOrderID Function Started");
             try
             {
-                var property = _property.GetPropertyByOrderID(OrderId);
+                var property = _property.GetPropertyByOrderID(orderId);
                 if (property == null)
                 {
-                    return NotFound($"Property with OrderID {OrderId} not found");
+                    return NotFound($"Property with OrderID {orderId} not found");
                 }
                 return Ok(new { property });
             }
@@ -249,19 +254,19 @@ namespace AppraisalLand.Controllers
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="UserId"></param>
+        /// <param name="userId"></param>
         /// <returns></returns>
         [Authorize]
         [HttpGet("getApprasierArchiveProperty")]
-        public IActionResult getApprasierArchiveProperty(int UserId)
+        public IActionResult getApprasierArchiveProperty(int userId)
         {
             Log.WriteLog("getApprasierArchiveProperty Function started");
             try
             {
                 var result = from p in _context.Properties
                              join a in _context.ArchivedAppraisers
-                             on p.OrderId equals a.Orderid
-                             where a.Userid == UserId
+                             on p.OrderId equals a.OrderId
+                             where a.UserId == userId
                              select new { Property = p, ArchiveAppraiser = a };
 
                 var resultList = result.ToList();
@@ -277,11 +282,11 @@ namespace AppraisalLand.Controllers
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="UserId"></param>
+        /// <param name="userId"></param>
         /// <returns></returns>
         [Authorize]
         [HttpGet("getBrokerArchiveProperty")]
-        public IActionResult getBrokerArchiveProperty(int UserId)
+        public IActionResult getBrokerArchiveProperty(int userId)
         {
             Log.WriteLog("getApprasierArchiveProperty Function started");
             try
@@ -289,7 +294,7 @@ namespace AppraisalLand.Controllers
                 var result = from p in _context.Properties
                              join a in _context.ArchivedProperties
                              on p.OrderId equals Convert.ToInt32(a.OrderId)
-                             where a.UserId == UserId
+                             where a.UserId == userId
                              select new { Property = p, ArchiveAppraiser = a };
 
                 var resultList = result.ToList();
@@ -312,43 +317,41 @@ namespace AppraisalLand.Controllers
         public async Task<IActionResult> addProperty([FromBody] ClsProperty property)
         {
             Log.WriteLog("RegisterProperty Function started");
-            long? userId_ = property.UserId;
+            long? userId = property.UserId;
             if (ModelState.IsValid)
             {
                 try
                 {
                     var remainingProperty = 0;
-                    var UserType = _context.UserInformations.Where(x => x.UserId == userId_).Select(x => x.UserType).FirstOrDefault();
-                    if (UserType != null)
+                    var userType = _context.UserInformations.Where(x => x.UserId == userId).Select(x => x.UserType).FirstOrDefault();
+                    if (userType != null)
                     {
                         var broker_ = _context.Brokers.Where(x => x.UserId == property.UserId).FirstOrDefault();
                         var brokerage = _context.Brokerages.Where(x => x.UserId == property.UserId).FirstOrDefault();
                         if ((broker_ != null && broker_.IsActive != false) || (brokerage != null && brokerage.IsActive != false))
                         {
-                            if (UserType == 6)
+                            if (userType == (short)UserType.SubBroker)
                             {
-                                var broker_details = _context.Brokers.Where(x => x.UserId == userId_).FirstOrDefault();
-                                var BrokerageUserId = _context.Brokerages.Where(x => x.Id == broker_details.Brokerageid).FirstOrDefault();
-                                userId_ = BrokerageUserId.UserId;
-
+                                var subBrokerDetail = _context.Brokers.Where(x => x.UserId == userId).FirstOrDefault();
+                                var brokerageDetail = _context.Brokerages.Where(x => x.Id == subBrokerDetail.BrokerageId).FirstOrDefault();
+                                userId = brokerageDetail.UserId;
                             }
-                            var SubcriptionDetails = _context.TransactionLogs.Where(x => x.UserId == userId_ && x.IsActive == true && x.EndDate >= DateTime.Now).FirstOrDefault();
-                            if (SubcriptionDetails != null)
+                            var subscriptionDetail = _context.TransactionLogs.Where(x => x.UserId == userId && x.IsActive == true && x.EndDate >= DateTime.Now).FirstOrDefault();
+                            if (subscriptionDetail != null)
                             {
-                                var totalUsedPropertiesCount = _context.Properties.Where(x => x.UserId == userId_).ToList().Count();
-                                remainingProperty = (int)SubcriptionDetails.TotalProperties - totalUsedPropertiesCount;
+                                var totalUsedPropertiesCount = _context.Properties.Where(x => x.UserId == userId).ToList().Count();
+                                remainingProperty = (int)subscriptionDetail.TotalProperties - totalUsedPropertiesCount;
 
                                 if (remainingProperty > 0)
                                 {
                                     var registeredProperty = await _registrationService.RegisterPropertyAsync(property);
                                     if (registeredProperty > 0)
                                     {
-
                                         short Count = 1;
-                                        SubcriptionDetails.UsedProperties = (short)((SubcriptionDetails.UsedProperties) + Count);
-                                        _context.TransactionLogs.Update(SubcriptionDetails);
+                                        subscriptionDetail.UsedProperties = (short)((subscriptionDetail.UsedProperties) + Count);
+                                        _context.TransactionLogs.Update(subscriptionDetail);
                                         _context.SaveChanges();
-                                        var userEmail = _context.UserInformations.Where(x => x.UserId == userId_).Select(x => x.Email).FirstOrDefault();
+                                        var userEmail = _context.UserInformations.Where(x => x.UserId == userId).Select(x => x.Email).FirstOrDefault();
 
                                         //if (UserType == 6)
                                         //{
@@ -365,15 +368,13 @@ namespace AppraisalLand.Controllers
 
                                         //}
 
-                                        var transtion_log = _context.TransactionLogs
-                                                           .Where(x => x.UserId == userId_ && x.IsActive == true)
+                                        var transactionLogDetail = _context.TransactionLogs
+                                                           .Where(x => x.UserId == userId && x.IsActive == true)
                                                            .FirstOrDefault();
                                         var planLimitExceed = 0;
-                                        if (transtion_log != null)
+                                        if (transactionLogDetail != null)
                                         {
-
-
-                                            if (transtion_log.UsedProperties < transtion_log.TotalProperties)
+                                            if (transactionLogDetail.UsedProperties < transactionLogDetail.TotalProperties)
                                             {
                                                 planLimitExceed = 0;
                                             }
@@ -382,39 +383,47 @@ namespace AppraisalLand.Controllers
                                                 planLimitExceed = 1;
                                             }
                                         }
-                                        List<string> email = new List<string>();
-                                        List<string> brokeremail = new List<string>();
-                                        var Appraisers = await _context.UserInformations.Where(x => x.UserType == 3).ToListAsync();
-                                        var AppraiserCompany = await _context.UserInformations.Where(x => x.UserType == 4).ToListAsync();
-                                        foreach (var AppraiserCompanyEmail in AppraiserCompany)
+                                        List<string> emailIds = new List<string>();
+                                        List<string> brokerEmailIds = new List<string>();
+                                        var appraisers = await _context.UserInformations.Where(x => x.UserType == (short)UserType.Appraiser).ToListAsync();
+                                        var appraiserCompany = await _context.UserInformations.Where(x => x.UserType == (short)UserType.AppraiserCompany).ToListAsync();
+                                        foreach (var AppraiserCompanyEmail in appraiserCompany)
                                         {
-                                            email.Add(AppraiserCompanyEmail.Email);
+                                            emailIds.Add(AppraiserCompanyEmail.Email);
                                         }
-                                        foreach (var AppraisersEmail in Appraisers)
+                                        foreach (var AppraisersEmail in appraisers)
                                         {
-                                            email.Add(AppraisersEmail.Email);
+                                            emailIds.Add(AppraisersEmail.Email);
                                         }
                                         // await _registrationService.SendPropertyRegistrationEmail(property, registeredProperty);
-                                        brokeremail.Add(userEmail);
-                                        Task.Run(async () => await _smtpEmailService.SendEmailToUser(email, "Appraiser", Convert.ToString(registeredProperty)));
-                                        Task.Run(async () => await _smtpEmailService.SendEmailToUser(brokeremail, "Broker", Convert.ToString(registeredProperty)));
+                                        brokerEmailIds.Add(userEmail);
+
+                                        var notificationDetail = await _emailSmsNotification.getEmailSmsBody((int)MessageCode.NewPropertySubmission);
+                                        if (notificationDetail != null)
+                                        {
+                                            var subNotificationDetail = await _emailSmsNotification.getSubEmailSmsBody(notificationDetail.SubMsgCode ?? (int)MessageCode.NewUserRegistration);
+                                            if (subNotificationDetail != null)
+                                            {
+                                                Task.Run(async () => await _smtpEmailService.SendEmailToUser(emailIds, "Appraiser", Convert.ToString(registeredProperty), subNotificationDetail.SubEmailDescription, subNotificationDetail.SubTriggerPoint));
+                                            }
+                                            Task.Run(async () => await _smtpEmailService.SendEmailToUser(brokerEmailIds, "Broker", Convert.ToString(registeredProperty), "body", "subject"));
+                                        }
+
 
                                         return Ok(new
                                         {
                                             Message = "Property Registration successful!",
                                             PropertyId = registeredProperty,
-                                            usedProperties = transtion_log?.UsedProperties ?? 0,
-                                            totalNoOfProperties = transtion_log?.TotalProperties ?? 0,
+                                            usedProperties = transactionLogDetail?.UsedProperties ?? 0,
+                                            totalNoOfProperties = transactionLogDetail?.TotalProperties ?? 0,
                                             planLimitExceed = planLimitExceed
 
                                         });
-
                                     }
                                     else
                                     {
                                         return BadRequest(new { Message = "Property registration failed. Please try again later." });
                                     }
-
                                 }
                                 else
                                 {
@@ -442,7 +451,6 @@ namespace AppraisalLand.Controllers
                         {
                             return BadRequest("User is not active.");
                         }
-
                     }
                     else
                     {
@@ -655,14 +663,14 @@ namespace AppraisalLand.Controllers
         {
             try
             {
-                var Property = _property.getAllAppraiserAgentAssignedProperty(appraiserId);
-                if (Property == null)
+                var property = _property.getAllAppraiserAgentAssignedProperty(appraiserId);
+                if (property == null)
                 {
                     return NotFound("Not Found any Property");
                 }
                 else
                 {
-                    return Ok(Property);
+                    return Ok(property);
                 }
             }
             catch (Exception ex)

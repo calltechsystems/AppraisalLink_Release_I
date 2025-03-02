@@ -25,7 +25,7 @@
 
         public string? VerifyEmailToken { get; set; }
 
-        public DateTime? Resettokenexpiry { get; set; }
+        public DateTime? ResetTokenExpiry { get; set; }
 
         public int? GetSms { get; set; }
 

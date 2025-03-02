@@ -7,8 +7,8 @@ namespace DAL.Repository
     {
         Task<AppraiserCompany>? UpdateAppraiserCompanyAsync(int userId, ClsAppraiserCompany appraiserCompany);
         Task<bool> AssignProperty(ClsAssignProperty assignProperty);
-        AppraiserCompany? GetAppraiserCompany(long UserId);
-        AppraiserCompany? GetAppraisersCompany(long UserId);
-        Task<List<AssignProperty>>? GetAllassignProperty(long companyid);
+        AppraiserCompany? GetAppraiserCompany(long userId);
+        AppraiserCompany? GetAppraisersCompany(long userId);
+        Task<List<AssignProperty>>? GetAllassignProperty(long companyId);
     }
 }

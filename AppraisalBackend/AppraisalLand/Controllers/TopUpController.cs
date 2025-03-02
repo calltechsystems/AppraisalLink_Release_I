@@ -11,16 +11,16 @@ namespace AppraisalLand.Controllers
     [ApiController]
     public class TopUpController : ControllerBase
     {
-        private readonly AppraisallandsContext _AppraisallandContext;
+        private readonly AppraisallandsContext _appraisallandContext;
         Log log = new Log();
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="AppraisallandContext"></param>
-        public TopUpController(AppraisallandsContext AppraisallandContext)
+        /// <param name="appraisallandContext"></param>
+        public TopUpController(AppraisallandsContext appraisallandContext)
         {
-            _AppraisallandContext = AppraisallandContext;
+            _appraisallandContext = appraisallandContext;
         }
 
         /// <summary>
@@ -34,7 +34,7 @@ namespace AppraisalLand.Controllers
             log.WriteLog("getTopUp Function started");
             try
             {
-                var topUpDetails = _AppraisallandContext.Topups.ToList();
+                var topUpDetails = _appraisallandContext.Topups.ToList();
                 return Ok(topUpDetails);
             }
             catch (Exception ex)

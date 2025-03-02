@@ -7,11 +7,11 @@
     {
         public int Id { get; set; }
 
-        public int Companyid { get; set; }
+        public int CompanyId { get; set; }
 
-        public int Appraiserid { get; set; }
+        public int AppraiserId { get; set; }
 
-        public int Propertyid { get; set; }
+        public int PropertyId { get; set; }
 
         public DateTime? CreatedDateTime { get; set; }
 

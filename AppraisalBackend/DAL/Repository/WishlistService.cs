@@ -8,15 +8,15 @@ namespace DAL.Repository
     /// </summary>
     public class WishlistService : IWishlistService
     {
-        readonly private AppraisallandsContext _AppraisallandContext;
+        readonly private AppraisallandsContext _appraisallandContext;
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="AppraisallandContext"></param>
-        public WishlistService(AppraisallandsContext AppraisallandContext)
+        /// <param name="appraisallandContext"></param>
+        public WishlistService(AppraisallandsContext appraisallandContext)
         {
-            _AppraisallandContext = AppraisallandContext;
+            _appraisallandContext = appraisallandContext;
         }
 
         /// <summary>
@@ -26,14 +26,14 @@ namespace DAL.Repository
         /// <returns></returns>
         public Task<Wishlist> AddToWishlist(ClsWishlist wishlist)
         {
-            Wishlist wishlist1 = new Wishlist();
-            wishlist1.PropertyId = wishlist.PropertyId;
-            wishlist1.UserId = wishlist.UserId;
-            wishlist1.AddedDateTime = DateTime.Now;
-            _AppraisallandContext.Add(wishlist1);
-            _AppraisallandContext.SaveChanges();
+            Wishlist newWishlist = new Wishlist();
+            newWishlist.PropertyId = wishlist.PropertyId;
+            newWishlist.UserId = wishlist.UserId;
+            newWishlist.AddedDateTime = DateTime.Now;
+            _appraisallandContext.Add(newWishlist);
+            _appraisallandContext.SaveChanges();
 
-            return Task.FromResult(wishlist1);
+            return Task.FromResult(newWishlist);
         }
 
         /// <summary>
@@ -42,10 +42,10 @@ namespace DAL.Repository
         /// <returns></returns>
         public Task<List<Wishlist>> GetWishlistsAsync()
         {
-            var Allwishlists = _AppraisallandContext.Wishlists.ToList();
-            if (Allwishlists != null)
+            var allwishlists = _appraisallandContext.Wishlists.ToList();
+            if (allwishlists != null)
             {
-                return Task.FromResult(Allwishlists);
+                return Task.FromResult(allwishlists);
             }
             return null;
         }
@@ -57,11 +57,11 @@ namespace DAL.Repository
         /// <returns></returns>
         public Task<bool> RemoveFromWishlist(long wishlistId)
         {
-            var wishlist = _AppraisallandContext.Wishlists.Where(x => x.Id == wishlistId).FirstOrDefault();
+            var wishlist = _appraisallandContext.Wishlists.Where(x => x.Id == wishlistId).FirstOrDefault();
             if (wishlist != null)
             {
-                _AppraisallandContext.Wishlists.Remove(wishlist);
-                _AppraisallandContext.SaveChanges();
+                _appraisallandContext.Wishlists.Remove(wishlist);
+                _appraisallandContext.SaveChanges();
                 return Task.FromResult(true);
             }
 

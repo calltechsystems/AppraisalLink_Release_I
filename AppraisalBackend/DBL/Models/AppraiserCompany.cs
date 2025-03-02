@@ -10,7 +10,6 @@
         public long UserId { get; set; }
 
         public string? LicenseNumber { get; set; }
-
         public string? AppraiserCompanyName { get; set; }
 
         public string? AddressLineOne { get; set; }

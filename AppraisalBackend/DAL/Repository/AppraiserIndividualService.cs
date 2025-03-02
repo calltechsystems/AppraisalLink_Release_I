@@ -1,4 +1,5 @@
 ﻿using DAL.Classes;
+using DAL.Common.Enums;
 using DBL.Models;
 
 namespace DAL.Repository
@@ -8,15 +9,15 @@ namespace DAL.Repository
     /// </summary>
     public class AppraiserIndividualService : IAppraiserIndividual
     {
-        private readonly AppraisallandsContext _AppraisallandContext;
+        private readonly AppraisallandsContext _appraisallandContext;
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="AppraisallandContext"></param>
-        public AppraiserIndividualService(AppraisallandsContext AppraisallandContext)
+        /// <param name="appraisallandContext"></param>
+        public AppraiserIndividualService(AppraisallandsContext appraisallandContext)
         {
-            _AppraisallandContext = AppraisallandContext;
+            _appraisallandContext = appraisallandContext;
         }
 
         /// <summary>
@@ -25,8 +26,8 @@ namespace DAL.Repository
         /// <returns></returns>
         public Task<List<AppraiserCompany>> GetAllAppraiserCompany()
         {
-            var AppraiserCompany = _AppraisallandContext.AppraiserCompanies.ToList();
-            return Task.FromResult(AppraiserCompany);
+            var appraiserCompany = _appraisallandContext.AppraiserCompanies.ToList();
+            return Task.FromResult(appraiserCompany);
         }
 
         /// <summary>
@@ -35,8 +36,8 @@ namespace DAL.Repository
         /// <returns></returns>
         public Task<List<Appraiser>> GetAllApps()
         {
-            var Appraisers = _AppraisallandContext.Appraisers.ToList();
-            return Task.FromResult(Appraisers);
+            var appraisers = _appraisallandContext.Appraisers.ToList();
+            return Task.FromResult(appraisers);
         }
 
         /// <summary>
@@ -45,8 +46,8 @@ namespace DAL.Repository
         /// <returns></returns>
         public Task<List<Brokerage>> GetAllBrokerage()
         {
-            var Brokerages = _AppraisallandContext.Brokerages.ToList();
-            return Task.FromResult(Brokerages);
+            var brokerages = _appraisallandContext.Brokerages.ToList();
+            return Task.FromResult(brokerages);
         }
 
         /// <summary>
@@ -56,12 +57,12 @@ namespace DAL.Repository
         public async Task<List<List<Property>>> GetAllbrokerageProperies()
         {
             List<List<Property>> properties = new List<List<Property>>();
-            var usertype = 2;
-            var user_type = 6;
-            var ListOfBroker = _AppraisallandContext.UserInformations.Where(x => x.UserType == usertype || x.UserType == user_type).Select(x => x.UserId).ToList();
-            foreach (var b in ListOfBroker)
+            var mortgageBrokerageUserType = (short)UserType.MortgageBrokerage;
+            var subBrokerUserType = (short)UserType.SubBroker;
+            var brokers = _appraisallandContext.UserInformations.Where(x => x.UserType == mortgageBrokerageUserType || x.UserType == subBrokerUserType).Select(x => x.UserId).ToList();
+            foreach (var broker in brokers)
             {
-                var property = _AppraisallandContext.Properties.Where(x => x.UserId == b).ToList();
+                var property = _appraisallandContext.Properties.Where(x => x.UserId == broker).ToList();
                 properties.Add(property);
             }
             return properties;
@@ -74,11 +75,11 @@ namespace DAL.Repository
         public async Task<List<List<Property>>> GetAllProperties()
         {
             List<List<Property>> properties = new List<List<Property>>();
-            var usertype = 1;
-            var ListOfBroker = _AppraisallandContext.UserInformations.Where(x => x.UserType == usertype).Select(x => x.UserId).ToList();
-            foreach (var b in ListOfBroker)
+            var brokerUserType = (short)UserType.MortgageBroker;
+            var brokers = _appraisallandContext.UserInformations.Where(x => x.UserType == brokerUserType).Select(x => x.UserId).ToList();
+            foreach (var broker in brokers)
             {
-                var property = _AppraisallandContext.Properties.Where(x => x.UserId == b).ToList();
+                var property = _appraisallandContext.Properties.Where(x => x.UserId == broker).ToList();
                 properties.Add(property);
             }
             return properties;
@@ -87,14 +88,14 @@ namespace DAL.Repository
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="AppraiserId"></param>
+        /// <param name="appraiserId"></param>
         /// <returns></returns>
-        public Task<Appraiser> GetAppraiser(long AppraiserId)
+        public Task<Appraiser> GetAppraiser(long appraiserId)
         {
-            var Appraiser = _AppraisallandContext.Appraisers.Where(x => x.Id == AppraiserId).FirstOrDefault();
-            if (Appraiser != null)
+            var appraiser = _appraisallandContext.Appraisers.Where(x => x.Id == appraiserId).FirstOrDefault();
+            if (appraiser != null)
             {
-                return Task.FromResult(Appraiser);
+                return Task.FromResult(appraiser);
             }
 
             return null;
@@ -103,11 +104,11 @@ namespace DAL.Repository
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="appraiserid"></param>
+        /// <param name="appraiserId"></param>
         /// <returns></returns>
-        public List<Appraiser> getAppraiser(long appraiserid)
+        public List<Appraiser> getAppraiser(long appraiserId)
         {
-            var appraisers = _AppraisallandContext.Appraisers.Where(x => x.CompanyId == appraiserid).ToList();
+            var appraisers = _appraisallandContext.Appraisers.Where(x => x.CompanyId == appraiserId).ToList();
             if (appraisers.Count() != 0)
             {
                 return appraisers;
@@ -118,14 +119,14 @@ namespace DAL.Repository
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="UserId"></param>
+        /// <param name="userId"></param>
         /// <returns></returns>
-        public List<Appraiser> GetAppraiserByUserId(long UserId)
+        public List<Appraiser> GetAppraiserByUserId(long userId)
         {
-            var Appraiser = _AppraisallandContext.Appraisers.Where(x => x.UserId == UserId).ToList();
-            if (Appraiser != null)
+            var appraiser = _appraisallandContext.Appraisers.Where(x => x.UserId == userId).ToList();
+            if (appraiser != null)
             {
-                return Appraiser;
+                return appraiser;
             }
 
             return null;
@@ -134,25 +135,24 @@ namespace DAL.Repository
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="IsActive"></param>
+        /// <param name="userId"></param>
+        /// <param name="isActive"></param>
         /// <returns></returns>
-        public bool IsActive(long id, bool IsActive)
+        public bool IsActive(long userId, bool isActive)
         {
-            var Appraiser = _AppraisallandContext.Appraisers.Where(x => x.UserId == id).FirstOrDefault();
-            if (Appraiser != null)
+            var appraiser = _appraisallandContext.Appraisers.Where(x => x.UserId == userId).FirstOrDefault();
+            if (appraiser != null)
             {
-
-                var appraisersAssign = _AppraisallandContext.AssignProperties.Where(x => x.Appraiserid == Appraiser.Id).ToList();
+                var appraisersAssign = _appraisallandContext.AssignProperties.Where(x => x.AppraiserId == appraiser.Id).ToList();
                 foreach (var appraiserAssign in appraisersAssign)
                 {
-                    _AppraisallandContext.AssignProperties.Remove(appraiserAssign);
-                    _AppraisallandContext.SaveChanges();
+                    _appraisallandContext.AssignProperties.Remove(appraiserAssign);
+                    _appraisallandContext.SaveChanges();
                 }
-                Appraiser.IsActive = IsActive;
-                Appraiser.ModifiedDateTime = DateTime.UtcNow;
-                _AppraisallandContext.Appraisers.Update(Appraiser);
-                _AppraisallandContext.SaveChanges();
+                appraiser.IsActive = isActive;
+                appraiser.ModifiedDateTime = DateTime.UtcNow;
+                _appraisallandContext.Appraisers.Update(appraiser);
+                _appraisallandContext.SaveChanges();
                 return true;
             }
             return false;
@@ -162,42 +162,42 @@ namespace DAL.Repository
         /// 
         /// </summary>
         /// <param name="UserId"></param>
-        /// <param name="AppraiserIndividual"></param>
+        /// <param name="appraiserIndividual"></param>
         /// <returns></returns>
-        public async Task<Appraiser> UpdateAppraiserIndividualAsync(int UserId, ClsAppraiserIndividual AppraiserIndividual)
+        public async Task<Appraiser> UpdateAppraiserIndividualAsync(int userId, ClsAppraiserIndividual appraiserIndividual)
         {
-            var AppraiserIndividualUser = _AppraisallandContext.Appraisers.Where(x => x.UserId == UserId).FirstOrDefault();
-            var User_Details = _AppraisallandContext.UserInformations.Where(x => x.UserId == UserId).FirstOrDefault();
-            if (AppraiserIndividualUser != null)
+            var appraiserIndividualUser = _appraisallandContext.Appraisers.Where(x => x.UserId == userId).FirstOrDefault();
+            var userDetails = _appraisallandContext.UserInformations.Where(x => x.UserId == userId).FirstOrDefault();
+            if (appraiserIndividualUser != null)
             {
-                AppraiserIndividualUser.FirstName = AppraiserIndividual.FirstName;
-                AppraiserIndividualUser.MiddleName = AppraiserIndividual.MiddleName;
-                AppraiserIndividualUser.LastName = AppraiserIndividual.LastName;
-                AppraiserIndividualUser.CompanyName = AppraiserIndividual.CompanyName;
-                AppraiserIndividualUser.StreetNumber = AppraiserIndividual.StreetNumber;
-                AppraiserIndividualUser.StreetName = AppraiserIndividual.StreetName;
-                AppraiserIndividualUser.ApartmentNo = AppraiserIndividual.ApartmentNo;
-                AppraiserIndividualUser.City = AppraiserIndividual.City;
-                AppraiserIndividualUser.Province = AppraiserIndividual.Province;
-                AppraiserIndividualUser.PostalCode = AppraiserIndividual.PostalCode;
-                AppraiserIndividualUser.Area = AppraiserIndividual.Area;
-                AppraiserIndividualUser.PhoneNumber = AppraiserIndividual.PhoneNumber;
-                AppraiserIndividualUser.CommissionRate = AppraiserIndividual.CommissionRate;
-                AppraiserIndividualUser.MaxNumberOfAssignedOrders = AppraiserIndividual.MaxNumberOfAssignedOrders;
-                AppraiserIndividualUser.Designation = AppraiserIndividual.Designation;
-                AppraiserIndividualUser.ProfileImage = AppraiserIndividual.ProfileImage;
-                AppraiserIndividualUser.LenderListUrl = AppraiserIndividual.LenderListUrl;
-                AppraiserIndividualUser.CellNumber = AppraiserIndividual.CellNumber;
-                AppraiserIndividualUser.EmailId = AppraiserIndividual.EmailId;
-                AppraiserIndividualUser.ModifiedDateTime = DateTime.UtcNow;
-                AppraiserIndividualUser.IsActive = true;
-                _AppraisallandContext.Appraisers.Update(AppraiserIndividualUser);
-                _AppraisallandContext.SaveChanges();
+                appraiserIndividualUser.FirstName = appraiserIndividual.FirstName;
+                appraiserIndividualUser.MiddleName = appraiserIndividual.MiddleName;
+                appraiserIndividualUser.LastName = appraiserIndividual.LastName;
+                appraiserIndividualUser.CompanyName = appraiserIndividual.CompanyName;
+                appraiserIndividualUser.StreetNumber = appraiserIndividual.StreetNumber;
+                appraiserIndividualUser.StreetName = appraiserIndividual.StreetName;
+                appraiserIndividualUser.ApartmentNo = appraiserIndividual.ApartmentNo;
+                appraiserIndividualUser.City = appraiserIndividual.City;
+                appraiserIndividualUser.Province = appraiserIndividual.Province;
+                appraiserIndividualUser.PostalCode = appraiserIndividual.PostalCode;
+                appraiserIndividualUser.Area = appraiserIndividual.Area;
+                appraiserIndividualUser.PhoneNumber = appraiserIndividual.PhoneNumber;
+                appraiserIndividualUser.CommissionRate = appraiserIndividual.CommissionRate;
+                appraiserIndividualUser.MaxNumberOfAssignedOrders = appraiserIndividual.MaxNumberOfAssignedOrders;
+                appraiserIndividualUser.Designation = appraiserIndividual.Designation;
+                appraiserIndividualUser.ProfileImage = appraiserIndividual.ProfileImage;
+                appraiserIndividualUser.LenderListUrl = appraiserIndividual.LenderListUrl;
+                appraiserIndividualUser.CellNumber = appraiserIndividual.CellNumber;
+                appraiserIndividualUser.EmailId = appraiserIndividual.EmailId;
+                appraiserIndividualUser.ModifiedDateTime = DateTime.UtcNow;
+                appraiserIndividualUser.IsActive = true;
+                _appraisallandContext.Appraisers.Update(appraiserIndividualUser);
+                _appraisallandContext.SaveChanges();
                 //User_Details.GetEmail= AppraiserIndividual.GetEmail;
                 //User_Details.GetSms= AppraiserIndividual.GetSms;
                 //_AppraisallandContext.UserInformations.Update(User_Details);
                 //_AppraisallandContext.SaveChanges(); 
-                return AppraiserIndividualUser;
+                return appraiserIndividualUser;
             }
             return null;
         }
@@ -205,36 +205,36 @@ namespace DAL.Repository
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="planid"></param>
+        /// <param name="planId"></param>
         /// <param name="numberOfProperty"></param>
         /// <param name="amount"></param>
         /// <returns></returns>
-        public async Task<Plan> UpdatePlan(int planid, int numberOfProperty, double amount)
+        public async Task<Plan> UpdatePlan(int planId, int numberOfProperty, double amount)
         {
-            var plan_Details = _AppraisallandContext.Plans.Where(x => x.Id == planid).FirstOrDefault();
-            if (plan_Details != null)
+            var planDetails = _appraisallandContext.Plans.Where(x => x.Id == planId).FirstOrDefault();
+            if (planDetails != null)
             {
                 if (numberOfProperty != 0 && amount != 0)
                 {
-                    plan_Details.NoOfProperties = numberOfProperty;
-                    plan_Details.MonthlyAmount = amount;
-                    _AppraisallandContext.Plans.Update(plan_Details);
-                    _AppraisallandContext.SaveChanges();
-                    return plan_Details;
+                    planDetails.NoOfProperties = numberOfProperty;
+                    planDetails.MonthlyAmount = amount;
+                    _appraisallandContext.Plans.Update(planDetails);
+                    _appraisallandContext.SaveChanges();
+                    return planDetails;
                 }
                 else if (numberOfProperty != 0)
                 {
-                    plan_Details.NoOfProperties = numberOfProperty;
-                    _AppraisallandContext.Plans.Update(plan_Details);
-                    _AppraisallandContext.SaveChanges();
-                    return plan_Details;
+                    planDetails.NoOfProperties = numberOfProperty;
+                    _appraisallandContext.Plans.Update(planDetails);
+                    _appraisallandContext.SaveChanges();
+                    return planDetails;
                 }
                 else if (amount != 0)
                 {
-                    plan_Details.PlanValidity = amount;
-                    _AppraisallandContext.Plans.Update(plan_Details);
-                    _AppraisallandContext.SaveChanges();
-                    return plan_Details;
+                    planDetails.PlanValidity = amount;
+                    _appraisallandContext.Plans.Update(planDetails);
+                    _appraisallandContext.SaveChanges();
+                    return planDetails;
                 }
                 else
                 {

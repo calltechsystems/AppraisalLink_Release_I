@@ -5,12 +5,12 @@ namespace DAL.Repository
 {
     public interface IBroker
     {
-        Task<Broker> UpdateBrokerAsync(int BrokerID, ClsBrokerUpdateDto Brokers);
-        bool VerifyPasswordHash(string Oldpassword);
+        Task<Broker> UpdateBrokerAsync(int brokerId, ClsBrokerUpdateDto brokers);
+        bool VerifyPasswordHash(string oldPassword);
         bool UpdateNewPassword(ClsChangePassword model, byte[] storedHash, byte[] storedSalt);
-        Broker GeyByBrokerId(int brokerId);
+        Broker GetByBrokerId(int brokerId);
         List<Broker> AllBroker();
-        Broker GetBrokerByUserId(int Userid);
-        bool IsActive(long id, bool IsActive);
+        Broker GetBrokerByUserId(int userId);
+        bool IsActive(long id, bool isActive);
     }
 }

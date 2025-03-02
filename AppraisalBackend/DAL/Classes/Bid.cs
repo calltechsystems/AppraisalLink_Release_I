@@ -10,7 +10,7 @@
 
         public long? UserId { get; set; }
 
-        public long? appraiserId { get; set; }
+        public long? AppraiserId { get; set; }
 
         public long? AppraiserUserId { get; set; }
 

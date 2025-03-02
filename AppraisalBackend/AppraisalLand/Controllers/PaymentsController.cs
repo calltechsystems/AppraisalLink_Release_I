@@ -1,4 +1,6 @@
-﻿using DAL.Classes;
+﻿using AppraisalLand.Helper;
+using DAL.Classes;
+using DAL.Common.Enums;
 using DAL.Repository;
 using DBL.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -15,18 +17,22 @@ namespace AppraisalLand.Controllers
     public class PaymentsController : ControllerBase
     {
         private readonly IServicesMiddleware _servicesMiddlware;
-        private readonly AppraisallandsContext _AppraisallandContext;
+        private readonly AppraisallandsContext _appraisallandContext;
+        private NotificationHelper _smtpEmailService;
+        private IEmailSmsNotification _emailSmsNotification;
         Log Log = new Log();
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="servicesMiddlware"></param>
-        /// <param name="AppraisallandContext"></param>
-        public PaymentsController(IServicesMiddleware servicesMiddlware, AppraisallandsContext AppraisallandContext)
+        /// <param name="appraisallandContext"></param>
+        public PaymentsController(IServicesMiddleware servicesMiddlware, AppraisallandsContext appraisallandContext, IEmailSmsNotification emailSmsNotification, NotificationHelper smtpEmailService)
         {
             _servicesMiddlware = servicesMiddlware;
-            _AppraisallandContext = AppraisallandContext;
+            _appraisallandContext = appraisallandContext;
+            _emailSmsNotification = emailSmsNotification;
+            _smtpEmailService = smtpEmailService;
         }
         //[HttpGet]
         //public ServiceResponse<string> Info()
@@ -42,18 +48,18 @@ namespace AppraisalLand.Controllers
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="PlanName"></param>
-        /// <param name="UserId"></param>
+        /// <param name="planName"></param>
+        /// <param name="userId"></param>
         /// <returns></returns>
         [Route("paymenturl")]
         [Authorize]
         [HttpPost]
-        public IActionResult PaymentUrl(string PlanName, long UserId)
+        public IActionResult PaymentUrl(string planName, long userId)
         {
-            bool Isvalid = _servicesMiddlware.IsValid(UserId);
-            if (Isvalid)
+            bool isValid = _servicesMiddlware.IsValid(userId);
+            if (isValid)
             {
-                var response = _servicesMiddlware.PaymentUrl(PlanName, UserId);
+                var response = _servicesMiddlware.PaymentUrl(planName, userId);
                 PaymentToken paymentToken = new PaymentToken();
 
                 string[] parts = response.Response.Split('&');
@@ -68,14 +74,14 @@ namespace AppraisalLand.Controllers
                     }
                 }
 
-                var userDetails = _AppraisallandContext.UserInformations.Where(x => x.UserId == UserId).Select(x => x.UserType).FirstOrDefault();
-                var plan_details = _AppraisallandContext.Plans.Where(x => x.PlanName.ToLower() == PlanName.ToLower() && x.UserType == userDetails).FirstOrDefault();
-                paymentToken.Currentdatetime = DateTime.Now;
-                paymentToken.Userid = Convert.ToInt32(UserId);
+                var userDetail = _appraisallandContext.UserInformations.Where(x => x.UserId == userId).Select(x => x.UserType).FirstOrDefault();
+                var planDetail = _appraisallandContext.Plans.Where(x => x.PlanName.ToLower() == planName.ToLower() && x.UserType == userDetail).FirstOrDefault();
+                paymentToken.CurrentDateTime = DateTime.Now;
+                paymentToken.UserId = Convert.ToInt32(userId);
                 paymentToken.Token = token;
-                paymentToken.Planid = Convert.ToInt32(plan_details.Id);
-                _AppraisallandContext.PaymentTokens.Add(paymentToken);
-                _AppraisallandContext.SaveChanges();
+                paymentToken.PlanId = Convert.ToInt32(planDetail.Id);
+                _appraisallandContext.PaymentTokens.Add(paymentToken);
+                _appraisallandContext.SaveChanges();
 
                 return Ok(new { response.Response, response.Message, response.Success, response.Error });
             }
@@ -205,58 +211,58 @@ namespace AppraisalLand.Controllers
         public IActionResult cancelSubscription(long userId)
         {
             // var subcription_Details = _AppraisallandContext.Subscriptions.Where(x => x.UserId == userId && x.PlanId != 0).FirstOrDefault();
-            var subcription_Dtails = _AppraisallandContext.Subscriptions
+            var subscriptionDetail = _appraisallandContext.Subscriptions
                                                   .Where(x => x.UserId == userId && x.EndDate >= DateTime.Today && x.PlanId != 0)
                                                   .OrderBy(x => x.EndDate)
                                                   .FirstOrDefault();
-            var Topupsubcription_Details = _AppraisallandContext.Subscriptions.Where(x => x.UserId == userId && x.TopUpId != null).FirstOrDefault();
-            if (subcription_Dtails != null)
+            var topUpSubscriptionDetail = _appraisallandContext.Subscriptions.Where(x => x.UserId == userId && x.TopUpId != null).FirstOrDefault();
+            if (subscriptionDetail != null)
             {
-                var email = _AppraisallandContext.UserInformations.Where(x => x.UserId == userId).Select(x => x.Email).FirstOrDefault();
-                var tran_details = _AppraisallandContext.TransactionLogs.Where(x => x.StartDate == subcription_Dtails.StartDate).FirstOrDefault();
-                if (tran_details != null)
+                var email = _appraisallandContext.UserInformations.Where(x => x.UserId == userId).Select(x => x.Email).FirstOrDefault();
+                var tranactionDetail = _appraisallandContext.TransactionLogs.Where(x => x.StartDate == subscriptionDetail.StartDate).FirstOrDefault();
+                if (tranactionDetail != null)
                 {
-                    _AppraisallandContext.Remove(tran_details);
-                    _AppraisallandContext.SaveChanges();
+                    _appraisallandContext.Remove(tranactionDetail);
+                    _appraisallandContext.SaveChanges();
                 }
-                _AppraisallandContext.Remove(subcription_Dtails);
-                _AppraisallandContext.SaveChanges();
-                if (Topupsubcription_Details != null)
+                _appraisallandContext.Remove(subscriptionDetail);
+                _appraisallandContext.SaveChanges();
+                if (topUpSubscriptionDetail != null)
                 {
-                    _AppraisallandContext.Remove(Topupsubcription_Details);
-                    _AppraisallandContext.SaveChanges();
+                    _appraisallandContext.Remove(topUpSubscriptionDetail);
+                    _appraisallandContext.SaveChanges();
                 }
-                var subscription = _AppraisallandContext.Subscriptions
+                var subscription = _appraisallandContext.Subscriptions
                                   .Where(x => x.UserId == userId && x.StartDate >= DateTime.Now && x.PlanId != 0)
                                   .OrderBy(x => x.StartDate) // Order by start date in ascending order
                                   .FirstOrDefault();
 
                 if (subscription != null)
                 {
-                    var transationDetails = _AppraisallandContext.TransactionLogs.Where(x => x.StartDate == subscription.StartDate).FirstOrDefault();
+                    var transactionDetail = _appraisallandContext.TransactionLogs.Where(x => x.StartDate == subscription.StartDate).FirstOrDefault();
                     var values = 0;
-                    var plan_id = subscription.PlanId;
-                    var plan_details = _AppraisallandContext.Plans.Where(x => x.Id == plan_id).FirstOrDefault();
-                    var monthely = plan_details.MonthlyAmount;
-                    var yearly = plan_details.YearlyAmount;
+                    var planId = subscription.PlanId;
+                    var planDetail = _appraisallandContext.Plans.Where(x => x.Id == planId).FirstOrDefault();
+                    var monthely = planDetail.MonthlyAmount;
+                    var yearly = planDetail.YearlyAmount;
                     if (monthely != null)
                     { values = 1; }
                     else { values = 2; }
                     subscription.StartDate = DateTime.Now;
                     subscription.EndDate = values == 1 ? DateTime.Now.AddMonths(1) : DateTime.Now.AddYears(1);
-                    _AppraisallandContext.Subscriptions.Update(subscription);
-                    _AppraisallandContext.SaveChanges();
+                    _appraisallandContext.Subscriptions.Update(subscription);
+                    _appraisallandContext.SaveChanges();
 
-                    if (transationDetails != null)
+                    if (transactionDetail != null)
                     {
-                        transationDetails.StartDate = DateTime.Now;
-                        transationDetails.EndDate = values == 1 ? DateTime.Now.AddMonths(1) : DateTime.Now.AddYears(1);
-                        _AppraisallandContext.TransactionLogs.Update(transationDetails);
-                        _AppraisallandContext.SaveChanges();
+                        transactionDetail.StartDate = DateTime.Now;
+                        transactionDetail.EndDate = values == 1 ? DateTime.Now.AddMonths(1) : DateTime.Now.AddYears(1);
+                        _appraisallandContext.TransactionLogs.Update(transactionDetail);
+                        _appraisallandContext.SaveChanges();
                     }
                 }
                 _servicesMiddlware.sendCncelSubcriptionMail(email);
-                return Ok("subcription cancel successfully");
+                return Ok("subscription cancel successfully");
             }
             else
             {
@@ -271,19 +277,18 @@ namespace AppraisalLand.Controllers
         /// <returns></returns>
         [Authorize]
         [HttpGet("getSubcription")]
-        public async Task<IActionResult> getSubcription(long userId)
+        public async Task<IActionResult> getSubscription(long userId)
         {
             int upgradeEligible = 0;
             var activePaypalSubscriptionId = "";
             var futurePaypalSubscriptionId = "";
-            var PayPalSubscriptionStatus = "Cancel";
+            var payPalSubscriptionStatus = Enum.GetName(PaypalSubscriptionStatus.Cancel);
 
-            var transactions = _AppraisallandContext.TransactionLogs
+            var transactionLogs = _appraisallandContext.TransactionLogs
                             .Where(t => t.UserId == userId)
                             .ToList();
 
-
-            if (transactions.Count() == 0)
+            if (transactionLogs.Count() == 0)
             {
                 return Ok(new
                 {
@@ -293,7 +298,7 @@ namespace AppraisalLand.Controllers
                 });
             }
 
-            if (transactions.Count() >= 2)
+            if (transactionLogs.Count() >= 2)
             {
                 upgradeEligible = 0;
             }
@@ -302,43 +307,43 @@ namespace AppraisalLand.Controllers
                 upgradeEligible = 1;
             }
 
-            var subcription_Dtails = _AppraisallandContext.Subscriptions
+            var subscriptionDetail = _appraisallandContext.Subscriptions
                                                     .Where(x => x.UserId == userId && x.EndDate >= DateTime.Today && x.PlanId != 0)
                                                     .OrderBy(x => x.EndDate)
                                                     .FirstOrDefault();
-            foreach (var transaction in transactions)
+            foreach (var transactionLog in transactionLogs)
             {
-                if (transaction.PaypalSubscriptionStatus == "Active")
+                if (transactionLog.PaypalSubscriptionStatus == Enum.GetName(PaypalSubscriptionStatus.Active))
                 {
-                    PayPalSubscriptionStatus = "Active";
+                    payPalSubscriptionStatus = Enum.GetName(PaypalSubscriptionStatus.Active);
                 }
 
-                if (transaction.IsActive == true)
+                if (transactionLog.IsActive == true)
                 {
-                    if (transaction.IsActive == true && transaction.PaypalSubscriptionStatus == "Cancel")
+                    if (transactionLog.IsActive == true && transactionLog.PaypalSubscriptionStatus == Enum.GetName(PaypalSubscriptionStatus.Cancel))
                     {
                         upgradeEligible = 0;
                     }
 
-                    var transactionDetails = _AppraisallandContext.PaypalTransactionLogs.Where(x => x.Userid == userId && x.Paymentid == transaction.Paymentid).FirstOrDefault();
+                    var transactionDetails = _appraisallandContext.PaypalTransactionLogs.Where(x => x.UserId == userId && x.PaymentId == transactionLog.PaymentId).FirstOrDefault();
 
                     activePaypalSubscriptionId = transactionDetails.SubscriptionId;
                 }
                 else
                 {
-                    var transactionDetails = _AppraisallandContext.PaypalTransactionLogs.Where(x => x.Userid == userId && x.Paymentid == transaction.Paymentid).FirstOrDefault();
+                    var transactionDetail = _appraisallandContext.PaypalTransactionLogs.Where(x => x.UserId == userId && x.PaymentId == transactionLog.PaymentId).FirstOrDefault();
 
-                    futurePaypalSubscriptionId = transactionDetails.SubscriptionId;
+                    futurePaypalSubscriptionId = transactionDetail.SubscriptionId;
                 }
             }
 
             return Ok(new
             {
-                subcription_Dtails,
+                subscriptionDetail,
                 upgradeEligible,
                 activePaypalSubscriptionId,
                 futurePaypalSubscriptionId,
-                PayPalSubscriptionStatus
+                payPalSubscriptionStatus
             });
         }
 
@@ -348,13 +353,13 @@ namespace AppraisalLand.Controllers
         /// <returns></returns>
         [Authorize]
         [HttpGet("getAllSubcription")]
-        public async Task<IActionResult> getAllSubcription()
+        public async Task<IActionResult> getAllSubscription()
         {
-            var subcription_Dtails = _AppraisallandContext.Subscriptions
+            var subscriptionDetails = _appraisallandContext.Subscriptions
                                                     .Where(x => x.EndDate >= DateTime.Today && x.PlanId != 0)
                                                     .OrderBy(x => x.EndDate)
                                                     .ToList();
-            return Ok(new { subcription_Dtails = subcription_Dtails });
+            return Ok(new { subscriptionDetails = subscriptionDetails });
         }
 
         /// <summary>
@@ -365,8 +370,8 @@ namespace AppraisalLand.Controllers
         [HttpGet("getAllSubscriptionHistory")]
         public async Task<ActionResult> getAllSubscriptionHistory()
         {
-            var subcription_history = _AppraisallandContext.TransactionLogs.ToList();
-            return Ok(subcription_history);
+            var subscriptionHistory = _appraisallandContext.TransactionLogs.ToList();
+            return Ok(subscriptionHistory);
         }
 
         /// <summary>
@@ -376,7 +381,7 @@ namespace AppraisalLand.Controllers
         /// <returns></returns>
         [Authorize]
         [HttpPost("postSubscriptionsDetails")]
-        public IActionResult postSubscriptionsDetails([FromBody] PaymentPyload payment)
+        public async Task<IActionResult> postSubscriptionsDetails([FromBody] PaymentPayload payment)
         {
             try
             {
@@ -388,31 +393,27 @@ namespace AppraisalLand.Controllers
                 var status = _servicesMiddlware.postSubscriptionsDetails(payment);
                 if (status)
                 {
-                    long userId_ = payment.UserId;
-                    var usertype = _AppraisallandContext.UserInformations.Where(x => x.UserId == userId_).Select(x => x.UserType).FirstOrDefault();
-                    if (usertype == 6)
+                    long userId = payment.UserId;
+                    var userType = _appraisallandContext.UserInformations.Where(x => x.UserId == userId).Select(x => x.UserType).FirstOrDefault();
+                    if (userType == (short)UserType.SubBroker)
                     {
-                        var broker_details = _AppraisallandContext.Brokers.Where(x => x.UserId == userId_).FirstOrDefault();
-                        var BrokerageUserId = _AppraisallandContext.Brokerages.Where(x => x.Id == broker_details.Brokerageid).FirstOrDefault();
-                        userId_ = (long)BrokerageUserId.UserId;
-
+                        var subBrokerDetail = _appraisallandContext.Brokers.Where(x => x.UserId == userId).FirstOrDefault();
+                        var brokerageDetail = _appraisallandContext.Brokerages.Where(x => x.Id == subBrokerDetail.BrokerageId).FirstOrDefault();
+                        userId = (long)brokerageDetail.UserId;
                     }
-                    if (usertype == 5)
+                    if (userType == (short)UserType.SubAppraiser)
                     {
-                        var Appraiser_details = _AppraisallandContext.Appraisers.Where(x => x.UserId == userId_).FirstOrDefault();
-                        var AppraiserCompanyUserId = _AppraisallandContext.Brokerages.Where(x => x.Id == Appraiser_details.CompanyId).FirstOrDefault();
-                        userId_ = (long)AppraiserCompanyUserId.UserId;
-
+                        var subAppraiserDetail = _appraisallandContext.Appraisers.Where(x => x.UserId == userId).FirstOrDefault();
+                        var appraiserCompanyDetail = _appraisallandContext.Brokerages.Where(x => x.Id == subAppraiserDetail.CompanyId).FirstOrDefault();
+                        userId = (long)appraiserCompanyDetail.UserId;
                     }
-                    var transtion_log = _AppraisallandContext.TransactionLogs
-                                        .Where(x => x.UserId == userId_ && x.IsActive == true)
+                    var transactionLog = _appraisallandContext.TransactionLogs
+                                        .Where(x => x.UserId == userId && x.IsActive == true)
                                         .FirstOrDefault();
                     var planLimitExceed = 0;
-                    if (transtion_log != null)
+                    if (transactionLog != null)
                     {
-
-
-                        if (transtion_log.UsedProperties < transtion_log.TotalProperties)
+                        if (transactionLog.UsedProperties < transactionLog.TotalProperties)
                         {
                             planLimitExceed = 0;
                         }
@@ -421,14 +422,20 @@ namespace AppraisalLand.Controllers
                             planLimitExceed = 1;
                         }
                     }
+                    var topUpPlanDetail = _appraisallandContext.Topups.Where(x => x.Id == payment.TopUpId).FirstOrDefault();
+                    var userEmailIds = _appraisallandContext.UserInformations.Where(x => x.UserId == userId).Select(x => x.Email).ToList();
+                    var notificationDetail = await _emailSmsNotification.getEmailSmsBody((int)MessageCode.TopUpPlanPurchased);
+                    if (notificationDetail != null)
+                    {
+                        System.Threading.Tasks.Task.Run(async () => await _smtpEmailService.SendEmailToUser(userEmailIds, "Common", "0", notificationDetail.EmailContent, notificationDetail.TriggerPoint, topUpPlanDetail.TopupName));
+                    }
 
                     return Ok(new
                     {
                         Message = "Payment Complete successful!",
-                        usedProperties = transtion_log?.UsedProperties ?? 0,
-                        totalNoOfProperties = transtion_log?.TotalProperties ?? 0,
+                        usedProperties = transactionLog?.UsedProperties ?? 0,
+                        totalNoOfProperties = transactionLog?.TotalProperties ?? 0,
                         planLimitExceed = planLimitExceed
-
                     });
                 }
                 else
@@ -454,7 +461,7 @@ namespace AppraisalLand.Controllers
         {
             try
             {
-                Log.WriteLog("hIT postRecurringSubscriptionsDetails");
+                Log.WriteLog("Started postRecurringSubscriptionsDetails");
                 string json = recurringPayPalSubscription.ToString();
                 RecurringPayPalSubscription subscription = JsonConvert.DeserializeObject<RecurringPayPalSubscription>(json);
                 Log.WriteLog("start postRecurringSubscriptionsDetails function " + json);
@@ -466,33 +473,31 @@ namespace AppraisalLand.Controllers
                 Log.WriteLog("subscription is not null");
                 var status = await _servicesMiddlware.postRecurringSubscriptionsDetails(subscription);
 
-                long userId_ = subscription.UserId;
+                long userId = subscription.UserId;
                 if (status)
                 {
-                    var usertype = _AppraisallandContext.UserInformations.Where(x => x.UserId == userId_).Select(x => x.UserType).FirstOrDefault();
-                    if (usertype == 6)
+                    var userType = _appraisallandContext.UserInformations.Where(x => x.UserId == userId).Select(x => x.UserType).FirstOrDefault();
+                    if (userType == (short)UserType.SubBroker)
                     {
-                        var broker_details = _AppraisallandContext.Brokers.Where(x => x.UserId == userId_).FirstOrDefault();
-                        var BrokerageUserId = _AppraisallandContext.Brokerages.Where(x => x.Id == broker_details.Brokerageid).FirstOrDefault();
-                        userId_ = (long)BrokerageUserId.UserId;
-
+                        var subBrokerDetail = _appraisallandContext.Brokers.Where(x => x.UserId == userId).FirstOrDefault();
+                        var brokerageDetail = _appraisallandContext.Brokerages.Where(x => x.Id == subBrokerDetail.BrokerageId).FirstOrDefault();
+                        userId = (long)brokerageDetail.UserId;
                     }
-                    if (usertype == 5)
+                    if (userType == (short)UserType.SubAppraiser)
                     {
-                        var Appraiser_details = _AppraisallandContext.Appraisers.Where(x => x.UserId == userId_).FirstOrDefault();
-                        var AppraiserCompanyUserId = _AppraisallandContext.Brokerages.Where(x => x.Id == Appraiser_details.CompanyId).FirstOrDefault();
-                        userId_ = (long)AppraiserCompanyUserId.UserId;
-
+                        var subAppraiserDetail = _appraisallandContext.Appraisers.Where(x => x.UserId == userId).FirstOrDefault();
+                        var appraiserCompanyDetail = _appraisallandContext.Brokerages.Where(x => x.Id == subAppraiserDetail.CompanyId).FirstOrDefault();
+                        userId = (long)appraiserCompanyDetail.UserId;
                     }
-                    var transtion_log = _AppraisallandContext.TransactionLogs
-                                        .Where(x => x.UserId == userId_ && x.IsActive == true)
+                    var transactionLog = _appraisallandContext.TransactionLogs
+                                        .Where(x => x.UserId == userId && x.IsActive == true)
                                         .FirstOrDefault();
+                    var PlanDetails = _appraisallandContext.Plans.Where(x => x.Id == subscription.newPlanId).FirstOrDefault();
+                    var userEmailIds = _appraisallandContext.UserInformations.Where(x => x.UserId == userId).Select(x => x.Email).ToList();
                     var planLimitExceed = 0;
-                    if (transtion_log != null)
+                    if (transactionLog != null)
                     {
-
-
-                        if (transtion_log.UsedProperties < transtion_log.TotalProperties)
+                        if (transactionLog.UsedProperties < transactionLog.TotalProperties)
                         {
                             planLimitExceed = 0;
                         }
@@ -502,13 +507,18 @@ namespace AppraisalLand.Controllers
                         }
                     }
 
+                    var notificationDetail = await _emailSmsNotification.getEmailSmsBody((int)MessageCode.SubscriptionActivation);
+                    if (notificationDetail != null)
+                    {
+                        System.Threading.Tasks.Task.Run(async () => await _smtpEmailService.SendEmailToUser(userEmailIds, "Common", "0", notificationDetail.EmailContent, notificationDetail.TriggerPoint, PlanDetails.PlanName));
+                    }
+
                     return Ok(new
                     {
                         Message = "Payment Complete successful!",
-                        usedProperties = transtion_log?.UsedProperties ?? 0,
-                        totalNoOfProperties = transtion_log?.TotalProperties ?? 0,
+                        usedProperties = transactionLog?.UsedProperties ?? 0,
+                        totalNoOfProperties = transactionLog?.TotalProperties ?? 0,
                         planLimitExceed = planLimitExceed
-
                     });
                 }
                 else
@@ -538,7 +548,6 @@ namespace AppraisalLand.Controllers
                 string json = cancelSubscriptionDetails.ToString();
                 CancelSubscriptionDetails subscription = JsonConvert.DeserializeObject<CancelSubscriptionDetails>(json);
 
-
                 Log.WriteLog("start CancelRecurringSubscription function " + cancelSubscriptionDetails);
                 // WriteLogAndUploadToS3("start postRecurringSubscriptionsDetails function " + recurringPayPalSubscription);
                 if (subscription == null)
@@ -548,6 +557,13 @@ namespace AppraisalLand.Controllers
                 var status = await _servicesMiddlware.cancelRecurringSubscription(subscription);
                 if (status)
                 {
+                    var emailIds = _appraisallandContext.UserInformations.Where(x => x.UserId == subscription.UserId).Select(x => x.Email).ToList();
+                    var notificationDetail = await _emailSmsNotification.getEmailSmsBody((int)MessageCode.SubscriptionCancellation);
+                    if (notificationDetail != null)
+                    {
+                        System.Threading.Tasks.Task.Run(async () => await _smtpEmailService.SendEmailToUser(emailIds, "Common", "0", notificationDetail.EmailContent, notificationDetail.TriggerPoint));
+                    }
+
                     return Ok();
                 }
                 else

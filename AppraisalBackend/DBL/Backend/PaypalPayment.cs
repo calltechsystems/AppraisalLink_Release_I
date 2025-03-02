@@ -16,17 +16,17 @@ namespace DBL.Backend
         public string Tax { get; set; }
         public string ShippingFee { get; set; }
         public string OrderDescription { get; set; }
-        public string PayerID { get; set; }
-        public string PaymentID { get; set; }
+        public string PayerId { get; set; }
+        public string PaymentId { get; set; }
         public string Token { get; set; }
         public int? Count { get; set; }
-        public string StartID { get; set; }
+        public string StartId { get; set; }
         public int? StartIndex { get; set; }
         public string StartTime { get; set; }
         public string EndTime { get; set; }
         public string StartDate { get; set; }
         public string PayeeEmail { get; set; }
-        public string PayeeID { get; set; }
+        public string PayeeId { get; set; }
         public string SortBy { get; set; }
         public string SortOrder { get; set; }
     }

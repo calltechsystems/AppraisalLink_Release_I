@@ -31,11 +31,11 @@ namespace AppraisalLand.Controllers
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="File"></param>
+        /// <param name="file"></param>
         /// <returns></returns>
         [Authorize]
         [HttpPost("upload")]
-        public async Task<IActionResult> UploadFile(IFormFile File)
+        public async Task<IActionResult> UploadFile(IFormFile file)
         {
             try
             {
@@ -47,21 +47,21 @@ namespace AppraisalLand.Controllers
                 RegionEndpoint region = RegionEndpoint.USEast1; // For example, US West (Oregon)
                 AmazonS3Client s3Client = new AmazonS3Client(credentials, region);
 
-                if (File == null || File.Length == 0)
+                if (file == null || file.Length == 0)
                 {
                     return BadRequest("No file uploaded");
                 }
 
-                string fileName = Guid.NewGuid().ToString() + Path.GetExtension(File.FileName);
+                string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
 
-                using (var stream = File.OpenReadStream())
+                using (var stream = file.OpenReadStream())
                 {
                     var request = new PutObjectRequest
                     {
                         BucketName = "appraisalfile",
                         Key = fileName,
                         InputStream = stream,
-                        ContentType = File.ContentType
+                        ContentType = file.ContentType
                     };
 
                     await s3Client.PutObjectAsync(request);

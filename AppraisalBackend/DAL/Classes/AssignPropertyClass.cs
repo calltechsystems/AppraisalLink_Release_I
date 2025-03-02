@@ -6,12 +6,12 @@ namespace DAL.Classes
     {
         public int Id { get; set; }
 
-        public int Companyid { get; set; }
+        public int CompanyId { get; set; }
 
-        public int Appraiserid { get; set; }
+        public int AppraiserId { get; set; }
 
-        public int Propertyid { get; set; }
+        public int PropertyId { get; set; }
 
-        public Property properrtyDetails { get; set; }
+        public Property PropertyDetail { get; set; }
     }
 }

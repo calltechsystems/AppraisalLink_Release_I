@@ -12,31 +12,31 @@ namespace AppraisalLand.Controllers
     public class PlanTopUpController : ControllerBase
     {
         private readonly IServicesMiddlewareTopUp _servicesMiddlware;
-        private readonly AppraisallandsContext _AppraisallandContext;
+        private readonly AppraisallandsContext _appraisallandContext;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="servicesMiddlware"></param>
-        /// <param name="AppraisallandContext"></param>
-        public PlanTopUpController(IServicesMiddlewareTopUp servicesMiddlware, AppraisallandsContext AppraisallandContext)
+        /// <param name="appraisallandContext"></param>
+        public PlanTopUpController(IServicesMiddlewareTopUp servicesMiddlware, AppraisallandsContext appraisallandContext)
         {
-            _AppraisallandContext = AppraisallandContext;
+            _appraisallandContext = appraisallandContext;
             _servicesMiddlware = servicesMiddlware;
         }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="UserId"></param>
+        /// <param name="userId"></param>
         /// <returns></returns>
         [HttpPost("createTopUpPlan")]
-        public IActionResult createTopUpPlan(long UserId)
+        public IActionResult CreateTopUpPlan(long userId)
         {
-            bool Isvalid = _servicesMiddlware.IsValid(UserId);
-            if (Isvalid)
+            bool isValid = _servicesMiddlware.IsValid(userId);
+            if (isValid)
             {
-                var response = _servicesMiddlware.PaymentUrl(UserId);
+                var response = _servicesMiddlware.PaymentUrl(userId);
                 PaymentToken paymentToken = new PaymentToken();
 
                 string[] parts = response.Response.Split('&');
@@ -50,14 +50,14 @@ namespace AppraisalLand.Controllers
                         break;
                     }
                 }
-                var user_details = _AppraisallandContext.UserInformations.Where(x => x.UserId == UserId).Select(x => x.UserType).FirstOrDefault();
-                var topupid = _AppraisallandContext.Topups.Where(x => x.UserType == user_details).Select(x => x.Id).FirstOrDefault();
-                paymentToken.Currentdatetime = DateTime.Now;
-                paymentToken.Userid = Convert.ToInt32(UserId);
+                var userDetail = _appraisallandContext.UserInformations.Where(x => x.UserId == userId).Select(x => x.UserType).FirstOrDefault();
+                var topUpId = _appraisallandContext.Topups.Where(x => x.UserType == userDetail).Select(x => x.Id).FirstOrDefault();
+                paymentToken.CurrentDateTime = DateTime.Now;
+                paymentToken.UserId = Convert.ToInt32(userId);
                 paymentToken.Token = token;
-                paymentToken.TopUpId = Convert.ToInt32(topupid);
-                _AppraisallandContext.PaymentTokens.Add(paymentToken);
-                _AppraisallandContext.SaveChanges();
+                paymentToken.TopUpId = Convert.ToInt32(topUpId);
+                _appraisallandContext.PaymentTokens.Add(paymentToken);
+                _appraisallandContext.SaveChanges();
 
                 return Ok(new { response.Response, response.Message, response.Success, response.Error });
             }

@@ -19,12 +19,12 @@ namespace DAL
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="strValue"></param>
-        public void WriteLog(string strValue)
+        /// <param name="logMessage"></param>
+        public void WriteLog(string logMessage)
         {
             try
             {
-                Task task = WriteLogAndUploadToS3(strValue);
+                Task task = WriteLogAndUploadToS3(logMessage);
             }
             catch (Exception ex)
             {
@@ -36,11 +36,11 @@ namespace DAL
         /// 
         /// </summary>
         /// <param name="logMessage"></param>
-        /// <param name="w"></param>
-        private static void LogWrite(string logMessage, StreamWriter w)
+        /// <param name="streamWriter"></param>
+        private static void LogWrite(string logMessage, StreamWriter streamWriter)
         {
-            w.WriteLine("{0}", logMessage);
-            w.WriteLine("----------------------------------------");
+            streamWriter.WriteLine("{0}", logMessage);
+            streamWriter.WriteLine("----------------------------------------");
         }
 
         /// <summary>

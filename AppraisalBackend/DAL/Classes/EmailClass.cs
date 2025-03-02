@@ -2,8 +2,8 @@
 {
     public class EmailClass
     {
-        public string toEmail { get; set; } = String.Empty;
-        public string subject { get; set; } = String.Empty;
-        public string body { get; set; } = String.Empty;
+        public string ToEmail { get; set; } = String.Empty;
+        public string Subject { get; set; } = String.Empty;
+        public string Body { get; set; } = String.Empty;
     }
 }

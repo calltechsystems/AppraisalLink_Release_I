@@ -10,8 +10,8 @@ namespace AppraisalLand
     /// </summary>
     public class Log
     {
-        private static readonly string BucketName = "appraisalfile";
-        private static readonly string LogFolder = "logs";
+        private static readonly string _bucketName = "appraisalfile";
+        private static readonly string _logFolder = "logs";
 
         private static readonly AmazonS3Client s3Client = new AmazonS3Client(RegionEndpoint.USEast1);
 
@@ -54,11 +54,11 @@ namespace AppraisalLand
         /// 
         /// </summary>
         /// <param name="logMessage"></param>
-        /// <param name="w"></param>
-        private static void LogWrite(string logMessage, StreamWriter w)
+        /// <param name="streamWriter"></param>
+        private static void LogWrite(string logMessage, StreamWriter streamWriter)
         {
-            w.WriteLine("{0}", logMessage);
-            w.WriteLine("----------------------------------------");
+            streamWriter.WriteLine("{0}", logMessage);
+            streamWriter.WriteLine("----------------------------------------");
         }
 
         /// <summary>
@@ -96,7 +96,7 @@ namespace AppraisalLand
             RegionEndpoint region = RegionEndpoint.USEast1; // For example, US West (Oregon)
             AmazonS3Client s3Client = new AmazonS3Client(credentials, region);
 
-            string s3Key = $"{LogFolder}/{Path.GetFileName(logFilePath)}";
+            string s3Key = $"{_logFolder}/{Path.GetFileName(logFilePath)}";
 
             try
             {
@@ -104,7 +104,7 @@ namespace AppraisalLand
                 {
                     var request = new PutObjectRequest
                     {
-                        BucketName = BucketName,
+                        BucketName = _bucketName,
                         Key = s3Key,
                         InputStream = stream,
                         ContentType = "text/plain"
@@ -138,13 +138,13 @@ namespace AppraisalLand
         /// <returns></returns>
         public async Task WriteLogAndUploadToS3(string message)
         {
-            string logsDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, LogFolder);
+            string logsDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, _logFolder);
             Directory.CreateDirectory(logsDir); // Ensure the directory exists
 
             TimeZoneInfo easternZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
 
             DateTime easternTime = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, easternZone);
-            string safeTime = easternTime.ToString("yyyyMMdd_HHmmss");
+            string safeTime = easternTime.ToString("yyyyMMdd");
             string logFilePath = Path.Combine(logsDir, $"log_{safeTime}.txt");
 
             try

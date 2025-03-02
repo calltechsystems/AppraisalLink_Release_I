@@ -13,6 +13,6 @@ namespace DAL.Classes
         public DateTime? StartDate { get; set; }
 
         public DateTime? EndDate { get; set; }
-        public string planType { get; set; } = "Monthly";
+        public string PlanType { get; set; } = "Monthly";
     }
 }

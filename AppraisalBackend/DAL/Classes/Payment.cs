@@ -2,7 +2,7 @@
 
 namespace DAL.Classes
 {
-    public class PaymentPyload
+    public class PaymentPayload
     {
 
         [Required]

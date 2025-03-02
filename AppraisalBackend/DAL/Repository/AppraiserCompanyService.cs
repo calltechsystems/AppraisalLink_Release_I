@@ -10,14 +10,14 @@ namespace DAL.Repository
     /// </summary>
     public class AppraiserCompanyService : IAppraiserCompany
     {
-        private readonly AppraisallandsContext _AppraisallandContext;
+        private readonly AppraisallandsContext _appraisallandContext;
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="AppraisallandContext"></param>
-        public AppraiserCompanyService(AppraisallandsContext AppraisallandContext)
+        /// <param name="appraisallandContext"></param>
+        public AppraiserCompanyService(AppraisallandsContext appraisallandContext)
         {
-            _AppraisallandContext = AppraisallandContext;
+            _appraisallandContext = appraisallandContext;
         }
 
         /// <summary>
@@ -29,32 +29,31 @@ namespace DAL.Repository
         {
             try
             {
-                var Assign_Details = _AppraisallandContext.AssignProperties.Where(x => x.Companyid == assignProperty.Companyid && x.Propertyid == assignProperty.Propertyid).FirstOrDefault();
-                if (assignProperty.Companyid > 0 && assignProperty.Appraiserid == 0)
+                var propertyDetail = _appraisallandContext.AssignProperties.Where(x => x.CompanyId == assignProperty.CompanyId && x.PropertyId == assignProperty.PropertyId).FirstOrDefault();
+                if (assignProperty.CompanyId > 0 && assignProperty.AppraiserId == 0)
                 {
-                    var AssignPro = _AppraisallandContext.AssignProperties.Where(x => x.Propertyid == assignProperty.Propertyid && x.Companyid == assignProperty.Companyid).FirstOrDefault();
-                    AssignPro.IsSelfAssigned = false;
+                    var assignPropertyDetail = _appraisallandContext.AssignProperties.Where(x => x.PropertyId == assignProperty.PropertyId && x.CompanyId == assignProperty.CompanyId).FirstOrDefault();
+                    assignPropertyDetail.IsSelfAssigned = false;
 
-
-                    _AppraisallandContext.AssignProperties.Update(AssignPro);
-                    _AppraisallandContext.SaveChanges();
+                    _appraisallandContext.AssignProperties.Update(assignPropertyDetail);
+                    _appraisallandContext.SaveChanges();
                     return true;
                 }
-                if (Assign_Details == null)
+                if (propertyDetail == null)
                 {
-                    var appraiser = _AppraisallandContext.Appraisers.Where(x => x.Id == assignProperty.Appraiserid).FirstOrDefault();
+                    var appraiser = _appraisallandContext.Appraisers.Where(x => x.Id == assignProperty.AppraiserId).FirstOrDefault();
 
                     if (appraiser.CompanyId != null)
                     {
-                        AssignProperty ObjAssign = new AssignProperty();
-                        ObjAssign.Propertyid = assignProperty.Propertyid;
-                        ObjAssign.Companyid = assignProperty.Companyid;
-                        ObjAssign.Appraiserid = assignProperty.Appraiserid;
-                        ObjAssign.CreatedDateTime = DateTime.Now;
-                        ObjAssign.AssignCount = 1;
-                        ObjAssign.IsSelfAssigned = true;
-                        _AppraisallandContext.AssignProperties.Add(ObjAssign);
-                        _AppraisallandContext.SaveChanges();
+                        AssignProperty newAssignProperty = new AssignProperty();
+                        newAssignProperty.PropertyId = assignProperty.PropertyId;
+                        newAssignProperty.CompanyId = assignProperty.CompanyId;
+                        newAssignProperty.AppraiserId = assignProperty.AppraiserId;
+                        newAssignProperty.CreatedDateTime = DateTime.Now;
+                        newAssignProperty.AssignCount = 1;
+                        newAssignProperty.IsSelfAssigned = true;
+                        _appraisallandContext.AssignProperties.Add(newAssignProperty);
+                        _appraisallandContext.SaveChanges();
                         SendMailassignPropertyByCompany(appraiser.EmailId);
 
                         return true;
@@ -65,24 +64,24 @@ namespace DAL.Repository
                     //if (Assign_Details.AssignCount<2)
                     //{
 
-                    var property_Details = _AppraisallandContext.Properties.Where(x => x.PropertyId == assignProperty.Propertyid).FirstOrDefault();
+                    var propertyDetails = _appraisallandContext.Properties.Where(x => x.PropertyId == assignProperty.PropertyId).FirstOrDefault();
                     //var Appraiser_Details = _AppraisallandContext.Appraisers.Where(x => x.Id == assignProperty.Appraiserid).FirstOrDefault();
-                    var Appraiser_Details = _AppraisallandContext.AppraiserCompanies.Where(x => x.AppraiserCompanyId == assignProperty.Companyid).FirstOrDefault();
-                    if (Appraiser_Details != null && property_Details != null)
+                    var appraiserDetails = _appraisallandContext.AppraiserCompanies.Where(x => x.AppraiserCompanyId == assignProperty.CompanyId).FirstOrDefault();
+                    if (appraiserDetails != null && propertyDetails != null)
                     {
-                        var bid_Details = _AppraisallandContext.Bids
-                                         .Where(x => x.OrderId == property_Details.OrderId && x.AppraiserUserId == Appraiser_Details.UserId)
+                        var bidDetails = _appraisallandContext.Bids
+                                         .Where(x => x.OrderId == propertyDetails.OrderId && x.AppraiserUserId == appraiserDetails.UserId)
                                          .OrderByDescending(x => x.RequestTime)
                                          .FirstOrDefault();
-                        bid_Details.Orderstatus = 0;
-                        _AppraisallandContext.Bids.Update(bid_Details);
-                        _AppraisallandContext.SaveChanges();
+                        bidDetails.OrderStatus = 0;
+                        _appraisallandContext.Bids.Update(bidDetails);
+                        _appraisallandContext.SaveChanges();
                     }
-                    Assign_Details.Appraiserid = assignProperty.Appraiserid;
-                    Assign_Details.AssignCount = 2;
-                    Assign_Details.IsSelfAssigned = true;
-                    _AppraisallandContext.AssignProperties.Update(Assign_Details);
-                    _AppraisallandContext.SaveChanges();
+                    propertyDetail.AppraiserId = assignProperty.AppraiserId;
+                    propertyDetail.AssignCount = 2;
+                    propertyDetail.IsSelfAssigned = true;
+                    _appraisallandContext.AssignProperties.Update(propertyDetail);
+                    _appraisallandContext.SaveChanges();
                     return true;
                     //}
                     //else
@@ -123,11 +122,11 @@ namespace DAL.Repository
 
                 appraiserMail.Body = appraiserMessage;
 
-                NetworkCredential info = new NetworkCredential("pradhumn7078@gmail.com", pswd);
+                NetworkCredential credential = new NetworkCredential("pradhumn7078@gmail.com", pswd);
                 SmtpClient smtp = new SmtpClient("smtp.gmail.com")
                 {
                     Port = 587,
-                    Credentials = info,
+                    Credentials = credential,
                     EnableSsl = true
                 };
 
@@ -144,14 +143,14 @@ namespace DAL.Repository
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="companyid"></param>
+        /// <param name="companyId"></param>
         /// <returns></returns>
-        public async Task<List<AssignProperty>>? GetAllassignProperty(long companyid)
+        public async Task<List<AssignProperty>>? GetAllassignProperty(long companyId)
         {
-            var AssignProperties = _AppraisallandContext.AssignProperties.Where(x => x.Companyid == companyid).ToList();
-            if (AssignProperties != null)
+            var assignProperties = _appraisallandContext.AssignProperties.Where(x => x.CompanyId == companyId).ToList();
+            if (assignProperties != null)
             {
-                return AssignProperties;
+                return assignProperties;
             }
             else
             {
@@ -162,11 +161,11 @@ namespace DAL.Repository
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="UserId"></param>
+        /// <param name="userId"></param>
         /// <returns></returns>
-        public AppraiserCompany? GetAppraiserCompany(long UserId)
+        public AppraiserCompany? GetAppraiserCompany(long userId)
         {
-            var appraiserCompany = _AppraisallandContext.AppraiserCompanies.Where(x => x.UserId == UserId).FirstOrDefault();
+            var appraiserCompany = _appraisallandContext.AppraiserCompanies.Where(x => x.UserId == userId).FirstOrDefault();
             if (appraiserCompany != null)
             {
                 return appraiserCompany;
@@ -180,11 +179,11 @@ namespace DAL.Repository
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="UserId"></param>
+        /// <param name="userId"></param>
         /// <returns></returns>
-        public AppraiserCompany? GetAppraisersCompany(long UserId)
+        public AppraiserCompany? GetAppraisersCompany(long userId)
         {
-            var appraiserCompany = _AppraisallandContext.AppraiserCompanies.Where(x => x.UserId == UserId).FirstOrDefault();
+            var appraiserCompany = _appraisallandContext.AppraiserCompanies.Where(x => x.UserId == userId).FirstOrDefault();
             if (appraiserCompany != null)
             {
                 return appraiserCompany;
@@ -198,44 +197,44 @@ namespace DAL.Repository
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="UserId"></param>
-        /// <param name="AppraiserCompany"></param>
+        /// <param name="userId"></param>
+        /// <param name="appraiserCompany"></param>
         /// <returns></returns>
-        public async Task<AppraiserCompany>? UpdateAppraiserCompanyAsync(int UserId, ClsAppraiserCompany AppraiserCompany)
+        public async Task<AppraiserCompany>? UpdateAppraiserCompanyAsync(int userId, ClsAppraiserCompany appraiserCompany)
         {
-            var AppraiserCompanyUser = _AppraisallandContext.AppraiserCompanies.Where(x => x.UserId == UserId).FirstOrDefault();
-            var User_Details = _AppraisallandContext.UserInformations.Where(x => x.UserId == UserId).FirstOrDefault();
-            if (AppraiserCompanyUser != null)
+            var appraiserCompanyUser = _appraisallandContext.AppraiserCompanies.Where(x => x.UserId == userId).FirstOrDefault();
+            var userDetails = _appraisallandContext.UserInformations.Where(x => x.UserId == userId).FirstOrDefault();
+            if (appraiserCompanyUser != null)
             {
-                AppraiserCompanyUser.LicenseNumber = AppraiserCompany.LicenseNumber;
-                AppraiserCompanyUser.AppraiserCompanyName = AppraiserCompany.AppraiserCompanyName;
-                AppraiserCompanyUser.AddressLineOne = AppraiserCompany.AddressLineOne;
-                AppraiserCompanyUser.AddressLineTwo = AppraiserCompany.AddressLineTwo;
-                AppraiserCompanyUser.City = AppraiserCompany.City;
-                AppraiserCompanyUser.State = AppraiserCompany.State;
-                AppraiserCompanyUser.PostalCode = AppraiserCompany.PostalCode;
-                AppraiserCompanyUser.PhoneNumber = AppraiserCompany.PhoneNumber;
-                AppraiserCompanyUser.FirstName = AppraiserCompany.FirstName;
-                AppraiserCompanyUser.LastName = AppraiserCompany.LastName;
-                AppraiserCompanyUser.OfficeContactFirstName = AppraiserCompany.OfficeContactFirstName;
-                AppraiserCompanyUser.OfficeContactLastName = AppraiserCompany.OfficeContactLastName;
-                AppraiserCompanyUser.OfficeContactEmail = AppraiserCompany.OfficeContactEmail;
-                AppraiserCompanyUser.OfficeContactPhone = AppraiserCompany.OfficeContactPhone;
-                AppraiserCompanyUser.LenderListUrl = AppraiserCompany.LenderListUrl;
-                AppraiserCompanyUser.CellNumber = AppraiserCompany.CellNumber;
-                AppraiserCompanyUser.EmailId = AppraiserCompany.EmailId;
-                AppraiserCompanyUser.StreetNumber = AppraiserCompany.StreetNumber;
-                AppraiserCompanyUser.StreetName = AppraiserCompany.StreetName;
-                AppraiserCompanyUser.ApartmentNumber = AppraiserCompany.ApartmentNumber;
-                AppraiserCompanyUser.ProfileImage = AppraiserCompany.ProfileImage;
-                AppraiserCompanyUser.ModifiedDateTime = DateTime.UtcNow;
-                _AppraisallandContext.AppraiserCompanies.Update(AppraiserCompanyUser);
-                _AppraisallandContext.SaveChanges();
+                appraiserCompanyUser.LicenseNumber = appraiserCompany.LicenseNumber;
+                appraiserCompanyUser.AppraiserCompanyName = appraiserCompany.AppraiserCompanyName;
+                appraiserCompanyUser.AddressLineOne = appraiserCompany.AddressLineOne;
+                appraiserCompanyUser.AddressLineTwo = appraiserCompany.AddressLineTwo;
+                appraiserCompanyUser.City = appraiserCompany.City;
+                appraiserCompanyUser.State = appraiserCompany.State;
+                appraiserCompanyUser.PostalCode = appraiserCompany.PostalCode;
+                appraiserCompanyUser.PhoneNumber = appraiserCompany.PhoneNumber;
+                appraiserCompanyUser.FirstName = appraiserCompany.FirstName;
+                appraiserCompanyUser.LastName = appraiserCompany.LastName;
+                appraiserCompanyUser.OfficeContactFirstName = appraiserCompany.OfficeContactFirstName;
+                appraiserCompanyUser.OfficeContactLastName = appraiserCompany.OfficeContactLastName;
+                appraiserCompanyUser.OfficeContactEmail = appraiserCompany.OfficeContactEmail;
+                appraiserCompanyUser.OfficeContactPhone = appraiserCompany.OfficeContactPhone;
+                appraiserCompanyUser.LenderListUrl = appraiserCompany.LenderListUrl;
+                appraiserCompanyUser.CellNumber = appraiserCompany.CellNumber;
+                appraiserCompanyUser.EmailId = appraiserCompany.EmailId;
+                appraiserCompanyUser.StreetNumber = appraiserCompany.StreetNumber;
+                appraiserCompanyUser.StreetName = appraiserCompany.StreetName;
+                appraiserCompanyUser.ApartmentNumber = appraiserCompany.ApartmentNumber;
+                appraiserCompanyUser.ProfileImage = appraiserCompany.ProfileImage;
+                appraiserCompanyUser.ModifiedDateTime = DateTime.UtcNow;
+                _appraisallandContext.AppraiserCompanies.Update(appraiserCompanyUser);
+                _appraisallandContext.SaveChanges();
                 //User_Details.GetSms = AppraiserCompany.GetSms;
                 //User_Details.GetEmail= AppraiserCompany.GetEmail;
                 //_AppraisallandContext.UserInformations.Update(User_Details);
                 //_AppraisallandContext.SaveChanges();
-                return AppraiserCompanyUser;
+                return appraiserCompanyUser;
             }
             else
             {

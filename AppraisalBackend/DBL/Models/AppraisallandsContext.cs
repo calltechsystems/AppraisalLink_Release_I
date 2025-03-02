@@ -42,6 +42,12 @@ namespace DBL.Models
 
         public virtual DbSet<EmailNotification> EmailNotifications { get; set; }
 
+        public virtual DbSet<EmailSmsNotificationsI> EmailSmsNotificationsIs { get; set; }
+
+        public virtual DbSet<EmailSmsNotificationsIi> EmailSmsNotificationsIis { get; set; }
+
+        public virtual DbSet<NoticationCode> NoticationCodes { get; set; }
+
         public virtual DbSet<PaymentToken> PaymentTokens { get; set; }
 
         public virtual DbSet<PaypalTransactionLog> PaypalTransactionLogs { get; set; }
@@ -95,7 +101,7 @@ namespace DBL.Models
                 entity.ToTable("admin_archive_users");
 
                 entity.Property(e => e.Id).HasColumnName("id");
-                entity.Property(e => e.Userid).HasColumnName("userid");
+                entity.Property(e => e.UserId).HasColumnName("userid");
             });
 
             modelBuilder.Entity<Agreement>(entity =>
@@ -107,11 +113,11 @@ namespace DBL.Models
                 entity.Property(e => e.Id).HasColumnName("id");
                 entity.Property(e => e.Description).HasColumnName("description");
                 entity.Property(e => e.Name).HasColumnName("name");
-                entity.Property(e => e.Paypalagreementid).HasColumnName("paypalagreementid");
-                entity.Property(e => e.Startdate)
+                entity.Property(e => e.PayPalAgreementId).HasColumnName("paypalagreementid");
+                entity.Property(e => e.StartDate)
                     .HasColumnType("timestamp without time zone")
                     .HasColumnName("startdate");
-                entity.Property(e => e.Subscriptionid).HasColumnName("subscriptionid");
+                entity.Property(e => e.SubscriptionId).HasColumnName("subscriptionid");
             });
 
             modelBuilder.Entity<Appraiser>(entity =>
@@ -257,7 +263,7 @@ namespace DBL.Models
                 entity.ToTable("archived_appraiser");
 
                 entity.Property(e => e.Id).HasColumnName("id");
-                entity.Property(e => e.Userid).HasColumnName("userid");
+                entity.Property(e => e.UserId).HasColumnName("userid");
             });
 
             modelBuilder.Entity<ArchivedProperty>(entity =>
@@ -277,17 +283,17 @@ namespace DBL.Models
 
                 entity.ToTable("assign_properties");
 
-                entity.HasIndex(e => e.Propertyid, "IX_assign_properties_propertyid");
+                entity.HasIndex(e => e.PropertyId, "IX_assign_properties_propertyid");
 
                 entity.Property(e => e.Id).HasColumnName("id");
-                entity.Property(e => e.Appraiserid).HasColumnName("appraiserid");
+                entity.Property(e => e.AppraiserId).HasColumnName("appraiserid");
                 entity.Property(e => e.AssignCount).HasColumnName("assignCount");
-                entity.Property(e => e.Companyid).HasColumnName("companyid");
+                entity.Property(e => e.CompanyId).HasColumnName("companyid");
                 entity.Property(e => e.CreatedDateTime)
                     .HasColumnType("timestamp without time zone")
                     .HasColumnName("created_DateTime");
                 entity.Property(e => e.IsSelfAssigned).HasColumnName("is_self_assigned");
-                entity.Property(e => e.Propertyid).HasColumnName("propertyid");
+                entity.Property(e => e.PropertyId).HasColumnName("propertyid");
             });
 
             modelBuilder.Entity<Bid>(entity =>
@@ -301,7 +307,7 @@ namespace DBL.Models
                     .HasMaxLength(250)
                     .HasColumnName("appraiser_name");
                 entity.Property(e => e.AppraiserUserId).HasColumnName("appraiser_user_id");
-                entity.Property(e => e.Assignedby).HasColumnName("assignedby");
+                entity.Property(e => e.AssignedBy).HasColumnName("assignedby");
                 entity.Property(e => e.BidAmount).HasColumnName("bid_amount");
                 entity.Property(e => e.BidLowerRange).HasColumnName("bid_lower_range");
                 entity.Property(e => e.BidUpperRange).HasColumnName("bid_upper_range");
@@ -315,7 +321,7 @@ namespace DBL.Models
                     .HasColumnType("timestamp without time zone")
                     .HasColumnName("modified_date");
                 entity.Property(e => e.OrderId).HasColumnName("order_id");
-                entity.Property(e => e.Orderstatus).HasColumnName("orderstatus");
+                entity.Property(e => e.OrderStatus).HasColumnName("orderstatus");
                 entity.Property(e => e.Remark)
                     .HasMaxLength(500)
                     .HasColumnName("remark");
@@ -326,7 +332,7 @@ namespace DBL.Models
                     .HasColumnType("timestamp without time zone")
                     .HasColumnName("response_time");
                 entity.Property(e => e.Status).HasColumnName("status");
-                entity.Property(e => e.Statusdate)
+                entity.Property(e => e.StatusDate)
                     .HasMaxLength(500)
                     .HasColumnName("statusdate");
                 entity.Property(e => e.UserId).HasColumnName("user_id");
@@ -372,8 +378,8 @@ namespace DBL.Models
                 entity.Property(e => e.BrokerageName)
                     .HasMaxLength(100)
                     .HasColumnName("brokerage_name");
-                entity.Property(e => e.Brokerageid).HasColumnName("brokerageid");
-                entity.Property(e => e.Cellnumber)
+                entity.Property(e => e.BrokerageId).HasColumnName("brokerageid");
+                entity.Property(e => e.CellNumber)
                     .HasColumnType("character varying")
                     .HasColumnName("cellnumber");
                 entity.Property(e => e.City)
@@ -394,7 +400,7 @@ namespace DBL.Models
                     .HasMaxLength(100)
                     .HasColumnName("first_name");
                 entity.Property(e => e.IsActive).HasColumnName("is_active");
-                entity.Property(e => e.Isactive1).HasColumnName("isactive");
+                entity.Property(e => e.IsActive1).HasColumnName("isactive");
                 entity.Property(e => e.LastName)
                     .HasMaxLength(100)
                     .HasColumnName("last_name");
@@ -530,11 +536,11 @@ namespace DBL.Models
 
             modelBuilder.Entity<Contactu>(entity =>
             {
-                entity.HasKey(e => e.ContactusId).HasName("contactus_pkey");
+                entity.HasKey(e => e.ContactUsId).HasName("contactus_pkey");
 
                 entity.ToTable("contactus");
 
-                entity.Property(e => e.ContactusId).HasColumnName("contactus_id");
+                entity.Property(e => e.ContactUsId).HasColumnName("contactus_id");
                 entity.Property(e => e.Company)
                     .HasMaxLength(100)
                     .HasColumnName("company");
@@ -562,17 +568,89 @@ namespace DBL.Models
 
             modelBuilder.Entity<EmailNotification>(entity =>
             {
-                entity.HasKey(e => e.EmailNotificationId).HasName("notifications_pkey");
+                entity
+                    .HasNoKey()
+                    .ToTable("emailNotifications");
 
-                entity.ToTable("emailNotifications");
-
-                entity.Property(e => e.EmailNotificationId).HasColumnName("email_notification_id");
+                entity.Property(e => e.EmailNotificationId)
+                    .ValueGeneratedOnAdd()
+                    .HasColumnName("email_notification_id");
                 entity.Property(e => e.IsSeen).HasColumnName("is_seen");
                 entity.Property(e => e.Message)
                     .HasMaxLength(250)
                     .HasColumnName("message");
                 entity.Property(e => e.ReceiverId).HasColumnName("receiver_id");
                 entity.Property(e => e.SenderId).HasColumnName("sender_id");
+            });
+
+            modelBuilder.Entity<EmailSmsNotificationsI>(entity =>
+            {
+                entity.HasKey(e => e.NotificationIdI).HasName("notifications_pkey");
+
+                entity.ToTable("email_sms_notifications_I");
+
+                entity.Property(e => e.NotificationIdI).HasColumnName("notification_id_I");
+                entity.Property(e => e.EmailContent)
+                    .HasMaxLength(1000)
+                    .HasColumnName("email_content");
+                entity.Property(e => e.EmailSubject)
+                    .HasMaxLength(250)
+                    .HasColumnName("email_subject");
+                entity.Property(e => e.MsgCode).HasColumnName("msg_code");
+                entity.Property(e => e.SmsContent)
+                    .HasMaxLength(500)
+                    .HasColumnName("sms_content");
+                entity.Property(e => e.SubMsgCode).HasColumnName("sub_msg_code");
+                entity.Property(e => e.TriggerPoint)
+                    .HasMaxLength(250)
+                    .HasColumnName("trigger_point");
+                entity.Property(e => e.UserDescription)
+                    .HasMaxLength(250)
+                    .HasColumnName("user_description");
+                entity.Property(e => e.UserType)
+                    .HasMaxLength(250)
+                    .HasColumnName("user_type");
+            });
+
+            modelBuilder.Entity<EmailSmsNotificationsIi>(entity =>
+            {
+                entity.HasKey(e => e.NotificationIdIi).HasName("email_sms_notifications_II_pkey");
+
+                entity.ToTable("email_sms_notifications_II");
+
+                entity.Property(e => e.NotificationIdIi).HasColumnName("notification_id_II");
+                entity.Property(e => e.NotificationTriggerCode).HasColumnName("notification_trigger_code");
+                entity.Property(e => e.SubEmailDescription)
+                    .HasColumnType("character varying")
+                    .HasColumnName("sub_email_description");
+                entity.Property(e => e.SubEmailSubject)
+                    .HasColumnType("character varying")
+                    .HasColumnName("sub_email_subject");
+                entity.Property(e => e.SubMsgCode).HasColumnName("sub_msg_code");
+                entity.Property(e => e.SubSmsContent)
+                    .HasColumnType("character varying")
+                    .HasColumnName("sub_sms_content");
+                entity.Property(e => e.SubTriggerPoint)
+                    .HasColumnType("character varying")
+                    .HasColumnName("sub_trigger_point");
+                entity.Property(e => e.SubUserTypeDescription)
+                    .HasColumnType("character varying")
+                    .HasColumnName("sub_user_type_description");
+            });
+
+            modelBuilder.Entity<NoticationCode>(entity =>
+            {
+                entity.HasKey(e => e.CodeId).HasName("notication_code_pkey");
+
+                entity.ToTable("notication_code");
+
+                entity.Property(e => e.CodeId)
+                    .ValueGeneratedNever()
+                    .HasColumnName("code_id");
+                entity.Property(e => e.NotificationDescription)
+                    .HasMaxLength(250)
+                    .HasColumnName("notification_description");
+                entity.Property(e => e.NotificationTriggerCode).HasColumnName("notification_trigger_code");
             });
 
             modelBuilder.Entity<PaymentToken>(entity =>
@@ -582,55 +660,55 @@ namespace DBL.Models
                 entity.ToTable("payment_tokens");
 
                 entity.Property(e => e.Id).HasColumnName("id");
-                entity.Property(e => e.Currentdatetime)
+                entity.Property(e => e.CurrentDateTime)
                     .HasDefaultValueSql("CURRENT_TIMESTAMP")
                     .HasColumnType("timestamp without time zone")
                     .HasColumnName("currentdatetime");
-                entity.Property(e => e.Planid).HasColumnName("planid");
+                entity.Property(e => e.PlanId).HasColumnName("planid");
                 entity.Property(e => e.Token)
                     .HasMaxLength(255)
                     .HasColumnName("token");
                 entity.Property(e => e.TopUpId).HasColumnName("topUpId");
-                entity.Property(e => e.Userid).HasColumnName("userid");
+                entity.Property(e => e.UserId).HasColumnName("userid");
             });
 
             modelBuilder.Entity<PaypalTransactionLog>(entity =>
             {
-                entity.HasKey(e => e.Logid).HasName("paypal_transaction_logs_pkey");
+                entity.HasKey(e => e.LogId).HasName("paypal_transaction_logs_pkey");
 
                 entity.ToTable("paypal_transaction_logs");
 
-                entity.Property(e => e.Logid).HasColumnName("logid");
-                entity.Property(e => e.Brandname)
+                entity.Property(e => e.LogId).HasColumnName("logid");
+                entity.Property(e => e.BrandName)
                     .HasMaxLength(255)
                     .HasColumnName("brandname");
-                entity.Property(e => e.Cancelurl).HasColumnName("cancelurl");
-                entity.Property(e => e.Currencycode)
+                entity.Property(e => e.CancelUrl).HasColumnName("cancelurl");
+                entity.Property(e => e.CurrencyCode)
                     .HasMaxLength(10)
                     .HasColumnName("currencycode");
-                entity.Property(e => e.Enddate)
+                entity.Property(e => e.EndDate)
                     .HasColumnType("timestamp without time zone")
                     .HasColumnName("enddate");
                 entity.Property(e => e.Locale)
                     .HasMaxLength(10)
                     .HasColumnName("locale");
                 entity.Property(e => e.PaymentSource).HasColumnType("character varying");
-                entity.Property(e => e.Paymentid)
+                entity.Property(e => e.PaymentId)
                     .HasMaxLength(255)
                     .HasColumnName("paymentid");
-                entity.Property(e => e.Paymentrequestsent).HasColumnName("paymentrequestsent");
-                entity.Property(e => e.Paymentresponsereceived).HasColumnName("paymentresponsereceived");
-                entity.Property(e => e.Paymenttype)
+                entity.Property(e => e.PaymentRequestSent).HasColumnName("paymentrequestsent");
+                entity.Property(e => e.PaymentResponseReceived).HasColumnName("paymentresponsereceived");
+                entity.Property(e => e.PaymentType)
                     .HasMaxLength(50)
                     .HasColumnName("paymenttype");
-                entity.Property(e => e.Planid)
+                entity.Property(e => e.PlanId)
                     .HasMaxLength(255)
                     .HasColumnName("planid");
-                entity.Property(e => e.Returnurl).HasColumnName("returnurl");
+                entity.Property(e => e.ReturnUrl).HasColumnName("returnurl");
                 entity.Property(e => e.Status)
                     .HasMaxLength(50)
                     .HasColumnName("status");
-                entity.Property(e => e.Stratdate)
+                entity.Property(e => e.StratDate)
                     .HasColumnType("timestamp without time zone")
                     .HasColumnName("stratdate");
                 entity.Property(e => e.SubscriberEmailId)
@@ -643,11 +721,11 @@ namespace DBL.Models
                     .HasColumnType("character varying")
                     .HasColumnName("Subscriber_ProfileName");
                 entity.Property(e => e.SubscriptionId).HasColumnType("character varying");
-                entity.Property(e => e.Totalpropertiesofplan).HasColumnName("totalpropertiesofplan");
-                entity.Property(e => e.Useraction)
+                entity.Property(e => e.TotalPropertiesOfPlan).HasColumnName("totalpropertiesofplan");
+                entity.Property(e => e.UserAction)
                     .HasMaxLength(50)
                     .HasColumnName("useraction");
-                entity.Property(e => e.Userid).HasColumnName("userid");
+                entity.Property(e => e.UserId).HasColumnName("userid");
             });
 
             modelBuilder.Entity<Plan>(entity =>
@@ -657,7 +735,7 @@ namespace DBL.Models
                 entity.ToTable("plans");
 
                 entity.Property(e => e.Id).HasColumnName("id");
-                entity.Property(e => e.Currencycode)
+                entity.Property(e => e.CurrencyCode)
                     .HasMaxLength(50)
                     .HasColumnName("currencycode");
                 entity.Property(e => e.Description)
@@ -673,7 +751,7 @@ namespace DBL.Models
                     .HasMaxLength(100)
                     .HasColumnName("plan_name");
                 entity.Property(e => e.PlanValidity).HasColumnName("planValidity");
-                entity.Property(e => e.Returnurl).HasColumnName("returnurl");
+                entity.Property(e => e.ReturnUrl).HasColumnName("returnurl");
                 entity.Property(e => e.UserType).HasColumnName("user_type");
                 entity.Property(e => e.YearlyAmount).HasColumnName("yearly_amount");
             });
@@ -728,10 +806,10 @@ namespace DBL.Models
                     .HasMaxLength(255)
                     .HasColumnName("image");
                 entity.Property(e => e.IsArchive).HasColumnName("is_archive");
-                entity.Property(e => e.IsArchiveappraiser).HasColumnName("is_archiveappraiser");
+                entity.Property(e => e.IsArchiveAppraiser).HasColumnName("is_archiveappraiser");
                 entity.Property(e => e.IsCompleted).HasColumnName("is_completed");
-                entity.Property(e => e.Isoncancel).HasColumnName("isoncancel");
-                entity.Property(e => e.Isonhold).HasColumnName("isonhold");
+                entity.Property(e => e.IsOnCancel).HasColumnName("isoncancel");
+                entity.Property(e => e.IsOnHold).HasColumnName("isonhold");
                 entity.Property(e => e.LenderInformation)
                     .HasColumnType("character varying")
                     .HasColumnName("lender_information");
@@ -742,7 +820,7 @@ namespace DBL.Models
                     .ValueGeneratedOnAdd()
                     .HasIdentityOptions(null, 3L, 10000L, null, null, null)
                     .HasColumnName("order_id");
-                entity.Property(e => e.Orderstatus).HasColumnName("orderstatus");
+                entity.Property(e => e.OrderStatus).HasColumnName("orderstatus");
                 entity.Property(e => e.PropertyStatus).HasColumnName("property_status");
                 entity.Property(e => e.Province)
                     .HasMaxLength(50)
@@ -845,7 +923,7 @@ namespace DBL.Models
                 entity.Property(e => e.Amount)
                     .HasPrecision(18, 2)
                     .HasColumnName("amount");
-                entity.Property(e => e.Cancelurl)
+                entity.Property(e => e.CancelUrl)
                     .HasMaxLength(255)
                     .HasColumnName("cancelurl");
                 entity.Property(e => e.Cycles).HasColumnName("cycles");
@@ -853,14 +931,14 @@ namespace DBL.Models
                 entity.Property(e => e.Frequency)
                     .HasMaxLength(50)
                     .HasColumnName("frequency");
-                entity.Property(e => e.Frequencyinterval).HasColumnName("frequencyinterval");
+                entity.Property(e => e.FrequencyInterval).HasColumnName("frequencyinterval");
                 entity.Property(e => e.Name)
                     .HasMaxLength(255)
                     .HasColumnName("name");
-                entity.Property(e => e.Returnurl)
+                entity.Property(e => e.ReturnUrl)
                     .HasMaxLength(255)
                     .HasColumnName("returnurl");
-                entity.Property(e => e.Setupfee)
+                entity.Property(e => e.SetupFee)
                     .HasPrecision(18, 2)
                     .HasColumnName("setupfee");
                 entity.Property(e => e.Type)
@@ -875,12 +953,12 @@ namespace DBL.Models
                 entity.ToTable("topup");
 
                 entity.Property(e => e.Id).HasColumnName("id");
-                entity.Property(e => e.Currencycode).HasMaxLength(50);
+                entity.Property(e => e.CurrencyCode).HasMaxLength(50);
                 entity.Property(e => e.NoOfProperties).HasColumnName("no_of_properties");
                 entity.Property(e => e.ReturnUrl).HasColumnName("returnUrl");
                 entity.Property(e => e.TopUpAmount).HasColumnName("top_up_amount");
                 entity.Property(e => e.TopupDescription).HasColumnName("topup_description");
-                entity.Property(e => e.Topupname)
+                entity.Property(e => e.TopupName)
                     .HasMaxLength(255)
                     .HasColumnName("topupname");
                 entity.Property(e => e.UserType).HasColumnName("user_type");
@@ -900,7 +978,7 @@ namespace DBL.Models
                     .HasColumnType("timestamp without time zone")
                     .HasColumnName("end_date");
                 entity.Property(e => e.IsActive).HasColumnName("Is_Active");
-                entity.Property(e => e.Paymentid)
+                entity.Property(e => e.PaymentId)
                     .HasMaxLength(100)
                     .HasColumnName("paymentid");
                 entity.Property(e => e.PaypalSubscriptionStatus)
@@ -946,7 +1024,7 @@ namespace DBL.Models
                     .HasColumnName("password");
                 entity.Property(e => e.PasswordHash).HasColumnName("password_hash");
                 entity.Property(e => e.PasswordSalt).HasColumnName("password_salt");
-                entity.Property(e => e.Resettokenexpiry)
+                entity.Property(e => e.ResetTokenExpiry)
                     .HasColumnType("timestamp without time zone")
                     .HasColumnName("resettokenexpiry");
                 entity.Property(e => e.UserType).HasColumnName("user_type");
@@ -960,10 +1038,10 @@ namespace DBL.Models
                 entity.ToTable("usertype");
 
                 entity.Property(e => e.Id).HasColumnName("id");
-                entity.Property(e => e.Usertype1)
+                entity.Property(e => e.UserType1)
                     .HasMaxLength(255)
                     .HasColumnName("usertype");
-                entity.Property(e => e.Usertypeid).HasColumnName("usertypeid");
+                entity.Property(e => e.UserTypeId).HasColumnName("usertypeid");
             });
 
             modelBuilder.Entity<Wishlist>(entity =>

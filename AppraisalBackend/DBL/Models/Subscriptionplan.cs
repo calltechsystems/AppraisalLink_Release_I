@@ -15,16 +15,16 @@
 
         public string? Frequency { get; set; }
 
-        public int? Frequencyinterval { get; set; }
+        public int? FrequencyInterval { get; set; }
 
         public decimal? Amount { get; set; }
 
         public int? Cycles { get; set; }
 
-        public decimal? Setupfee { get; set; }
+        public decimal? SetupFee { get; set; }
 
-        public string? Cancelurl { get; set; }
+        public string? CancelUrl { get; set; }
 
-        public string? Returnurl { get; set; }
+        public string? ReturnUrl { get; set; }
     }
 }

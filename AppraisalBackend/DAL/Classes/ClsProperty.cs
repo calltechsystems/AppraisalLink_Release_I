@@ -3,7 +3,8 @@
     public class ClsProperty
     {
 
-        public long? UserId { get; set; }
+        public long UserId { get; set; }
+        public string? UserEmailId { get; set; }
         public string? StreetName { get; set; }
 
         public string? StreetNumber { get; set; }
@@ -63,7 +64,7 @@
         public string? QuoteRequiredDate { get; set; }
 
         public string? Remark { get; set; }
-        public string? apartment_number { get; set; }
+        public string? ApartmentNumber { get; set; }
 
         // public int? IsCompleted { get; set; }
 

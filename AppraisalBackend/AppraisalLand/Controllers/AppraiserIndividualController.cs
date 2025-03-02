@@ -1,4 +1,6 @@
-﻿using DAL.Classes;
+﻿using AppraisalLand.Helper;
+using DAL.Classes;
+using DAL.Common.Enums;
 using DAL.Repository;
 using DBL.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -15,57 +17,66 @@ namespace AppraisalLand.Controllers
     {
         private readonly IRegistrationService _registrationService;
         private readonly IAppraiserIndividual _appraiserIndividual;
+        private NotificationHelper _smtpEmailService;
+        private IEmailSmsNotification _emailSmsNotification;
         private readonly AppraisallandsContext _context;
         Log log = new Log();
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="AppraiserIndividual"></param>
+        /// <param name="appraiserIndividual"></param>
         /// <param name="registrationService"></param>
         /// <param name="context"></param>
-        public AppraiserIndividualController(IAppraiserIndividual AppraiserIndividual, IRegistrationService registrationService, AppraisallandsContext context)
+        public AppraiserIndividualController(IAppraiserIndividual appraiserIndividual, IRegistrationService registrationService, AppraisallandsContext context, IEmailSmsNotification emailSmsNotification, NotificationHelper smtpEmailService)
         {
-            _appraiserIndividual = AppraiserIndividual;
+            _appraiserIndividual = appraiserIndividual;
             _registrationService = registrationService;
             _context = context;
+            _emailSmsNotification= emailSmsNotification;
+            _smtpEmailService= smtpEmailService;
         }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="AppraiserId"></param>
+        /// <param name="appraiserId"></param>
         /// <param name="updateRequest"></param>
         /// <returns></returns>
         [Authorize]
         [HttpPut("updateAppraiserProfile")]
-        public async Task<IActionResult> updateAppraiserProfile(int AppraiserId, [FromBody] ClsAppraiserIndividual updateRequest)
+        public async Task<IActionResult> updateAppraiserProfile(int appraiserId, [FromBody] ClsAppraiserIndividual updateRequest)
         {
             log.WriteLog($"ApprisalLandAppError: AppraiserIndividualController->updateAppraiserProfile Method: Started");
             try
             {
-                var updatedAppraiserIndividual = await _appraiserIndividual.UpdateAppraiserIndividualAsync(AppraiserId, updateRequest);
+                var updatedAppraiserIndividual = await _appraiserIndividual.UpdateAppraiserIndividualAsync(appraiserId, updateRequest);
 
                 if (updatedAppraiserIndividual == null)
                 {
                     log.WriteLog($"ApprisalLandAppError: AppraiserIndividualController->updateAppraiserProfile Method: End");
-                    return NotFound($"Appraiser not found with ID {AppraiserId} or update failed");
+                    return NotFound($"Appraiser not found with ID {appraiserId} or update failed");
                 }
-                var get_SMS = updateRequest.GetSms;
-                var get_Email = updateRequest.GetEmail;
+                var getSMS = updateRequest.GetSms;
+                var getEmail = updateRequest.GetEmail;
 
-                var user = _context.UserInformations.Where(x => x.UserId == AppraiserId).FirstOrDefault();
-                if (user != null)
+                var userDetail = _context.UserInformations.Where(x => x.UserId == appraiserId).FirstOrDefault();
+                if (userDetail != null)
                 {
-                    user.GetEmail = get_Email;
-                    user.GetSms = get_SMS;
-                    _context.UserInformations.Update(user);
+                    userDetail.GetEmail = getEmail;
+                    userDetail.GetSms = getSMS;
+                    _context.UserInformations.Update(userDetail);
                     _context.SaveChanges();
                 }
-
-                var Appraiser_Details = _context.UserInformations.Where(x => x.UserId == AppraiserId).FirstOrDefault();
-                log.WriteLog($"ApprisalLandAppError: AppraiserIndividualController->updateAppraiserProfile Method: End");
-                return Ok(new { Message = $"Appraiser with ID {AppraiserId} updated successfully", Appraiser = updatedAppraiserIndividual, IsEmail = Appraiser_Details.GetEmail, IsSms = Appraiser_Details.GetSms });
+                var appraiserDetail = _context.UserInformations.Where(x => x.UserId == appraiserId).FirstOrDefault();
+                List<string> emailIds = new List<string>();
+                emailIds.Add(userDetail.Email);
+                var notificationDetails = await _emailSmsNotification.getEmailSmsBody((int)MessageCode.ProfileUpdate);
+                if (notificationDetails != null)
+                {
+                    Task.Run(async () => await _smtpEmailService.SendEmailToUser(emailIds, "Common", "0", notificationDetails.EmailContent, notificationDetails.TriggerPoint));
+                }
+                return Ok(new { Message = $"Appraiser with ID {appraiserId} updated successfully", Appraiser = updatedAppraiserIndividual, IsEmail = appraiserDetail.GetEmail, IsSms = appraiserDetail.GetSms });
             }
             catch (Exception ex)
             {
@@ -109,15 +120,18 @@ namespace AppraisalLand.Controllers
             {
                 List<Property> properties = new List<Property>();
 
-                var AssignProperties = _context.AssignProperties.Where(x => x.Appraiserid == appraiserId && x.IsSelfAssigned == true).ToList();
-                var groupedAssignments = AssignProperties.GroupBy(a => a.Appraiserid);
+                var assignProperties = _context.AssignProperties.Where(x => x.AppraiserId == appraiserId && x.IsSelfAssigned == true).ToList();
+                var groupedAssignments = assignProperties.GroupBy(a => a.AppraiserId);
 
-                var propertyIds = AssignProperties.Select(a => a.Propertyid).Distinct().ToList();
+                var propertyIds = assignProperties.Select(a => a.PropertyId).Distinct().ToList();
 
-                foreach (var propiD in propertyIds)
+                foreach (var propertyId in propertyIds)
                 {
-                    var property = _context.Properties.Where(x => x.PropertyId == propiD).FirstOrDefault();
-                    properties.Add(property);
+                    var propertyDetail = _context.Properties.Where(x => x.PropertyId == propertyId).FirstOrDefault();
+                    if (propertyDetail != null)
+                    {
+                        properties.Add(propertyDetail);
+                    }
                 }
 
                 log.WriteLog($"ApprisalLandAppError: AppraiserIndividualController->getPropertiesById Method: End");
@@ -133,18 +147,18 @@ namespace AppraisalLand.Controllers
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="Userid"></param>
-        /// <param name="IsActive"></param>
+        /// <param name="userId"></param>
+        /// <param name="isActive"></param>
         /// <returns></returns>
         [Authorize]
         [HttpPut("updateApprasierStatus")]
-        public IActionResult updateApprasierStatus(long Userid, bool IsActive)
+        public IActionResult updateApprasierStatus(long userId, bool isActive)
         {
             log.WriteLog($"ApprisalLandAppError: AppraiserIndividualController->updateApprasierStatus Method: Start");
             try
             {
-                var Appraiser = _appraiserIndividual.IsActive(Userid, IsActive);
-                if (Appraiser)
+                var appraiser = _appraiserIndividual.IsActive(userId, isActive);
+                if (appraiser)
                 {
                     log.WriteLog($"ApprisalLandAppError: AppraiserIndividualController->updateApprasierStatus Method: End");
                     return Ok(new { Message = "Appraiser status updated successfully" });
@@ -174,10 +188,10 @@ namespace AppraisalLand.Controllers
             log.WriteLog($"ApprisalLandAppError: AppraiserIndividualController->getAssignedAppraiserbyAppraiserCompanyId Method: Start");
             try
             {
-                var apptaisers = _appraiserIndividual.getAppraiser(companyId);
-                if (apptaisers != null)
+                var appraisers = _appraiserIndividual.getAppraiser(companyId);
+                if (appraisers != null)
                 {
-                    var itemsWithUserInfo = apptaisers
+                    var itemsWithUserInfo = appraisers
                                            .Join(_context.UserInformations,
                                             item => item.UserId,
                                             userInfo => userInfo.UserId,

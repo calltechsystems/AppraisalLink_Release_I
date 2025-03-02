@@ -5,14 +5,14 @@ namespace DAL.Repository
 {
     public interface Ibid
     {
-        Task<Bid> AppraiserBidAsync(DAL.Classes.Bid clsBid);
-        Task<List<Bid>> getAllAppraiserBidAsync(int OrderId);
+        Task<Bid> AppraiserBidAsync(DAL.Classes.Bid bidClass);
+        Task<List<Bid>> getAllAppraiserBidAsync(int orderId);
         Task<List<Bid>> getAllQuotesByAppraiser();
-        Task<List<Bid>> getAppraiserBidbyId(long PropertyID);
-        Task<List<Bid>> getAppraiserBidbyUserID(long Userid);
+        Task<List<Bid>> getAppraiserBidbyId(long propertyId);
+        Task<List<Bid>> getAppraiserBidbyUserID(long userId);
         Task<Bid> AcceptBidAsync(int bidId);
         Task<Bid> DeclineBidAsync(int bidId);
-        Task<Bid> UpdateBid(long bidiD, Classes.Bid bid);
+        Task<Bid> UpdateBid(long bidId, Classes.Bid bidClass);
         Bid UpdateStatus(QuoteClass quoteClass);
     }
 }

@@ -40,8 +40,8 @@ namespace AppraisalLand.Controllers
             log.WriteLog("GetWishlists Function started");
             try
             {
-                var Wishlists = _wishlistService.GetWishlistsAsync();
-                return Ok(Wishlists.Result);
+                var wishlists = _wishlistService.GetWishlistsAsync();
+                return Ok(wishlists.Result);
             }
             catch (Exception ex)
             {
@@ -64,21 +64,17 @@ namespace AppraisalLand.Controllers
             try
             {
                 var propertyId = wishlistItem.PropertyId;
-                var UserId = wishlistItem.UserId;
-                var IsValid = _context.UserInformations.Where(x => x.UserId == UserId).FirstOrDefault();
-                var PropertyValid = _context.Properties.Where(x => x.PropertyId == propertyId).FirstOrDefault();
+                var userId = wishlistItem.UserId;
+                var isValid = _context.UserInformations.Where(x => x.UserId == userId).FirstOrDefault();
+                var propertyValid = _context.Properties.Where(x => x.PropertyId == propertyId).FirstOrDefault();
+                var isOnWishlist = _context.Wishlists.Where(x => x.UserId == userId && x.PropertyId == propertyId).FirstOrDefault();
 
-                var userid = wishlistItem.UserId;
-                var PropertyId = wishlistItem.PropertyId;
-
-                var isOnWishlist = _context.Wishlists.Where(x => x.UserId == userid && x.PropertyId == propertyId).FirstOrDefault();
                 if (isOnWishlist == null)
                 {
-                    if (IsValid != null && PropertyValid != null)
+                    if (isValid != null && propertyValid != null)
                     {
                         var Wishlist = _wishlistService.AddToWishlist(wishlistItem);
                         return Ok(new { Message = "Item successfully added to the wishlist", Wishlist = Wishlist.Result });
-
                     }
                     return BadRequest("PropertyId is not valid OR UserId is not valid");
                 }

@@ -15,6 +15,7 @@ namespace AppraisalLand.Controllers
     {
         private readonly AppraisallandsContext _appraisallandsContext;
         private readonly IConfiguration _configuration;
+        Log log = new Log();
 
         /// <summary>
         /// 
@@ -35,6 +36,7 @@ namespace AppraisalLand.Controllers
         [HttpPost]
         public async Task<IActionResult> HandlePayPalWebhook([FromBody] dynamic payload)
         {
+            log.WriteLog("HandlePayPalWebhook Method start");
             if (HttpContext.Request.Method != HttpMethods.Post)
             {
                 return StatusCode(405, new { error = "Method not allowed" });
@@ -50,36 +52,42 @@ namespace AppraisalLand.Controllers
                 switch (eventType)
                 {
                     case "BILLING.SUBSCRIPTION.CREATED":
-                        HandleSubscriptionCreated(parsedObject);
+                        log.WriteLog("eventType--BILLING.SUBSCRIPTION.CREATED start ");
+                        HandleSubscriptionCreated(payload);
                         break;
 
-                    case "BILLING.SUBSCRIPTION.UPDATED":
-                        HandleSubscriptionUpdated(payload);
-                        break;
+                    //case "BILLING.SUBSCRIPTION.UPDATED":
+                    //    HandleSubscriptionUpdated(payload);
+                    //    break;
 
                     case "BILLING.SUBSCRIPTION.CANCELLED":
+
+                        log.WriteLog("eventType--BILLING.SUBSCRIPTION.CANCELLED start ");
                         HandleSubscriptionCancelled(payload);
                         break;
 
                     case "BILLING.SUBSCRIPTION.ACTIVATED":
+                        log.WriteLog("eventType--BILLING.SUBSCRIPTION.ACTIVATED start ");
                         HandleSubscriptionActivated(payload);
                         break;
 
                     case "BILLING.SUBSCRIPTION.PAYMENT.FAILED":
+                        log.WriteLog("eventType--BILLING.SUBSCRIPTION.CREATED start ");
                         HandlePaymentFailed(payload);
                         break;
 
                     case "BILLING.SUBSCRIPTION.EXPIRED":
+                        log.WriteLog("eventType--BILLING.SUBSCRIPTION.EXPIRED start ");
                         HandleSubscriptionExpired(payload);
                         break;
 
-                    case "PAYMENT.SALE.COMPLETED":
-                        HandlePaymentSaleCompleted(payload);
-                        break;
+                    //case "PAYMENT.SALE.COMPLETED":
+                    //    HandlePaymentSaleCompleted(payload);
+                    //    break;
 
-                    case "PAYMENT.SALE.DENIED":
-                        HandlePaymentSaleDenied(payload);
-                        break;
+                    //case "PAYMENT.SALE.DENIED":
+                    //    HandlePaymentSaleDenied(payload);
+                    //    break;
 
                     default:
                         Console.WriteLine($"Unhandled event type: {eventType}");
@@ -102,8 +110,9 @@ namespace AppraisalLand.Controllers
         /// <param name="payload"></param>
         private void HandleSubscriptionCreated(JObject payload)
         {
-            string json = payload.ToString();
-            RecurringPayPalSubscription subscription = JsonConvert.DeserializeObject<RecurringPayPalSubscription>(json);
+            log.WriteLog("HandleSubscriptionCreated payload" + payload);
+            log.WriteLog("HandleSubscriptionCreated function start ");
+            PaypalWebhookSubcriptionCreated webhookData = JsonConvert.DeserializeObject<PaypalWebhookSubcriptionCreated>(payload.ToString());
         }
 
 
@@ -126,11 +135,11 @@ namespace AppraisalLand.Controllers
         /// <param name="payload"></param>
         private void HandleSubscriptionCancelled(JObject payload)
         {
-            var resource = payload["resource"];
-            string agreementId = resource["id"]?.ToString();
-            string state = resource["state"]?.ToString();
+            log.WriteLog("HandleSubscriptionCancelled payload" + payload);
+            log.WriteLog("HandleSubscriptionCancelled function start ");
+            PayPalWebhookSubscriptionCancelled webhookData = JsonConvert.DeserializeObject<PayPalWebhookSubscriptionCancelled>(payload.ToString());
 
-            Console.WriteLine($"Subscription Cancelled: Agreement ID = {agreementId}, State = {state}");
+            //Console.WriteLine($"Subscription Cancelled: Agreement ID = {agreementId}, State = {state}");
         }
 
         /// <summary>

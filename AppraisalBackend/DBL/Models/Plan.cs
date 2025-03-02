@@ -15,9 +15,9 @@
 
         public string Description { get; set; } = null!;
 
-        public string Returnurl { get; set; } = null!;
+        public string ReturnUrl { get; set; } = null!;
 
-        public string? Currencycode { get; set; }
+        public string? CurrencyCode { get; set; }
 
         public double? MonthlyAmount { get; set; }
 

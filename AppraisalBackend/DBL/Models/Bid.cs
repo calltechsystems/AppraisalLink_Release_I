@@ -27,9 +27,9 @@
 
         public int? BidUpperRange { get; set; }
 
-        public int? Orderstatus { get; set; }
+        public int? OrderStatus { get; set; }
 
-        public long? Assignedby { get; set; }
+        public long? AssignedBy { get; set; }
 
         public string? Remark { get; set; }
 
@@ -37,7 +37,7 @@
 
         public DateTime? ModifiedDate { get; set; }
 
-        public string? Statusdate { get; set; }
+        public string? StatusDate { get; set; }
 
         public string? AppraiserName { get; set; }
 

@@ -29,8 +29,8 @@ namespace DAL.Repository
             foreach (var item in Properties)
             {
                 var orderId = item.OrderId;
-                var Property_Details = _context.Properties.Where(x => x.OrderId == orderId).FirstOrDefault();
-                property.Add(Property_Details);
+                var PropertyDetails = _context.Properties.Where(x => x.OrderId == orderId).FirstOrDefault();
+                property.Add(PropertyDetails);
             }
             return Task.FromResult(property);
         }
@@ -45,9 +45,9 @@ namespace DAL.Repository
             var Users = _context.AdminArchiveUsers.ToList();
             foreach (var user in Users)
             {
-                var userid = user.Userid;
-                var user_Details = _context.UserInformations.Where(x => x.UserId == userid).FirstOrDefault();
-                userInformation.Add(user_Details);
+                var userid = user.UserId;
+                var userDetails = _context.UserInformations.Where(x => x.UserId == userid).FirstOrDefault();
+                userInformation.Add(userDetails);
             }
             return Task.FromResult(userInformation);
         }
@@ -85,7 +85,7 @@ namespace DAL.Repository
             if (users != null)
             {
                 AdminArchiveUser adminArchiveUser = new AdminArchiveUser();
-                adminArchiveUser.Userid = UserId;
+                adminArchiveUser.UserId = UserId;
                 _context.AdminArchiveUsers.Add(adminArchiveUser);
                 _context.SaveChanges();
                 return Task.FromResult(adminArchiveUser);

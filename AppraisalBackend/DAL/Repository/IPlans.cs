@@ -7,6 +7,6 @@ namespace DAL.Repository
     {
         Task<List<Plan>> GetAllPlans();
         Task<Plan> GetPlanById(int id);
-        Task<PlanClass> UpdatePlan(int PlanID, PlanClass plan);
+        Task<PlanClass> UpdatePlan(int planId, PlanClass plan);
     }
 }

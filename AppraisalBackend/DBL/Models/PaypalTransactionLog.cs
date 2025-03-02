@@ -5,37 +5,37 @@
     /// </summary>
     public partial class PaypalTransactionLog
     {
-        public int Logid { get; set; }
+        public int LogId { get; set; }
 
-        public int Userid { get; set; }
+        public int UserId { get; set; }
 
-        public string Paymentid { get; set; } = null!;
+        public string PaymentId { get; set; } = null!;
 
-        public string Planid { get; set; } = null!;
+        public string PlanId { get; set; } = null!;
 
-        public int? Totalpropertiesofplan { get; set; }
+        public int? TotalPropertiesOfPlan { get; set; }
 
-        public string? Paymenttype { get; set; }
+        public string? PaymentType { get; set; }
 
-        public DateTime? Stratdate { get; set; }
+        public DateTime? StratDate { get; set; }
 
-        public DateTime? Enddate { get; set; }
+        public DateTime? EndDate { get; set; }
 
-        public string? Paymentrequestsent { get; set; }
+        public string? PaymentRequestSent { get; set; }
 
-        public string? Paymentresponsereceived { get; set; }
+        public string? PaymentResponseReceived { get; set; }
 
         public string? Status { get; set; }
 
-        public string? Currencycode { get; set; }
+        public string? CurrencyCode { get; set; }
 
-        public string? Brandname { get; set; }
+        public string? BrandName { get; set; }
 
-        public string? Useraction { get; set; }
+        public string? UserAction { get; set; }
 
-        public string? Returnurl { get; set; }
+        public string? ReturnUrl { get; set; }
 
-        public string? Cancelurl { get; set; }
+        public string? CancelUrl { get; set; }
 
         public string? Locale { get; set; }
 

@@ -11,22 +11,22 @@ namespace AppraisalLand.Controllers
     [ApiController]
     public class AdminController : ControllerBase
     {
-        private readonly IAdmin admin;
-        private readonly IBroker _BrokerService;
+        private readonly IAdmin _admin;
+        private readonly IBroker _brokerService;
         private readonly IAppraiserIndividual _appraiserIndividual;
         Log Log = new Log();
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="BrokerService"></param>
+        /// <param name="brokerService"></param>
         /// <param name="appraiserIndividual"></param>
         /// <param name="admin"></param>
-        public AdminController(IBroker BrokerService, IAppraiserIndividual appraiserIndividual, IAdmin admin)
+        public AdminController(IBroker brokerService, IAppraiserIndividual appraiserIndividual, IAdmin admin)
         {
-            _BrokerService = BrokerService;
+            _brokerService = brokerService;
             _appraiserIndividual = appraiserIndividual;
-            this.admin = admin;
+            this._admin = admin;
         }
 
         /// <summary>
@@ -41,10 +41,10 @@ namespace AppraisalLand.Controllers
             Log.WriteLog("GetAllBroker Function started");
             try
             {
-                var Brokers = _BrokerService.AllBroker();
-                if (Brokers != null)
+                var brokers = _brokerService.AllBroker();
+                if (brokers != null)
                 {
-                    return Ok(Brokers);
+                    return Ok(brokers);
                 }
                 else
                 {
@@ -71,10 +71,10 @@ namespace AppraisalLand.Controllers
             Log.WriteLog($"ApprisalLandAppError: AdminController->GetAllApraiser Method: Function Started");
             try
             {
-                var Apraisers = _appraiserIndividual.GetAllApps();
-                if (Apraisers != null)
+                var apraisers = _appraiserIndividual.GetAllApps();
+                if (apraisers != null)
                 {
-                    return Ok(Apraisers);
+                    return Ok(apraisers);
                 }
                 else
                 {
@@ -100,11 +100,11 @@ namespace AppraisalLand.Controllers
             Log.WriteLog($"ApprisalLandAppError: AdminController->getAllBrokerage Method: Started");
             try
             {
-                var Brokerages = _appraiserIndividual.GetAllBrokerage();
-                if (Brokerages != null)
+                var brokerages = _appraiserIndividual.GetAllBrokerage();
+                if (brokerages != null)
                 {
                     Log.WriteLog($"ApprisalLandAppError: AdminController->getAllBrokerage Method: END");
-                    return Ok(Brokerages);
+                    return Ok(brokerages);
                 }
                 else
                 {
@@ -131,11 +131,11 @@ namespace AppraisalLand.Controllers
             Log.WriteLog($"ApprisalLandAppError: AdminController->getAllappraiserCompany Method: Start");
             try
             {
-                var AppraiserCompany = _appraiserIndividual.GetAllAppraiserCompany();
-                if (AppraiserCompany != null)
+                var appraiserCompanies = _appraiserIndividual.GetAllAppraiserCompany();
+                if (appraiserCompanies != null)
                 {
                     Log.WriteLog($"ApprisalLandAppError: AdminController->getAllappraiserCompany Method: End");
-                    return Ok(AppraiserCompany);
+                    return Ok(appraiserCompanies);
                 }
                 else
                 {
@@ -153,21 +153,21 @@ namespace AppraisalLand.Controllers
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="planID"></param>
+        /// <param name="planId"></param>
         /// <param name="numberOfProperty"></param>
         /// <param name="amount"></param>
         /// <returns></returns>
         [Authorize]
         [HttpPut]
         [Route("updatePlan")]
-        public ActionResult updatePlan(int planID, int numberOfProperty, double amount)
+        public ActionResult updatePlan(int planId, int numberOfProperty, double amount)
         {
             Log.WriteLog($"ApprisalLandAppError: AdminController->updatePlan Method: Start");
             try
             {
                 if (numberOfProperty != 0 || amount != 0)
                 {
-                    var plan = _appraiserIndividual.UpdatePlan(planID, numberOfProperty, amount);
+                    var plan = _appraiserIndividual.UpdatePlan(planId, numberOfProperty, amount);
                     if (plan.Result != null)
                     {
                         Log.WriteLog($"ApprisalLandAppError: AdminController->updatePlan Method: End");
@@ -245,8 +245,8 @@ namespace AppraisalLand.Controllers
         {
             try
             {
-                var appraiser_Company = _appraiserIndividual.GetAllAppraiserCompany();
-                return Ok(appraiser_Company);
+                var appraiserCompany = _appraiserIndividual.GetAllAppraiserCompany();
+                return Ok(appraiserCompany);
             }
             catch (Exception ex)
             {
@@ -267,7 +267,7 @@ namespace AppraisalLand.Controllers
         {
             try
             {
-                var user = admin.PostArchiveUser(userId);
+                var user = _admin.PostArchiveUser(userId);
                 if (user != null)
                 {
                     return Ok("User archived successfully.");
@@ -278,7 +278,7 @@ namespace AppraisalLand.Controllers
             catch (Exception ex)
             {
                 Log.WriteLog($"ApprisalLandAppError: AdminController->archiveUser Method: {ex.Message}");
-                return StatusCode(500, new { Message = "An error occurred while archive User" });
+                return BadRequest(new { Message = "An error occurred while archive User" });
             }
         }
 
@@ -294,7 +294,7 @@ namespace AppraisalLand.Controllers
         {
             try
             {
-                var user = admin.PostArchiveProperty(orderId);
+                var user = _admin.PostArchiveProperty(orderId);
                 if (user != null)
                 {
                     return Ok("Property archived successfully.");
@@ -305,7 +305,7 @@ namespace AppraisalLand.Controllers
             catch (Exception ex)
             {
                 Log.WriteLog($"ApprisalLandAppError: AdminController->archiveProperty Method: {ex.Message}");
-                return StatusCode(500, new { Message = "An error occurred while archive Property" });
+                return BadRequest(new { Message = "An error occurred while archive Property" });
             }
         }
 
@@ -320,13 +320,13 @@ namespace AppraisalLand.Controllers
         {
             try
             {
-                var properties = admin.GetAllArchivedProperty();
+                var properties = _admin.GetAllArchivedProperty();
                 return Ok(properties);
             }
             catch (Exception ex)
             {
                 Log.WriteLog($"ApprisalLandAppError: AdminController->GetAllArchivedProperty Method: {ex.Message}");
-                return StatusCode(500, new { Message = "An error occurred while Get All archive Property" });
+                return BadRequest(new { Message = "An error occurred while Get All archive Property" });
             }
         }
 
@@ -341,13 +341,13 @@ namespace AppraisalLand.Controllers
         {
             try
             {
-                var Users = admin.GetAllArchiveUser();
-                return Ok(Users);
+                var archiveUsers = _admin.GetAllArchiveUser();
+                return Ok(archiveUsers);
             }
             catch (Exception ex)
             {
                 Log.WriteLog($"ApprisalLandAppError: AdminController->getArchiveUser Method: {ex.Message}");
-                return StatusCode(500, new { Message = "An error occurred while Get Archive User" });
+                return BadRequest(new { Message = "An error occurred while Get Archive User" });
             }
         }
     }

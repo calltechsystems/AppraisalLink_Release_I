@@ -32,11 +32,11 @@ namespace AppraisalLand.Controllers
         /// 
         /// </summary>
         /// <param name="subscriptionId"></param>
-        /// <param name="UserId"></param>
+        /// <param name="userId"></param>
         /// <returns></returns>
         [Authorize]
         [HttpPost("subscribe")]
-        public async Task<IActionResult> Subscribe([FromQuery] int subscriptionId, [FromQuery] int UserId)
+        public async Task<IActionResult> Subscribe([FromQuery] int subscriptionId, [FromQuery] int userId)
         {
             var clientId = _configuration["ApplicationSettings:ClientId"];
             var clientSecret = _configuration["ApplicationSettings:ClientSecret"];
@@ -68,7 +68,7 @@ namespace AppraisalLand.Controllers
                     name = "Regular Payment",
                     type = "REGULAR",
                     frequency = subscriptionPlan.Frequency,
-                    frequency_interval = subscriptionPlan.Frequencyinterval.ToString(),
+                    frequency_interval = subscriptionPlan.FrequencyInterval.ToString(),
                     amount = new Currency
                     {
                         value = subscriptionPlan.Amount.ToString(),
@@ -84,35 +84,32 @@ namespace AppraisalLand.Controllers
                         value = subscriptionPlan.Amount.ToString(),
                         currency = "USD"
                     },
-                    cancel_url = subscriptionPlan.Cancelurl,
-                    return_url = subscriptionPlan.Returnurl,
+                    cancel_url = subscriptionPlan.CancelUrl,
+                    return_url = subscriptionPlan.ReturnUrl,
                     auto_bill_amount = "YES", // Set to YES for automatic billing
                     initial_fail_amount_action = "CONTINUE", // Set to CONTINUE to continue billing on initial payment failure
                     max_fail_attempts = "0"
                 }
             };
 
-
             var createdPlan = plan.Create(apiContext);
-
 
             if (createdPlan != null)
             {
-                var planId = createdPlan.id;
+                //var planId = createdPlan.id;
                 var planStatus = createdPlan.state;
             }
 
             var patchRequest = new PatchRequest
-        {
-            new Patch
             {
-                op = "replace",
-                path = "/",
-                value = new PayPal.Api.Plan { state = "ACTIVE" }
-            }
-        };
-            createdPlan.Update(apiContext, patchRequest);
+                new Patch {
+                    op = "replace",
+                    path = "/",
+                    value = new PayPal.Api.Plan { state = "ACTIVE" }
+                }
+            };
 
+            createdPlan.Update(apiContext, patchRequest);
 
             // Subscription API
             var client = new HttpClient();
@@ -131,29 +128,26 @@ namespace AppraisalLand.Controllers
             switch (subscriptionPlan.Frequency)
             {
                 case "MONTH":
-                    if (subscriptionPlan.Frequencyinterval.HasValue)
+                    if (subscriptionPlan.FrequencyInterval.HasValue)
                     {
-                        nextPaymentDate = nextPaymentDate.AddMonths(subscriptionPlan.Frequencyinterval.Value);
+                        nextPaymentDate = nextPaymentDate.AddMonths(subscriptionPlan.FrequencyInterval.Value);
                     }
                     break;
                 case "YEAR":
-                    if (subscriptionPlan.Frequencyinterval.HasValue)
+                    if (subscriptionPlan.FrequencyInterval.HasValue)
                     {
-                        nextPaymentDate = nextPaymentDate.AddYears(subscriptionPlan.Frequencyinterval.Value);
+                        nextPaymentDate = nextPaymentDate.AddYears(subscriptionPlan.FrequencyInterval.Value);
                     }
                     break;
                 case "WEEK":
-                    if (subscriptionPlan.Frequencyinterval.HasValue)
+                    if (subscriptionPlan.FrequencyInterval.HasValue)
                     {
-                        nextPaymentDate = nextPaymentDate.AddDays(subscriptionPlan.Frequencyinterval.Value * 7);
+                        nextPaymentDate = nextPaymentDate.AddDays(subscriptionPlan.FrequencyInterval.Value * 7);
                     }
                     break;
             }
 
-
-
             string formattedNextPaymentDate = nextPaymentDate.ToString("yyyy-MM-ddTHH:mm:ssZ");
-
 
             var agreement = new PayPal.Api.Agreement
             {
@@ -166,17 +160,15 @@ namespace AppraisalLand.Controllers
 
             var createdAgreement = agreement.Create(apiContext);
 
-
-
             var approvalUrl = createdAgreement.links.FirstOrDefault(l => l.rel == "approval_url").href;
 
-            var PlanName = subscriptionPlan.Name;
-            var plan_id = _context.Plans.Where(x => x.PlanName == PlanName).FirstOrDefault();
+            var planName = subscriptionPlan.Name;
+            var planId = _context.Plans.Where(x => x.PlanName == planName).FirstOrDefault();
 
             Subscription subscription = new Subscription();
             //subscription.SubscriptionId = subscriptionId;
-            subscription.UserId = UserId;
-            subscription.PlanId = plan_id.Id;
+            subscription.UserId = userId;
+            subscription.PlanId = planId.Id;
             subscription.StartDate = DateTime.Now;
             DateTime? endDate = null;
             subscription.EndDate = Convert.ToDateTime(endDate);
@@ -190,10 +182,10 @@ namespace AppraisalLand.Controllers
         /// 
         /// </summary>
         /// <param name="token"></param>
-        /// <param name="ba_token"></param>
+        /// <param name="baToken"></param>
         /// <returns></returns>
         [HttpGet]
-        public IActionResult HandlePayPalReturn([FromQuery] string token, [FromQuery] string ba_token)
+        public IActionResult HandlePayPalReturn([FromQuery] string token, [FromQuery] string baToken)
         {
             try
             {
@@ -206,7 +198,7 @@ namespace AppraisalLand.Controllers
                     : new APIContext(new OAuthTokenCredential(clientId, clientSecret).GetAccessToken());
                 var response = HttpContext.Request.Headers;
                 //var billinginfo = new PayPal.Api.BillingInfo { pa };
-                var paymentExecution = new PaymentExecution { payer_id = ba_token };
+                var paymentExecution = new PaymentExecution { payer_id = baToken };
                 var executedAgreement = PayPal.Api.Agreement.Execute(apiContext, token);
 
                 var agreementId = executedAgreement.id;
@@ -242,9 +234,9 @@ namespace AppraisalLand.Controllers
                     DBL.Models.Agreement agreement1 = new DBL.Models.Agreement();
                     agreement1.Name = agreement.name;
                     agreement1.Description = agreement.description;
-                    agreement1.Startdate = DateTime.Now;
-                    agreement1.Paypalagreementid = agreementId;
-                    agreement1.Subscriptionid = SubscriptionId;
+                    agreement1.StartDate = DateTime.Now;
+                    agreement1.PayPalAgreementId = agreementId;
+                    agreement1.SubscriptionId = SubscriptionId;
                     _context.Agreements.Add(agreement1);
                     _context.SaveChanges();
                     return Ok("PaymentSuccess");
@@ -280,22 +272,18 @@ namespace AppraisalLand.Controllers
                     ? new APIContext(new OAuthTokenCredential(clientId, clientSecret, new Dictionary<string, string> { { "mode", "sandbox" } }).GetAccessToken())
                     : new APIContext(new OAuthTokenCredential(clientId, clientSecret).GetAccessToken());
 
-
                 var agreementStateDescriptor = new AgreementStateDescriptor();
                 agreementStateDescriptor.note = "Subscription suspended";
-
 
                 PayPal.Api.Agreement.Suspend(apiContext, agreementId, agreementStateDescriptor);
                 return Ok("Subscription suspended successfully.");
             }
             catch (PayPal.PaymentsException ex)
             {
-
                 return BadRequest($"Failed to suspend subscription: {ex.Message}");
             }
             catch (Exception ex)
             {
-
                 return StatusCode(500, $"Error suspending subscription: {ex.Message}");
             }
         }

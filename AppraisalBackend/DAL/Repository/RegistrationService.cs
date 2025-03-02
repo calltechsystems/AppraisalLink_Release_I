@@ -2,6 +2,7 @@
 using Amazon.SimpleNotificationService;
 using Amazon.SimpleNotificationService.Model;
 using DAL.Classes;
+using DAL.Common.Enums;
 using DBL.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -19,7 +20,7 @@ namespace DAL.Repository
     /// </summary>
     public class RegistrationService : IRegistrationService
     {
-        private readonly AppraisallandsContext context;
+        private readonly AppraisallandsContext _context;
         private IConfiguration _configuration;
 
         /// <summary>
@@ -29,7 +30,7 @@ namespace DAL.Repository
         /// <param name="configuration"></param>
         public RegistrationService(AppraisallandsContext _context, IConfiguration configuration)
         {
-            context = _context;
+            this._context = _context;
             _configuration = configuration;
         }
 
@@ -40,7 +41,7 @@ namespace DAL.Repository
         /// <returns></returns>
         public bool EmailExists(string email)
         {
-            bool isAvailable = context.UserInformations.Where(x => x.Email == email.ToLower()).Any();
+            bool isAvailable = _context.UserInformations.Where(x => x.Email == email.ToLower()).Any();
 
             return isAvailable;
 
@@ -50,25 +51,25 @@ namespace DAL.Repository
         /// 
         /// </summary>
         /// <param name="userInfo"></param>
-        /// <param name="PasswordHash"></param>
-        /// <param name="PasswordSalt"></param>
+        /// <param name="passwordHash"></param>
+        /// <param name="passwordSalt"></param>
         /// <returns></returns>
-        public async Task<bool> RegisterUserAsync(ClsSignUpUser userInfo, byte[] PasswordHash, byte[] PasswordSalt)
+        public async Task<bool> RegisterUserAsync(ClsSignUpUser userInfo, byte[] passwordHash, byte[] passwordSalt)
         {
             try
             {
-                var userDetails = context.UserInformations.Where(x => x.Email.ToLower() == userInfo.Email.ToLower()).FirstOrDefault();
+                var userDetails = _context.UserInformations.Where(x => x.Email.ToLower() == userInfo.Email.ToLower()).FirstOrDefault();
                 if (userDetails != null)
                 {
-                    bool IsActive = true;
+                    bool isActive = true;
 
                     userDetails.Password = userInfo.Password;
-                    userDetails.PasswordHash = PasswordHash;
-                    userDetails.PasswordSalt = PasswordSalt;
+                    userDetails.PasswordHash = passwordHash;
+                    userDetails.PasswordSalt = passwordSalt;
                     userDetails.Password = userInfo.Password;
                     userDetails.IsPasswordSet = false;
-                    context.UserInformations.Update(userDetails);
-                    await context.SaveChangesAsync();
+                    _context.UserInformations.Update(userDetails);
+                    await _context.SaveChangesAsync();
                     return true;
                 }
                 return false;
@@ -105,11 +106,11 @@ namespace DAL.Repository
 
                 appraiserMail.Body = appraiserMessage;
 
-                NetworkCredential info = new NetworkCredential("pradhumn7078@gmail.com", pswd);
+                NetworkCredential credential = new NetworkCredential("pradhumn7078@gmail.com", pswd);
                 SmtpClient smtp = new SmtpClient("smtp.gmail.com")
                 {
                     Port = 587,
-                    Credentials = info,
+                    Credentials = credential,
                     EnableSsl = true
                 };
 
@@ -171,7 +172,7 @@ namespace DAL.Repository
             try
             {
                 UserInformation userInformation = new UserInformation();
-                var user = context.UserInformations.Where(x => x.Email == email.ToLower()).FirstOrDefault();
+                var user = _context.UserInformations.Where(x => x.Email == email.ToLower()).FirstOrDefault();
 
                 return user;
             }
@@ -185,21 +186,20 @@ namespace DAL.Repository
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="UserId"></param>
-        public void BrokerRegister(long UserId)
+        /// <param name="userId"></param>
+        public void BrokerRegister(long userId)
         {
             try
             {
 
                 Broker broker = new Broker
                 {
-                    UserId = UserId,
+                    UserId = userId,
                     IsActive = true
-
                 };
 
-                context.Brokers.Add(broker);
-                context.SaveChanges();
+                _context.Brokers.Add(broker);
+                _context.SaveChanges();
 
             }
             catch (Exception)
@@ -211,36 +211,16 @@ namespace DAL.Repository
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="UserId"></param>
-        public void BrokerageRegister(long UserId)
+        /// <param name="userId"></param>
+        public void BrokerageRegister(long userId)
         {
             try
             {
-
                 Brokerage brokerage = new Brokerage();
-                brokerage.UserId = UserId;
+                brokerage.UserId = userId;
                 brokerage.IsActive = true;
-                context.Brokerages.Add(brokerage);
-                context.SaveChanges();
-
-            }
-            catch (Exception)
-            {
-
-            }
-        }
-
-        public void AppraiserIndividualRegister(long UserId)
-        {
-            try
-            {
-
-                Appraiser appraiser = new Appraiser();
-                appraiser.UserId = UserId;
-                appraiser.IsActive = false;
-                context.Appraisers.Add(appraiser);
-                context.SaveChanges();
-
+                _context.Brokerages.Add(brokerage);
+                _context.SaveChanges();
             }
             catch (Exception)
             {
@@ -251,17 +231,35 @@ namespace DAL.Repository
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="UserId"></param>
-        public void AppraiserCompRegister(long UserId)
+        /// <param name="userId"></param>
+        public void AppraiserIndividualRegister(long userId)
         {
             try
             {
+                Appraiser appraiser = new Appraiser();
+                appraiser.UserId = userId;
+                appraiser.IsActive = false;
+                _context.Appraisers.Add(appraiser);
+                _context.SaveChanges();
+            }
+            catch (Exception)
+            {
 
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="userId"></param>
+        public void AppraiserCompRegister(long userId)
+        {
+            try
+            {
                 DBL.Models.AppraiserCompany appraiserCompany = new DBL.Models.AppraiserCompany();
-                appraiserCompany.UserId = UserId;
-                context.AppraiserCompanies.Add(appraiserCompany);
-                context.SaveChanges();
-
+                appraiserCompany.UserId = userId;
+                _context.AppraiserCompanies.Add(appraiserCompany);
+                _context.SaveChanges();
             }
             catch (Exception)
             {
@@ -279,63 +277,61 @@ namespace DAL.Repository
         {
             try
             {
-                bool Attachment_Flag = false;
+                bool attachmentFlag = false;
 
                 if (property.Attachment != null)
                 {
-                    Attachment_Flag = true;
+                    attachmentFlag = true;
                 }
 
                 DateTime estTime = DateTimeHelper.GetEasternTime();
-                var User = context.UserInformations.Where(x => x.UserId == property.UserId).FirstOrDefault();
-                if (User != null)
+                var userDetail = _context.UserInformations.Where(x => x.UserId == property.UserId).FirstOrDefault();
+                if (userDetail != null)
                 {
-                    Property OBjproperty = new Property();
-                    OBjproperty.StreetName = property.StreetName;
-                    OBjproperty.StreetNumber = property.StreetNumber;
-                    OBjproperty.City = property.City;
-                    OBjproperty.Province = property.Province;
-                    OBjproperty.ZipCode = property.ZipCode;
-                    OBjproperty.Area = property.Area;
-                    OBjproperty.Community = property.Community;
-                    OBjproperty.TypeOfBuilding = property.TypeOfBuilding;
-                    OBjproperty.ApplicantFirstName = property.ApplicantFirstName;
-                    OBjproperty.ApplicantLastName = property.ApplicantLastName;
-                    OBjproperty.ApplicantPhoneNumber = property.ApplicantPhoneNumber;
-                    OBjproperty.ApplicantEmailAddress = property.ApplicantEmailAddress;
-                    OBjproperty.AddedDatetime = estTime;
-                    OBjproperty.BidLowerRange = property.BidLowerRange;
-                    OBjproperty.BidUpperRange = property.BidUpperRange;
-                    OBjproperty.Urgency = property.Urgency;
-                    OBjproperty.PropertyStatus = property.PropertyStatus;
-                    OBjproperty.UserId = property.UserId;
-                    OBjproperty.IsArchive = false;
-                    OBjproperty.IsCompleted = 0;
-                    OBjproperty.AttachmentFlag = Attachment_Flag;
-                    OBjproperty.ApartmentNumber = property.apartment_number;
-                    OBjproperty.Remark = property.Remark;
-                    OBjproperty.QuoteRequiredDate = property.QuoteRequiredDate;
-                    OBjproperty.EstimatedValue = property.EstimatedValue;
-                    OBjproperty.Purpose = property.Purpose;
-                    OBjproperty.TypeOfAppraisal = property.TypeOfAppraisal;
-                    OBjproperty.LenderInformation = property.LenderInformation;
-                    OBjproperty.ApplicantAddress = property.ApplicantAddress;
-                    OBjproperty.Attachment = property.Attachment;
-                    OBjproperty.Sqft = property.Sqft;
-                    OBjproperty.Image = property.Image;
-                    OBjproperty.Isonhold = false;
-                    OBjproperty.Isoncancel = false;
-                    OBjproperty.IsArchiveappraiser = false;
-                    context.Properties.Add(OBjproperty);
-                    await context.SaveChangesAsync();
-                    return OBjproperty.OrderId;
+                    Property newProperty = new Property();
+                    newProperty.StreetName = property.StreetName;
+                    newProperty.StreetNumber = property.StreetNumber;
+                    newProperty.City = property.City;
+                    newProperty.Province = property.Province;
+                    newProperty.ZipCode = property.ZipCode;
+                    newProperty.Area = property.Area;
+                    newProperty.Community = property.Community;
+                    newProperty.TypeOfBuilding = property.TypeOfBuilding;
+                    newProperty.ApplicantFirstName = property.ApplicantFirstName;
+                    newProperty.ApplicantLastName = property.ApplicantLastName;
+                    newProperty.ApplicantPhoneNumber = property.ApplicantPhoneNumber;
+                    newProperty.ApplicantEmailAddress = property.ApplicantEmailAddress;
+                    newProperty.AddedDatetime = estTime;
+                    newProperty.BidLowerRange = property.BidLowerRange;
+                    newProperty.BidUpperRange = property.BidUpperRange;
+                    newProperty.Urgency = property.Urgency;
+                    newProperty.PropertyStatus = property.PropertyStatus;
+                    newProperty.UserId = property.UserId;
+                    newProperty.IsArchive = false;
+                    newProperty.IsCompleted = 0;
+                    newProperty.AttachmentFlag = attachmentFlag;
+                    newProperty.ApartmentNumber = property.ApartmentNumber;
+                    newProperty.Remark = property.Remark;
+                    newProperty.QuoteRequiredDate = property.QuoteRequiredDate;
+                    newProperty.EstimatedValue = property.EstimatedValue;
+                    newProperty.Purpose = property.Purpose;
+                    newProperty.TypeOfAppraisal = property.TypeOfAppraisal;
+                    newProperty.LenderInformation = property.LenderInformation;
+                    newProperty.ApplicantAddress = property.ApplicantAddress;
+                    newProperty.Attachment = property.Attachment;
+                    newProperty.Sqft = property.Sqft;
+                    newProperty.Image = property.Image;
+                    newProperty.IsOnHold = false;
+                    newProperty.IsOnCancel = false;
+                    newProperty.IsArchiveAppraiser = false;
+                    _context.Properties.Add(newProperty);
+                    await _context.SaveChangesAsync();
+                    return newProperty.OrderId;
                 }
                 else
                 {
                     return 0;
                 }
-
-
             }
             catch (Exception ex)
             {
@@ -360,27 +356,27 @@ namespace DAL.Repository
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="clsProperty"></param>
+        /// <param name="property"></param>
         /// <returns></returns>
-        public async Task<bool> SendMailAppaisers(ClsProperty clsProperty, int orderid)
+        public async Task<bool> SendMailAppaisers(ClsProperty property, int orderId)
         {
             try
             {
-                var Appraisers = await context.Appraisers.ToListAsync();
-                var AppraiserCompany = await context.AppraiserCompanies.ToListAsync();
+                var appraisers = await _context.Appraisers.ToListAsync();
+                var appraiserCompanies = await _context.AppraiserCompanies.ToListAsync();
 
                 var emailTasks = new List<Task>();
 
-                if (Appraisers != null)
+                if (appraisers != null)
                 {
-                    foreach (var User in Appraisers)
+                    foreach (var User in appraisers)
                     {
                         emailTasks.Add(SendEmailToUser(User.UserId));
                     }
                 }
-                if (AppraiserCompany != null)
+                if (appraiserCompanies != null)
                 {
-                    foreach (var User in AppraiserCompany)
+                    foreach (var User in appraiserCompanies)
                     {
                         emailTasks.Add(SendEmailToUser(User.UserId));
                     }
@@ -390,7 +386,6 @@ namespace DAL.Repository
             }
             catch (Exception)
             {
-
                 return false;
             }
 
@@ -399,18 +394,15 @@ namespace DAL.Repository
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="UserId_"></param>
+        /// <param name="userId"></param>
         /// <returns></returns>
-        public async Task sendMailToBroker(long UserId_/*/*,int orderid*/)
+        public async Task sendMailToBroker(long userId /*/*,int orderid*/)
         {
             var emailTasks = new List<Task>();
-            if (UserId_ != null)
-            {
-                emailTasks.Add(SendEmailToBroker(UserId_));
-            }
+
+            emailTasks.Add(SendEmailToBroker(userId));
 
             await Task.WhenAll(emailTasks);
-
         }
 
         /// <summary>
@@ -727,9 +719,9 @@ namespace DAL.Repository
         /// <returns></returns>
         private async Task SendEmailToUser(long userId)
         {
-            var userDetails = context.UserInformations.FirstOrDefault(x => x.UserId == userId);
+            var userDetail = _context.UserInformations.FirstOrDefault(x => x.UserId == userId);
 
-            if (userDetails != null)
+            if (userDetail != null)
             {
                 var pswd = _configuration["EmailSettings:SmtpPassword"];
                 var appraiserMail = new MailMessage
@@ -738,17 +730,17 @@ namespace DAL.Repository
                     Subject = "Your Expert Opinion Needed: New Property Listing on Appraisal Land",
                     IsBodyHtml = true
                 };
-                appraiserMail.To.Add(new MailAddress(userDetails.Email));
+                appraiserMail.To.Add(new MailAddress(userDetail.Email));
 
                 // Email body (you can refactor it to make it reusable as shown above)
                 string emailBody = GetEmailBody();
 
                 appraiserMail.Body = emailBody;
-                NetworkCredential info = new NetworkCredential(_configuration["EmailSettings:SmtpFrom"], pswd);
+                NetworkCredential credential = new NetworkCredential(_configuration["EmailSettings:SmtpFrom"], pswd);
                 SmtpClient smtp = new SmtpClient("smtp.gmail.com")
                 {
                     Port = 587, // Using the standard port for Gmail SMTP
-                    Credentials = info, // Provide credentials
+                    Credentials = credential, // Provide credentials
                     EnableSsl = true // Enable SSL for secure connection
                 };
 
@@ -764,7 +756,7 @@ namespace DAL.Repository
         /// <returns></returns>
         private async Task SendEmailToBroker(long userId)
         {
-            var userDetails = context.UserInformations.FirstOrDefault(x => x.UserId == userId);
+            var userDetails = _context.UserInformations.FirstOrDefault(x => x.UserId == userId);
 
             if (userDetails != null)
             {
@@ -781,11 +773,11 @@ namespace DAL.Repository
                 string emailBody = GetEmailBodyForBroker();
 
                 appraiserMail.Body = emailBody;
-                NetworkCredential info = new NetworkCredential("pradhumn7078@gmail.com", pswd);
+                NetworkCredential credential = new NetworkCredential("pradhumn7078@gmail.com", pswd);
                 SmtpClient smtp = new SmtpClient("smtp.gmail.com")
                 {
                     Port = 587, // Using the standard port for Gmail SMTP
-                    Credentials = info, // Provide credentials
+                    Credentials = credential, // Provide credentials
                     EnableSsl = true // Enable SSL for secure connection
                 };
 
@@ -803,13 +795,13 @@ namespace DAL.Repository
         {
             try
             {
-                var Appraisers = context.Appraisers.ToList();
+                var appraisers = _context.Appraisers.ToList();
 
-                foreach (var User in Appraisers)
+                foreach (var User in appraisers)
                 {
-                    var Number = User.PhoneNumber;
+                    var mobileNumber = User.PhoneNumber;
 
-                    if (Number != null)
+                    if (mobileNumber != null)
                     {
                         string awsKeyId = "AKIA463TBXUOCZ3E2BYH";
                         string awsKeySecret = "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";
@@ -820,7 +812,7 @@ namespace DAL.Repository
                         var publishRequest = new PublishRequest
                         {
                             Message = "A new property has been added to our platform",
-                            PhoneNumber = Number
+                            PhoneNumber = mobileNumber
                         };
 
                         publishRequest.MessageAttributes.Add("AWS.SNS.SMS.SMSType", new MessageAttributeValue { StringValue = "Transactional", DataType = "String" });
@@ -828,7 +820,6 @@ namespace DAL.Repository
                         PublishResponse publishResponse = await snsClient.PublishAsync(publishRequest);
                         return publishResponse;
                     }
-
                 }
             }
             catch (Exception ex)
@@ -883,34 +874,33 @@ namespace DAL.Repository
         {
             try
             {
-                bool IsActive = false;
-                var users = context.UserInformations.ToList();
+                bool isActive = false;
+                var users = _context.UserInformations.ToList();
 
-                long UserId = 1;
+                long userId = 1;
                 if (users.Any())
                 {
                     var maxId = users.Max(x => x.UserId);
-                    UserId = maxId + 1;
+                    userId = maxId + 1;
                 }
                 UserInformation user = new UserInformation();
-                user.UserId = UserId;
+                user.UserId = userId;
                 user.Email = userInformation.Email.ToLower();
                 // user.Password = userInformation.Password;
                 user.IsPasswordSet = true;
-                user.IsActive = IsActive;
+                user.IsActive = isActive;
                 user.CreatedDateTime = DateTime.Now;
-                user.UserType = 5;
+                user.UserType = (short)UserType.SubAppraiser;
                 user.ForgotPasswordToken = null;
                 user.VerifyEmailToken = token;
                 //user.PasswordSalt = PasswordSalt;
                 //user.PasswordHash = PasswordHash;
-                await context.UserInformations.AddAsync(user);
-                await context.SaveChangesAsync();
+                await _context.UserInformations.AddAsync(user);
+                await _context.SaveChangesAsync();
                 return true;
             }
             catch (Exception ex)
             {
-
                 return false;
             }
 
@@ -920,32 +910,32 @@ namespace DAL.Repository
         /// 
         /// </summary>
         /// <param name="appraiserCompany"></param>
-        /// <param name="userid"></param>
+        /// <param name="userId"></param>
         /// <returns></returns>
-        public async Task AppraiserRegisterByCompany(Classes.AppraiserCompanyClass appraiserCompany, long userid)
+        public async Task AppraiserRegisterByCompany(Classes.AppraiserCompanyClass appraiserCompany, long userId)
         {
             Appraiser appraiser = new Appraiser();
-            appraiser.UserId = userid;
+            appraiser.UserId = userId;
             appraiser.DateEstablished = DateTime.UtcNow;
             appraiser.CompanyId = appraiserCompany.CompanyId;
-            context.Appraisers.Add(appraiser);
-            context.SaveChanges();
+            _context.Appraisers.Add(appraiser);
+            _context.SaveChanges();
         }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="brokerageCls"></param>
-        /// <param name="userid"></param>
+        /// <param name="brokerage"></param>
+        /// <param name="userId"></param>
         /// <returns></returns>
-        public async Task BrokerRegisterByBrokerage(BrokerageCls brokerageCls, long userid)
+        public async Task BrokerRegisterByBrokerage(BrokerageCls brokerage, long userId)
         {
-            Broker objbroker = new Broker();
-            objbroker.UserId = userid;
-            objbroker.Brokerageid = brokerageCls.BrokerageId;
-            objbroker.DateEstablished = DateTime.UtcNow;
-            context.Brokers.Add(objbroker);
-            context.SaveChanges();
+            Broker newBroker = new Broker();
+            newBroker.UserId = userId;
+            newBroker.BrokerageId = brokerage.BrokerageId;
+            newBroker.DateEstablished = DateTime.UtcNow;
+            _context.Brokers.Add(newBroker);
+            _context.SaveChanges();
         }
 
         /// <summary>
@@ -955,11 +945,11 @@ namespace DAL.Repository
         /// <returns></returns>
         public long GetUserIdByCompanyId(long companyId)
         {
-            var AppraiserCompanies = context.AppraiserCompanies.Where(x => x.AppraiserCompanyId == companyId).FirstOrDefault();
-            if (AppraiserCompanies != null)
+            var appraiserCompany = _context.AppraiserCompanies.Where(x => x.AppraiserCompanyId == companyId).FirstOrDefault();
+            if (appraiserCompany != null)
             {
-                long userid = AppraiserCompanies.UserId;
-                return userid;
+                long userId = appraiserCompany.UserId;
+                return userId;
             }
             return 0;
         }
@@ -967,12 +957,12 @@ namespace DAL.Repository
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="CompanyId"></param>
+        /// <param name="companyId"></param>
         /// <returns></returns>
-        public bool CompanyExist(long CompanyId)
+        public bool CompanyExist(long companyId)
         {
-            var AppraiserCompany = context.AppraiserCompanies.Where(x => x.AppraiserCompanyId == CompanyId).FirstOrDefault();
-            if (AppraiserCompany != null)
+            var appraiserCompany = _context.AppraiserCompanies.Where(x => x.AppraiserCompanyId == companyId).FirstOrDefault();
+            if (appraiserCompany != null)
             {
                 return true;
             }
@@ -982,15 +972,15 @@ namespace DAL.Repository
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="BrokerageId"></param>
+        /// <param name="brokerageId"></param>
         /// <returns></returns>
-        public bool BrokerageExist(long BrokerageId)
+        public bool BrokerageExist(long brokerageId)
         {
-            var Brokerage = context.Brokerages.Where(x => x.Id == BrokerageId).FirstOrDefault();
-            if (Brokerage != null)
+            var brokerageDetail = _context.Brokerages.Where(x => x.Id == brokerageId).FirstOrDefault();
+
+            if (brokerageDetail != null)
             {
                 return true;
-
             }
             return false;
         }
@@ -1004,8 +994,7 @@ namespace DAL.Repository
         {
             try
             {
-                var user = context.UserInformations.Where(x => x.Email == email.ToLower()).FirstOrDefault();
-                var users = context.UserInformations.ToList();
+                var user = _context.UserInformations.Where(x => x.Email == email.ToLower()).FirstOrDefault();
                 if (user != null)
                 {
                     return user;
@@ -1023,35 +1012,35 @@ namespace DAL.Repository
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="brokerageCls"></param>
+        /// <param name="brokerage"></param>
         /// <param name="token"></param>
         /// <returns></returns>
-        public async Task<bool> RegisterBroker(BrokerageCls brokerageCls, string token)
+        public async Task<bool> RegisterBroker(BrokerageCls brokerage, string token)
         {
             try
             {
-                bool IsActive = false;
-                var users = context.UserInformations.ToList();
+                bool isActive = false;
+                var users = _context.UserInformations.ToList();
 
-                long UserId = 1;
+                long userId = 1;
                 if (users.Any())
                 {
                     var maxId = users.Max(x => x.UserId);
-                    UserId = maxId + 1;
+                    userId = maxId + 1;
                 }
                 UserInformation user = new UserInformation();
-                user.UserId = UserId;
-                user.Email = brokerageCls.Email.ToLower();
+                user.UserId = userId;
+                user.Email = brokerage.Email.ToLower();
                 user.IsPasswordSet = true;
-                user.IsActive = IsActive;
+                user.IsActive = isActive;
                 user.CreatedDateTime = DateTime.Now;
-                user.UserType = 6;
+                user.UserType = (short)DAL.Common.UserType.SubBroker;
                 user.ForgotPasswordToken = null;
                 user.VerifyEmailToken = token;
                 //user.PasswordSalt = PasswordSalt;
                 //user.PasswordHash = PasswordHash;
-                await context.UserInformations.AddAsync(user);
-                await context.SaveChangesAsync();
+                await _context.UserInformations.AddAsync(user);
+                await _context.SaveChangesAsync();
                 return true;
             }
             catch (Exception ex)
@@ -1069,26 +1058,26 @@ namespace DAL.Repository
         /// <returns></returns>
         public async Task<bool> RegisterUser(ClsUserInformation userInformation, string token)
         {
-            bool IsActive = false;
-            var users = await context.UserInformations.ToListAsync();
+            bool isActive = false;
+            var users = await _context.UserInformations.ToListAsync();
 
-            long UserId = 1;
+            long userId = 1;
             if (users.Any())
             {
                 var maxId = users.Max(x => x.UserId);
-                UserId = maxId + 1;
+                userId = maxId + 1;
             }
             UserInformation user = new UserInformation();
-            user.UserId = UserId;
+            user.UserId = userId;
             user.Email = userInformation.Email.ToLower();
-            user.IsActive = IsActive;
+            user.IsActive = isActive;
             user.CreatedDateTime = DateTime.Now;
             user.UserType = userInformation.UserType;
             user.IsPasswordSet = true;
             user.ForgotPasswordToken = null;
             user.VerifyEmailToken = token;
-            await context.UserInformations.AddAsync(user);
-            await context.SaveChangesAsync();
+            await _context.UserInformations.AddAsync(user);
+            await _context.SaveChangesAsync();
             return true;
         }
 
@@ -1099,7 +1088,7 @@ namespace DAL.Repository
         /// <returns></returns>
         public bool? GetIsPassword(string email)
         {
-            var isAvailable = context.UserInformations.Where(x => x.Email.ToLower() == email.ToLower()).FirstOrDefault();
+            var isAvailable = _context.UserInformations.Where(x => x.Email.ToLower() == email.ToLower()).FirstOrDefault();
             return isAvailable.IsPasswordSet;
         }
     }

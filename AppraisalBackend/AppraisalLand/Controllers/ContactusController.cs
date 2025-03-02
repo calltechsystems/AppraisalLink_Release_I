@@ -1,4 +1,6 @@
-﻿using DAL.Classes;
+﻿using AppraisalLand.Helper;
+using DAL.Classes;
+using DAL.Common.Enums;
 using DAL.Repository;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,26 +13,30 @@ namespace AppraisalLand.Controllers
     [ApiController]
     public class ContactusController : ControllerBase
     {
-        private readonly IContactusRepository _contactusRepository;
+        private readonly IContactusRepository _contactUsRepository;
+        private NotificationHelper _smtpEmailService;
+        private IEmailSmsNotification _emailSmsNotification;
         Log log = new Log();
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="contactusRepository"></param>
-        public ContactusController(IContactusRepository contactusRepository)
+        /// <param name="contactUsRepository"></param>
+        public ContactusController(IContactusRepository contactUsRepository, IEmailSmsNotification emailSmsNotification, NotificationHelper smtpEmailService)
         {
-            _contactusRepository = contactusRepository;
+            _contactUsRepository = contactUsRepository;
+            _emailSmsNotification= emailSmsNotification;
+            _smtpEmailService= smtpEmailService;
         }
 
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="contactu"></param>
+        /// <param name="contactU"></param>
         /// <returns></returns>
        // [Authorize]
         [HttpPost("createContactus")]
-        public async Task<IActionResult> createContactus([FromBody] ClsContactUs contactu)
+        public async Task<IActionResult> createContactus([FromBody] ClsContactUs contactU)
         {
             log.WriteLog("CreateContactus Function started");
             try
@@ -39,7 +45,16 @@ namespace AppraisalLand.Controllers
                 {
                     return BadRequest(ModelState);
                 }
-                await _contactusRepository.CreateContactusAsync(contactu);
+                await _contactUsRepository.CreateContactusAsync(contactU);
+                
+                List<string> emailIds = new List<string>();
+                emailIds.Add(contactU.EmailAddress);
+                
+                var notificationDetail = await _emailSmsNotification.getEmailSmsBody((int)MessageCode.ThankYouforContactingUs);
+                if (notificationDetail != null)
+                {
+                    Task.Run(async () => await _smtpEmailService.SendEmailToUser(emailIds, "Common", "0", notificationDetail.EmailContent, notificationDetail.TriggerPoint));
+                }
 
                 return Ok("Contactus created successfully");
             }

@@ -5,7 +5,7 @@
     /// </summary>
     public partial class Contactu
     {
-        public int ContactusId { get; set; }
+        public int ContactUsId { get; set; }
 
         public string FirstName { get; set; } = null!;
 
