@@ -19,10 +19,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Amazon.Lambda.AspNetCoreServer.Hosting" Version="1.7.3" />
+    <PackageReference Include="Amazon.Lambda.AspNetCoreServer.Hosting" Version="1.7.4" />
     <PackageReference Include="AWSSDK.ElasticBeanstalk" Version="3.7.400.99" />
     <PackageReference Include="AWSSDK.Extensions.NETCore.Setup" Version="3.7.400" />
-    <PackageReference Include="AWSSDK.S3" Version="3.7.414" />   
+    <PackageReference Include="AWSSDK.S3" Version="3.7.415.9" />   
     <PackageReference Include="MailKit" Version="4.10.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="9.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.1" />
@@ -31,6 +31,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="9.0.2" />
     <PackageReference Include="PayPal.SDK.NETCore" Version="1.9.1.2" />
     <PackageReference Include="PayPalCheckoutSdk" Version="1.0.4" />
     <PackageReference Include="PayPalCheckoutSdk.DotNet6" Version="1.0.2" />
@@ -43,12 +44,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BAL\BAL.csproj" />
+    <ProjectReference Include="..\Common\Common.csproj" />
     <ProjectReference Include="..\DAL\DAL.csproj" />
     <ProjectReference Include="..\DBL\DBL.csproj" />
+    <ProjectReference Include="..\Infra\INFRA.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="logs\" />
+    <Folder Include="Services\" />
   </ItemGroup>
 
 </Project>

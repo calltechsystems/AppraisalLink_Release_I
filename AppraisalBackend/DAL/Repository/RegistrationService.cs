@@ -1,8 +1,8 @@
 ﻿using Amazon.Runtime;
 using Amazon.SimpleNotificationService;
 using Amazon.SimpleNotificationService.Model;
+using AppraisalLand.Common.Enums;
 using DAL.Classes;
-using DAL.Common.Enums;
 using DBL.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -1034,7 +1034,7 @@ namespace DAL.Repository
                 user.IsPasswordSet = true;
                 user.IsActive = isActive;
                 user.CreatedDateTime = DateTime.Now;
-                user.UserType = (short)DAL.Common.UserType.SubBroker;
+                user.UserType = (short)UserType.SubBroker;
                 user.ForgotPasswordToken = null;
                 user.VerifyEmailToken = token;
                 //user.PasswordSalt = PasswordSalt;

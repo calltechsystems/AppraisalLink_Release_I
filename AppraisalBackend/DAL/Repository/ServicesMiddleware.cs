@@ -1,5 +1,5 @@
-﻿using DAL.Classes;
-using DAL.Common.Enums;
+﻿using AppraisalLand.Common.Enums;
+using DAL.Classes;
 using DBL.Backend;
 using DBL.Models;
 using Microsoft.EntityFrameworkCore;
@@ -476,7 +476,7 @@ namespace DAL.Repository
                         transactionLog.StartDate = createTimeEst;
                         transactionLog.EndDate = endDateEst;
                         transactionLog.UsedProperties = 0;
-                        transactionLog.PaypalSubscriptionStatus = Enum.GetName(DAL.Common.PaypalSubscriptionStatus.Active);
+                        transactionLog.PaypalSubscriptionStatus = Enum.GetName(PaypalSubscriptionStatus.Active);
                         transactionLog.TotalProperties = planDetail.NoOfProperties;
                         _appraisallandContext.TransactionLogs.Add(transactionLog);
                         _appraisallandContext.SaveChanges();

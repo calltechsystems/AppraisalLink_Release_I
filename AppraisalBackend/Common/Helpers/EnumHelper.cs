@@ -8,23 +8,45 @@ namespace DAL.Common
 {
     public static class EnumHelper
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="enumValue"></param>
+        /// <returns></returns>
         public static Int32 ToInt(this Enum enumValue)
         {
             var intv = Enum.ToObject(enumValue.GetType(), enumValue);
             return (int)intv;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="enumValue"></param>
+        /// <returns></returns>
         public static short ToShort(this Enum enumValue)
         {
             var intv = Enum.ToObject(enumValue.GetType(), enumValue);
             return (short)(int)intv;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="enumValue"></param>
+        /// <returns></returns>
         public static String GetName(this Enum enumValue)
         {
             var intv = Enum.GetName(enumValue.GetType(), enumValue);
             return intv;
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        /// <exception cref="NotSupportedException"></exception>
         public static short? ToNullableShort(this object value)
         {
             if (value == null)
@@ -37,10 +59,10 @@ namespace DAL.Common
                 {
                     return (value as Enum).ToShort();
                 }
-                else if (value is String) //remove me after US732.9
-                {
-                    return (value as String).ToShort();
-                }
+                //else if (value is String) //remove me after US732.9
+                //{
+                //    return (value as String).ToShort();
+                //}
                 else
                 {
                     throw new NotSupportedException("TResult must be an Enum");
@@ -104,10 +126,10 @@ namespace DAL.Common
             }
         }
 
-        public static bool EqualsEnum(this string source, Enum compareTo)
-        {
-            return source.CIEquals(compareTo.ToIntString());
-        }
+        //public static bool EqualsEnum(this string source, Enum compareTo)
+        //{
+        //    return true;
+        //}
 
         public static TResult? ConvertToNullableEnum<TResult>(this string source) where TResult : struct
         {
@@ -124,6 +146,13 @@ namespace DAL.Common
             return (TResult)Enum.Parse(typeof(TResult), source);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="TResult"></typeparam>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        /// <exception cref="NotSupportedException"></exception>
         public static TResult? ConvertToNullableEnum<TResult>(this Int16? source) where TResult : struct
         {
             if (!typeof(TResult).IsEnum)
@@ -141,20 +170,20 @@ namespace DAL.Common
             }
         }
 
-        public static TResult? ConvertDropdownValueToEnum<TResult>(this string source) where TResult : struct
-        {
-            if (!typeof(TResult).IsEnum)
-            {
-                throw new NotSupportedException("TResult must be an Enum");
-            }
+        //public static TResult? ConvertDropdownValueToEnum<TResult>(this string source) where TResult : struct
+        //{
+        //    if (!typeof(TResult).IsEnum)
+        //    {
+        //        throw new NotSupportedException("TResult must be an Enum");
+        //    }
 
-            if (string.IsNullOrEmpty(source) || source.Trim().CIEquals("-1"))
-            {
-                return null;
-            }
+        //    if (string.IsNullOrEmpty(source) || source.Trim().CIEquals("-1"))
+        //    {
+        //        return null;
+        //    }
 
-            return (TResult)Enum.Parse(typeof(TResult), source);
-        }
+        //    return (TResult)Enum.Parse(typeof(TResult), source);
+        //}
 
         public static TResult ConvertToEnum<TResult>(this String source)
         {

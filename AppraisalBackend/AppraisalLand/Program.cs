@@ -1,6 +1,11 @@
 using Amazon.S3;
+using AppraisalLand.BAL.Interfaces;
+using AppraisalLand.BAL.Services;
 using AppraisalLand.Class;
-using AppraisalLand.Helper;
+using AppraisalLand.Common.Helpers;
+using AppraisalLand.INFRA;
+using AppraisalLand.INFRA.Interfaces;
+using BAL.Services;
 using DAL.Repository;
 using DBL.Backend;
 using DBL.Models;
@@ -20,12 +25,15 @@ builder.Services.AddControllers()
     {
         options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
     });
+
 builder.Services.AddAWSService<IAmazonS3>();
+
 builder.Services.AddDefaultAWSOptions(builder.Configuration.GetAWSOptions());
 var configuration = new ConfigurationBuilder()
             .AddJsonFile("appsettings.json") // Use appsettings.app.json
             .Build();
 builder.Services.AddSingleton(configuration);
+builder.Services.AddSingleton<FileValidationHelper>();
 
 builder.Services.AddHttpClient();
 
@@ -63,9 +71,22 @@ builder.Services.AddScoped<ITwilioSms>(provider =>
     )
 );
 
-
 var appSettingsSection = configuration.GetSection("ApplicationSettings");
 builder.Services.Configure<ApplicationSettings>(appSettingsSection);
+
+var storageProvider = builder.Configuration["Storage:Provider"];
+if (storageProvider == "AWS")
+{
+    builder.Services.AddSingleton<IStorageService, S3StorageService>();
+}
+else if (storageProvider == "Azure")
+{
+    builder.Services.AddSingleton<IStorageService, AzureStorageService>();
+}
+
+// Register Services
+builder.Services.AddScoped<IFileUploadService, FileUploadService>();
+builder.Services.AddScoped<IStorageService, S3StorageService>(); // or AzureStorageService
 
 var appSettings = appSettingsSection.Get<ApplicationSettings>();
 builder.Services.AddMvc(options => options.EnableEndpointRouting = false);
@@ -78,7 +99,6 @@ Log.Logger = new LoggerConfiguration()
 
 // Set Serilog as the logger factory for ASP.NET Core
 builder.Logging.AddSerilog();
-
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
 {
@@ -116,7 +136,7 @@ builder.Services.AddCors(options =>
 });
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "CallTech", Version = "v1.0" });
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "AppraisaLand", Version = "v1.0" });
 
     var securitySchema = new OpenApiSecurityScheme
     {

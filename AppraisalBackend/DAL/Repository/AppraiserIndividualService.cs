@@ -1,5 +1,5 @@
-﻿using DAL.Classes;
-using DAL.Common.Enums;
+﻿using AppraisalLand.Common.Enums;
+using DAL.Classes;
 using DBL.Models;
 
 namespace DAL.Repository

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DAL.Common.Enums
+namespace AppraisalLand.Common.Enums
 {
     /// <summary>
     /// 
@@ -18,6 +18,16 @@ namespace DAL.Common.Enums
         SubAppraiser = 5,
         SubBroker = 6,
         Admin = 7
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    public enum StorageProviderType
+    {
+        AWS,
+        Azure,
+        Local
     }
 
     /// <summary>

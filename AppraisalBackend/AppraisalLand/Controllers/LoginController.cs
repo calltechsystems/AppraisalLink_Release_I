@@ -1,7 +1,7 @@
 ﻿using AppraisalLand.Class;
 using DAL.Classes;
 using DAL.Repository;
-using DAL.Common.Enums;
+using AppraisalLand.Common.Enums;
 using DBL.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
